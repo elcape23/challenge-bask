@@ -102,8 +102,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className={`${LABEL_TEXT[size]} text-text-neutral-default mb-1 ${
-              disabled ? "opacity-50" : ""
+            className={`${LABEL_TEXT[size]} mb-1 ${
+              disabled ? "text-text-neutral-disabled" : "text-text-neutral-default"
             }`}
           >
             {label}
@@ -116,13 +116,18 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             SIZE_HEIGHT[size],
             SIZE_PADDING[size],
             SIZE_GAP[size],
-            borderColor,
+            disabled
+              ? "border-border-neutral-disabled bg-background-surface-neutral-default cursor-not-allowed"
+              : borderColor,
             "focus-within:shadow-focus",
-            disabled ? "opacity-50 cursor-not-allowed bg-background-surface-neutral-default" : "",
           ].join(" ")}
         >
           {leadingIcon && (
-            <span className={`shrink-0 text-icon-neutral-secondary ${SIZE_ICON[size]}`}>
+            <span
+              className={`shrink-0 ${SIZE_ICON[size]} ${
+                disabled ? "text-icon-neutral-disabled" : "text-icon-neutral-secondary"
+              }`}
+            >
               {leadingIcon}
             </span>
           )}
@@ -136,18 +141,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             className={[
               "flex-1 min-w-0 bg-transparent outline-none",
               SIZE_TEXT[size],
-              "text-text-neutral-default",
+              disabled ? "text-text-neutral-disabled cursor-not-allowed" : "text-text-neutral-default",
               "placeholder:text-text-neutral-placeholder",
-              disabled ? "cursor-not-allowed" : "",
             ].join(" ")}
             {...props}
           />
 
           {trailingIcon && (
             <span
-              className={`shrink-0 ${
-                isError ? "text-icon-danger-default" : "text-icon-neutral-secondary"
-              } ${SIZE_ICON[size]}`}
+              className={`shrink-0 ${SIZE_ICON[size]} ${
+                disabled ? "text-icon-neutral-disabled" : isError ? "text-icon-danger-default" : "text-icon-neutral-secondary"
+              }`}
             >
               {trailingIcon}
             </span>
@@ -160,7 +164,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             className={[
               "mt-1",
               HELPER_TEXT[size],
-              isError ? "text-text-danger-default" : "text-text-neutral-placeholder",
+              disabled ? "text-text-neutral-disabled" : isError ? "text-text-danger-default" : "text-text-neutral-placeholder",
             ].join(" ")}
             role={isError ? "alert" : undefined}
           >

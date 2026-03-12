@@ -30,6 +30,7 @@ export default function SpacingPage() {
       <DocHeader
         title="Spacing"
         description="A consistent spacing scale creates visual rhythm and structural clarity."
+        variant="foundations"
       />
 
       <DocSection title="Overview">

@@ -1,0 +1,84 @@
+SWITCH COMPONENT — DETAILED SPECIFICATION
+==========================================
+Source: Figma node 2:17
+File: [Telehealth App] - Components
+
+1. COMPONENT OVERVIEW
+---------------------
+A toggle switch for binary on/off settings. Takes effect immediately.
+Use for settings, preferences, and feature flags — not for form fields
+that require explicit submission.
+
+2. SIZES
+--------
+┌──────────┬─────────────────┬────────────┬──────────────────────────┐
+│ Size     │ Track (W×H)     │ Thumb      │ Use case                 │
+├──────────┼─────────────────┼────────────┼──────────────────────────┤
+│ sm       │ 36×20 px        │ 16×16 px   │ Table rows, compact UI  │
+│ md       │ 44×24 px        │ 20×20 px   │ Default settings pages   │
+└──────────┴─────────────────┴────────────┴──────────────────────────┘
+
+3. STATES
+---------
+• Off    — neutral-300 track (#d3d6cc), thumb left.
+• On     — primary/default track (#153014), thumb right.
+• Hover  — slightly darker track (neutral-400 off, primary-hover on).
+• Focus  — focus ring (2px offset, primary).
+• Disabled — 50% opacity, cursor-not-allowed.
+
+4. ANATOMY
+----------
+1. Track   — pill-shaped background, 2px padding, rounded-max.
+2. Thumb   — circular white handle, shadow-sm, slides left/right.
+3. Label   — text next to track, describes the setting.
+4. Description — optional secondary text below label.
+
+5. TYPOGRAPHY
+-------------
+┌──────────────┬──────────────────┬──────────────────┬────────┐
+│ Element      │ md                │ sm               │ Weight │
+├──────────────┼──────────────────┼──────────────────┼────────┤
+│ Label        │ Body/01 16/24    │ Body/02 13/16    │ 400    │
+│ Description  │ Body/02 13/16    │ Body/03 11/12    │ 400    │
+└──────────────┴──────────────────┴──────────────────┴────────┘
+
+6. SPACING
+----------
+• Track padding: 2px (space-0.5) for both sizes.
+• Gap between track and label: 12px (md), 8px (sm).
+• Description margin-top: 2px.
+
+7. COLORS (SEMANTIC TOKENS)
+----------------------------
+Track off:     bg-neutral-300 (#d3d6cc)
+Track off hover: bg-neutral-400 (#b7bbaf)
+Track on:      bg-background-fill-primary-default (#153014)
+Track on hover: bg-background-fill-primary-hover (#223f1e)
+Thumb:         white (#ffffff), shadow-sm
+Disabled:      opacity-50
+
+8. BEHAVIOR
+-----------
+• Click or Space toggles state.
+• Change takes effect immediately.
+• Thumb animates 150ms ease.
+• Label click also toggles (label wraps button).
+
+9. ACCESSIBILITY
+----------------
+• role="switch", aria-checked.
+• Label via wrapping <label> or aria-label.
+• Space toggles; Enter does not submit.
+• Thumb position as secondary state cue.
+• Focus ring for keyboard users.
+
+10. CONTROLLED / UNCONTROLLED
+------------------------------
+• checked prop → controlled.
+• defaultChecked prop → uncontrolled.
+• onChange(checked: boolean) fires on toggle.
+
+11. FILE LOCATIONS
+------------------
+• Component: src/components/ui/Switch.tsx
+• Doc page:  src/app/(docs)/components/switch/page.tsx

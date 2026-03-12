@@ -15,7 +15,7 @@ function NavSection({ items }: { items: NavItem[] }) {
           <li key={item.href}>
             <Link
               href={item.href}
-              className={`block rounded-sm px-3 py-1.5 text-body-02 transition-colors ${
+              className={`block rounded-sm px-3 py-1.5 text-body-01 transition-colors ${
                 isActive
                   ? "text-text-primary-default bg-primary-100 font-medium"
                   : "text-text-neutral-secondary font-regular hover:bg-background-fill-neutral-default"

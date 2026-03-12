@@ -148,7 +148,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     ].join(" ");
 
     const checkboxIndicator = (
-      <div className={`shrink-0 flex items-start ${SIZE_PY[size]}`}>
+      <div className={`shrink-0 flex items-start rounded-xs peer-focus-visible:shadow-focus ${SIZE_PY[size]}`}>
         <div className={boxClasses}>
           {indeterminate ? (
             <MinusIcon className="text-icon-primary-invert" />

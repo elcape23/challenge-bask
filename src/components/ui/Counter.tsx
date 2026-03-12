@@ -84,6 +84,11 @@ const SIZE_VALUE_MIN_W: Record<CounterSize, string> = {
   sm: "min-w-10",
 };
 
+const SIZE_VALUE_PADDING: Record<CounterSize, string> = {
+  md: "px-3 py-2",
+  sm: "px-2 py-2",
+};
+
 const SIZE_BUTTON_TEXT: Record<CounterSize, string> = {
   md: "text-body-01 font-medium",
   sm: "text-body-02 font-medium",
@@ -117,10 +122,11 @@ const Counter = forwardRef<HTMLDivElement, CounterProps>(
     const updateValue = useCallback(
       (next: number) => {
         const clamped = clamp(next);
+        if (clamped === currentValue) return;
         if (!isControlled) setInternalValue(clamped);
         onChange?.(clamped);
       },
-      [clamp, isControlled, onChange]
+      [clamp, currentValue, isControlled, onChange]
     );
 
     const decrement = useCallback(
@@ -140,7 +146,7 @@ const Counter = forwardRef<HTMLDivElement, CounterProps>(
       "flex items-center justify-center shrink-0 transition-colors",
       "focus-visible:outline-none focus-visible:shadow-focus",
       "cursor-pointer",
-      "disabled:opacity-50 disabled:cursor-not-allowed",
+      "disabled:text-icon-neutral-disabled disabled:cursor-not-allowed",
     ].join(" ");
 
     return (
@@ -149,8 +155,10 @@ const Counter = forwardRef<HTMLDivElement, CounterProps>(
         role="group"
         aria-label="Counter"
         className={[
-          "inline-flex items-center border border-border-neutral-default rounded-md overflow-hidden",
-          disabled ? "opacity-50 cursor-not-allowed" : "",
+          "inline-flex items-center rounded-md overflow-hidden",
+          disabled
+            ? "border border-border-neutral-disabled cursor-not-allowed"
+            : "border border-border-neutral-default",
           className ?? "",
         ].join(" ")}
         {...props}
@@ -164,11 +172,10 @@ const Counter = forwardRef<HTMLDivElement, CounterProps>(
             btnBase,
             SIZE_BUTTON[size],
             SIZE_BUTTON_TEXT[size],
-            "border-r border-border-neutral-default",
+            disabled
+              ? "border-r border-border-neutral-disabled"
+              : "border-r border-border-neutral-default hover:bg-background-surface-neutral-hover active:bg-background-fill-neutral-default",
             "text-icon-neutral-secondary",
-            disabled || atMin
-              ? ""
-              : "hover:bg-background-surface-neutral-hover active:bg-background-fill-neutral-default",
           ].join(" ")}
         >
           <MinusIcon />
@@ -180,10 +187,11 @@ const Counter = forwardRef<HTMLDivElement, CounterProps>(
           aria-valuemin={min}
           aria-valuemax={max}
           className={[
-            "text-center text-text-neutral-default select-none",
+            "text-center select-none",
+            disabled ? "text-text-neutral-disabled" : "text-text-neutral-default",
             SIZE_VALUE_TEXT[size],
             SIZE_VALUE_MIN_W[size],
-            "px-3 py-2",
+            SIZE_VALUE_PADDING[size],
           ].join(" ")}
         >
           {currentValue}
@@ -198,11 +206,10 @@ const Counter = forwardRef<HTMLDivElement, CounterProps>(
             btnBase,
             SIZE_BUTTON[size],
             SIZE_BUTTON_TEXT[size],
-            "border-l border-border-neutral-default",
+            disabled
+              ? "border-l border-border-neutral-disabled"
+              : "border-l border-border-neutral-default hover:bg-background-surface-neutral-hover active:bg-background-fill-neutral-default",
             "text-icon-neutral-secondary",
-            disabled || atMax
-              ? ""
-              : "hover:bg-background-surface-neutral-hover active:bg-background-fill-neutral-default",
           ].join(" ")}
         >
           <PlusIcon />

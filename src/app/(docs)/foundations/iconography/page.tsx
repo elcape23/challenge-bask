@@ -39,6 +39,7 @@ export default function IconographyPage() {
       <DocHeader
         title="Iconography"
         description="Icons support communication, navigation, and visual hierarchy across the interface."
+        variant="foundations"
       />
 
       <DocSection title="Overview">

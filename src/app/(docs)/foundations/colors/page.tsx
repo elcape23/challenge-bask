@@ -1,7 +1,6 @@
 import DocHeader from "@/components/docs/DocHeader";
 import DocSection from "@/components/docs/DocSection";
 import DocTable from "@/components/docs/DocTable";
-import DocCallout from "@/components/docs/DocCallout";
 import DoDontGrid from "@/components/docs/DoDontGrid";
 
 const colorScales = {
@@ -158,17 +157,36 @@ function contrastTextColor(hex: string): string {
     : "var(--color-text-neutral-invert)";
 }
 
+function getLuminance(hex: string): number {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/**
+ * Color swatch utility for Foundations/Colors docs only.
+ * Not a design system component — matches Figma Utilities (node 4-153).
+ */
 function ColorCard({ name, hex }: { name: string; hex: string }) {
+  const textColor = contrastTextColor(hex);
+  const luminance = getLuminance(hex);
+  const needsBorder = luminance > 0.9;
+
   return (
     <div
-      className="flex flex-col items-start justify-end overflow-clip p-3 gap-1 aspect-square"
-      style={{ backgroundColor: hex, color: contrastTextColor(hex) }}
+      className="flex flex-col items-start justify-end overflow-clip p-4 gap-2 aspect-square"
+      style={{
+        backgroundColor: hex,
+        color: textColor,
+        border: needsBorder ? "1px solid rgba(0,0,0,0.08)" : "none",
+      }}
       title={`${name}\n#${hex.replace("#", "").toUpperCase()}`}
     >
-      <p className="text-body-02 font-bold whitespace-nowrap leading-4">
+      <p className="text-body-02 font-bold whitespace-nowrap" style={{ fontFamily: '"Suisse Intl Trial", sans-serif' }}>
         {name}
       </p>
-      <p className="text-body-02 whitespace-nowrap leading-4">
+      <p className="text-body-02 font-regular whitespace-nowrap" style={{ fontFamily: '"Suisse Intl Trial", sans-serif' }}>
         #{hex.replace("#", "").toUpperCase()}
       </p>
     </div>
@@ -193,11 +211,7 @@ function ColorScaleRow({
       </div>
       <div className="grid grid-cols-5">
         {steps.map(({ step, hex }) => (
-          <ColorCard
-            key={step}
-            name={`${scaleKey}-${step}`}
-            hex={hex}
-          />
+          <ColorCard key={step} name={`${scaleKey}-${step}`} hex={hex} />
         ))}
       </div>
     </div>
@@ -207,119 +221,27 @@ function ColorScaleRow({
 export default function ColorsPage() {
   return (
     <>
-      <DocHeader
-        title="Colors"
-        description="The color system defines visual identity and ensures consistency across every surface, text element, and interactive state in the interface."
-      />
+      {/* Row 1: Colors heading + subheading, left column only */}
+      <div className="col-start-1 row-start-1">
+        <DocHeader
+          title="Colors"
+          description="The color system defines visual identity and ensures consistency across every surface, text element, and interactive state in the interface."
+          variant="foundations"
+        />
+      </div>
 
-      <DocSection title="Overview">
-        <p className="mb-4">
-          Our color system is built on carefully tuned scales extracted from
-          Figma, organized into core palettes (Neutral, Primary, Secondary)
-          and functional palettes (Success, Info, Warning, Danger). Each scale
-          runs from 50 (lightest) to 900 (darkest) and maps directly to CSS
-          custom properties using the{" "}
-          <code
-            className="text-body-03 bg-background-surface-neutral-default rounded-md"
-            style={{
-              padding: "2px 6px",
-              fontFamily: "monospace",
-            }}
-          >
-            --color-*
-          </code>{" "}
-          naming convention.
-        </p>
-        <p className="mb-4">
-          Components never reference raw hex values directly. Instead, they
-          consume semantic tokens that describe purpose — text, background,
-          border, feedback — so the system can adapt to light and dark modes
-          without modifying individual components.
-        </p>
-        <DocCallout variant="info" title="Token naming">
-          Scale tokens follow the pattern{" "}
-          <code style={{ fontFamily: "monospace" }}>
-            var(--color-primary-500)
-          </code>
-          . Semantic tokens use a role-based path like{" "}
-          <code style={{ fontFamily: "monospace" }}>
-            var(--color-text-neutral-default)
-          </code>
-          .
-        </DocCallout>
-      </DocSection>
-
-      <DocSection title="Principles">
-        <ul
-          className="list-none p-0 m-0 gap-3"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <li className="gap-3" style={{ display: "flex" }}>
-            <span
-              className="text-text-neutral-default font-medium"
-              style={{ minWidth: 140, flexShrink: 0 }}
-            >
-              Semantic first
-            </span>
-            <span>
-              Reference tokens by role (text, background, border), not by hue.
-              This keeps the palette decoupled from components and enables
-              theming.
-            </span>
-          </li>
-          <li className="gap-3" style={{ display: "flex" }}>
-            <span
-              className="text-text-neutral-default font-medium"
-              style={{ minWidth: 140, flexShrink: 0 }}
-            >
-              Accessible contrast
-            </span>
-            <span>
-              Every text/background pairing meets WCAG 2.1 AA — 4.5:1 for body
-              text and 3:1 for large text and UI elements. The neutral and
-              primary scales are designed so adjacent steps maintain usable
-              contrast.
-            </span>
-          </li>
-          <li className="gap-3" style={{ display: "flex" }}>
-            <span
-              className="text-text-neutral-default font-medium"
-              style={{ minWidth: 140, flexShrink: 0 }}
-            >
-              Functional color
-            </span>
-            <span>
-              Success, warning, danger, and info palettes are reserved
-              exclusively for communicating status. Never repurpose a feedback
-              color for decoration or branding.
-            </span>
-          </li>
-          <li className="gap-3" style={{ display: "flex" }}>
-            <span
-              className="text-text-neutral-default font-medium"
-              style={{ minWidth: 140, flexShrink: 0 }}
-            >
-              Restraint
-            </span>
-            <span>
-              Individual screens should feel calm. Lean on the neutral scale for
-              surfaces and text; use primary and secondary sparingly for
-              emphasis and interactive states.
-            </span>
-          </li>
-        </ul>
-      </DocSection>
-
-      {/* ── Light mode core scales ── */}
-      <DocSection title="Core scales — Light mode">
-        <p className="mb-6">
-          The three core scales form the foundation of every layout. Neutral
-          handles surfaces and text, Primary drives actions and focus, and
-          Secondary adds warmth to supporting elements.
-        </p>
+      {/* Core scales — Light mode */}
+      <div className="col-span-2 flex flex-col gap-20">
+        <div className="grid grid-cols-2 gap-x-[40px]">
+          <h2 className="text-heading-01 font-medium text-text-neutral-default leading-none self-start">
+            Core scales <br className="hidden md:block" /> Light mode
+          </h2>
+          <p className="text-body-01 font-regular text-text-neutral-secondary max-w-md self-start">
+            The three core scales form the foundation of every layout. Neutral
+            handles surfaces and text, Primary drives actions and focus, and
+            Secondary adds warmth to supporting elements.
+          </p>
+        </div>
         <ColorScaleRow
           label={colorScales.neutral.label}
           scaleKey="neutral"
@@ -335,15 +257,20 @@ export default function ColorsPage() {
           scaleKey="secondary"
           steps={colorScales.secondary.steps}
         />
-      </DocSection>
+      </div>
 
       {/* ── Functional scales ── */}
-      <DocSection title="Functional scales — Light mode">
-        <p className="mb-6">
-          Functional colors communicate status and feedback. Each scale
-          provides a background tint (50), lighter shades for containers
-          (100–200), and saturated values (500–600) for text and icons.
+      <div className="col-span-2 mt-12 grid grid-cols-2 gap-x-[40px]">
+        <h2 className="text-heading-01 font-medium text-text-neutral-default leading-none self-start">
+          Functional scales <br className="hidden md:block" /> Light mode
+        </h2>
+        <p className="text-body-01 font-regular text-text-neutral-secondary max-w-md self-start">
+          Functional colors communicate status and feedback. Each scale provides
+          a background tint (50), lighter shades for containers (100–200), and
+          saturated values (500–600) for text and icons.
         </p>
+      </div>
+      <div className="col-span-2">
         <ColorScaleRow
           label={colorScales.success.label}
           scaleKey="success"
@@ -364,7 +291,7 @@ export default function ColorsPage() {
           scaleKey="danger"
           steps={colorScales.danger.steps}
         />
-      </DocSection>
+      </div>
 
       {/* ── Dark mode scales ── */}
       <DocSection title="Core scales — Dark mode">
@@ -390,11 +317,7 @@ export default function ColorsPage() {
               </div>
               <div className="grid grid-cols-5">
                 {scale.steps.map(({ step, hex }) => (
-                  <ColorCard
-                    key={step}
-                    name={`${key}-${step}`}
-                    hex={hex}
-                  />
+                  <ColorCard key={step} name={`${key}-${step}`} hex={hex} />
                 ))}
               </div>
             </div>
@@ -545,9 +468,9 @@ export default function ColorsPage() {
             ) — never hard-code hex values in component styles.
           </li>
           <li>
-            Do not use color as the sole indicator of meaning. Pair it with
-            text labels, icons, or patterns so color-blind users receive the
-            same information.
+            Do not use color as the sole indicator of meaning. Pair it with text
+            labels, icons, or patterns so color-blind users receive the same
+            information.
           </li>
           <li>
             Reserve feedback palettes (success, warning, danger, info) for
@@ -640,8 +563,8 @@ export default function ColorsPage() {
         </div>
         <p>
           For theming or dark mode, the token values are redefined at the root
-          level. Components that use tokens automatically adapt without any
-          code changes — the same{" "}
+          level. Components that use tokens automatically adapt without any code
+          changes — the same{" "}
           <code style={{ fontFamily: "monospace" }}>
             var(--color-primary-500)
           </code>{" "}

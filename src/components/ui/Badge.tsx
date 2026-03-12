@@ -3,6 +3,7 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 export type BadgeType =
   | "neutral"
   | "success"
+  | "info"
   | "information"
   | "warning"
   | "danger";
@@ -17,23 +18,8 @@ export interface BadgeProps extends Omit<HTMLAttributes<HTMLSpanElement>, "child
   label?: string;
   /** Whether to show the leading icon */
   showIcon?: boolean;
-  /** Custom icon to override the default dot */
+  /** Custom leading icon (optional) */
   icon?: ReactNode;
-}
-
-function DotIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      width="8"
-      height="8"
-      viewBox="0 0 8 8"
-      fill="currentColor"
-      className={className}
-      aria-hidden="true"
-    >
-      <circle cx="4" cy="4" r="4" />
-    </svg>
-  );
 }
 
 const TYPE_STYLES: Record<
@@ -49,6 +35,11 @@ const TYPE_STYLES: Record<
     bg: "bg-background-fill-success-default",
     text: "text-text-success-invert",
     icon: "text-icon-success-invert",
+  },
+  info: {
+    bg: "bg-background-fill-information-default",
+    text: "text-text-information-invert",
+    icon: "text-icon-information-invert",
   },
   information: {
     bg: "bg-background-fill-information-default",
@@ -88,7 +79,7 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
       type = "neutral",
       size = "md",
       label = "Text",
-      showIcon = true,
+      showIcon = false,
       icon,
       className,
       ...props
@@ -107,11 +98,11 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
         `}
         {...props}
       >
-        {showIcon && (
+        {showIcon && icon && (
           <span
             className={`shrink-0 flex items-center justify-center overflow-hidden ${styles.icon} ${SIZE_ICON[size]}`}
           >
-            {icon ?? <DotIcon />}
+            {icon}
           </span>
         )}
         <span className={`${LABEL_STYLE[size]} ${styles.text}`}>{label}</span>

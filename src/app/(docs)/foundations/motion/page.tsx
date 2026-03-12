@@ -10,6 +10,7 @@ export default function MotionPage() {
       <DocHeader
         title="Motion"
         description="Motion adds meaning to interactions and guides attention through purposeful animation."
+        variant="foundations"
       />
 
       <DocSection title="Overview">

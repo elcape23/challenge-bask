@@ -1,5 +1,37 @@
 @import "tailwindcss";
 
+/* ─── Suisse Intl Trial (matches Figma typography variables) ─── */
+@font-face {
+  font-family: "Suisse Intl Trial";
+  src: url("/font/SuisseIntlTrial-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl Trial";
+  src: url("/font/SuisseIntlTrial-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Suisse Int'l Mono Trial (matches Figma mono variable) ─── */
+@font-face {
+  font-family: "Suisse Int'l Mono Trial";
+  src: url("/font/SuisseIntlMonoTrial-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Int'l Mono Trial";
+  src: url("/font/SuisseIntlMonoTrial-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   /* ─── Reset Tailwind defaults — Figma Foundations is the single source of truth ─── */
   --color-*: initial;
@@ -108,6 +140,7 @@
   --color-text-warning-invert: #fcefd9;
   --color-text-danger-default: #903328;
   --color-text-danger-invert: #903328;
+  --color-text-danger-disabled: #f6c4bd;
 
   /* ─── color/icon ─── */
   --color-icon-neutral-default: #1c1f1b;
@@ -145,6 +178,7 @@
   --color-background-fill-warning-default: #dda146;
   --color-background-fill-danger-default: #b84335;
   --color-background-fill-danger-hover: #eb978c;
+  --color-background-fill-danger-pressed: #d86759;
   --color-background-fill-danger-disabled: #f6c4bd;
 
   /* ─── color/background/surface ─── */
@@ -167,8 +201,8 @@
   --color-border-danger-default: #eb978c;
 
   /* ─── Font Family ─── */
-  --font-sans: var(--font-suisse-intl), "Suisse Intl", "Suisse Intl Trial", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  --font-sans: var(--font-suisse-intl, "Suisse Intl Trial"), "Suisse Intl Trial", system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains-mono, "Suisse Int'l Mono Trial"), "Suisse Int'l Mono Trial", "JetBrains Mono", monospace;
 
   /* ─── Font Size + paired Line Height ─── */
   --font-size-heading-01: 48px;
@@ -243,4 +277,45 @@ body {
 .docs-card:hover {
   border-color: var(--color-border-neutral-hover);
   box-shadow: var(--shadow-xs);
+}
+
+/* ─── Typography utilities (workaround for Tailwind v4 text- prefix conflict) ─── */
+@utility text-heading-01 {
+  font-size: var(--font-size-heading-01);
+  line-height: var(--font-size-heading-01--line-height);
+}
+@utility text-heading-02 {
+  font-size: var(--font-size-heading-02);
+  line-height: var(--font-size-heading-02--line-height);
+}
+@utility text-heading-03 {
+  font-size: var(--font-size-heading-03);
+  line-height: var(--font-size-heading-03--line-height);
+}
+@utility text-heading-04 {
+  font-size: var(--font-size-heading-04);
+  line-height: var(--font-size-heading-04--line-height);
+}
+@utility text-heading-05 {
+  font-size: var(--font-size-heading-05);
+  line-height: var(--font-size-heading-05--line-height);
+}
+@utility text-heading-06 {
+  font-size: var(--font-size-heading-06);
+  line-height: var(--font-size-heading-06--line-height);
+}
+@utility text-body-01 {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-body-01);
+  line-height: var(--font-size-body-01--line-height);
+}
+@utility text-body-02 {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-body-02);
+  line-height: var(--font-size-body-02--line-height);
+}
+@utility text-body-03 {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-body-03);
+  line-height: var(--font-size-body-03--line-height);
 }

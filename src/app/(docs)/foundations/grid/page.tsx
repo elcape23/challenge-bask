@@ -10,6 +10,7 @@ export default function GridPage() {
       <DocHeader
         title="Grid"
         description="The grid system provides structural consistency for layout and content alignment across screen sizes."
+        variant="foundations"
       />
 
       <DocSection title="Overview">

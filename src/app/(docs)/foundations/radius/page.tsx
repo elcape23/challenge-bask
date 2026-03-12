@@ -9,6 +9,7 @@ export default function RadiusPage() {
     <>
       <DocHeader
         title="Radius"
+        variant="foundations"
         description="Border radius values define the roundness of UI elements for a cohesive visual feel."
       />
 

@@ -74,7 +74,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     const bgClass = isSolid
       ? "bg-background-surface-neutral-default"
       : isBlur
-        ? "bg-background-fill-neutral-muted backdrop-blur-[20px]"
+        ? "bg-background-fill-neutral-muted backdrop-blur-20"
         : "";
 
     const borderClass =

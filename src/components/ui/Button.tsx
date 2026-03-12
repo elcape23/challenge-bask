@@ -38,96 +38,96 @@ const LINK_SIZE_CLASSES: Record<Exclude<ButtonSize, "icon">, string> = {
 
 const VARIANT_STYLES: Record<string, string> = {
   "neutral-filled": [
-    "bg-neutral-200 text-neutral-900",
-    "hover:bg-neutral-300 hover:text-neutral-800",
+    "bg-background-fill-neutral-default text-text-neutral-default",
+    "hover:bg-background-fill-neutral-hover hover:text-text-neutral-hover",
     "focus-visible:shadow-focus",
-    "active:bg-neutral-400 active:text-neutral-700",
-    "disabled:bg-neutral-600 disabled:text-neutral-400 disabled:pointer-events-none",
+    "active:bg-background-fill-neutral-pressed active:text-text-neutral-pressed",
+    "disabled:bg-background-fill-neutral-disabled disabled:text-text-neutral-disabled disabled:pointer-events-none",
   ].join(" "),
 
   "neutral-outlined": [
-    "border border-neutral-400 bg-transparent text-neutral-900",
-    "hover:bg-neutral-200 hover:text-neutral-800",
+    "border border-border-neutral-default bg-transparent text-text-neutral-default",
+    "hover:bg-background-fill-neutral-default hover:text-text-neutral-hover",
     "focus-visible:shadow-focus",
-    "active:bg-neutral-300 active:text-neutral-700",
-    "disabled:border-neutral-300 disabled:text-neutral-400 disabled:bg-transparent disabled:pointer-events-none",
+    "active:bg-background-fill-neutral-hover active:text-text-neutral-pressed",
+    "disabled:border-border-neutral-disabled disabled:text-text-neutral-disabled disabled:bg-transparent disabled:pointer-events-none",
   ].join(" "),
 
   "neutral-link": [
-    "bg-transparent text-neutral-900 underline underline-offset-2",
-    "hover:text-neutral-800",
-    "active:text-neutral-700",
-    "disabled:text-neutral-400 disabled:pointer-events-none",
+    "bg-transparent text-text-neutral-default underline underline-offset-2",
+    "hover:text-text-neutral-hover",
+    "active:text-text-neutral-pressed",
+    "disabled:text-text-neutral-disabled disabled:pointer-events-none",
   ].join(" "),
 
   "neutral-ghost": [
-    "bg-transparent text-neutral-900",
-    "hover:bg-neutral-200",
+    "bg-transparent text-text-neutral-default",
+    "hover:bg-background-fill-neutral-default",
     "focus-visible:shadow-focus",
-    "active:bg-neutral-300",
-    "disabled:text-neutral-400 disabled:bg-transparent disabled:pointer-events-none",
+    "active:bg-background-fill-neutral-hover",
+    "disabled:text-text-neutral-disabled disabled:bg-transparent disabled:pointer-events-none",
   ].join(" "),
 
   "primary-filled": [
-    "bg-primary-900 text-primary-100",
-    "hover:bg-primary-800",
+    "bg-background-fill-primary-default text-text-primary-invert",
+    "hover:bg-background-fill-primary-hover",
     "focus-visible:shadow-focus",
-    "active:bg-primary-700",
-    "disabled:bg-primary-200 disabled:pointer-events-none",
+    "active:bg-background-fill-primary-pressed",
+    "disabled:bg-background-fill-primary-disabled disabled:pointer-events-none",
   ].join(" "),
 
   "primary-outlined": [
-    "border border-primary-400 bg-transparent text-primary-900",
-    "hover:bg-primary-100 hover:text-primary-800",
+    "border border-border-primary-default bg-transparent text-text-primary-default",
+    "hover:bg-primary-100 hover:text-text-primary-default",
     "focus-visible:shadow-focus",
-    "active:bg-primary-200 active:text-primary-700",
-    "disabled:border-primary-200 disabled:text-primary-300 disabled:bg-transparent disabled:pointer-events-none",
+    "active:bg-primary-200 active:text-text-primary-default",
+    "disabled:border-border-primary-disabled disabled:text-text-primary-disabled disabled:bg-transparent disabled:pointer-events-none",
   ].join(" "),
 
   "primary-link": [
-    "bg-transparent text-primary-900 underline underline-offset-2",
+    "bg-transparent text-text-primary-default underline underline-offset-2",
     "hover:text-primary-800",
     "active:text-primary-700",
-    "disabled:text-primary-300 disabled:pointer-events-none",
+    "disabled:text-text-primary-disabled disabled:pointer-events-none",
   ].join(" "),
 
   "primary-ghost": [
-    "bg-transparent text-primary-900",
+    "bg-transparent text-text-primary-default",
     "hover:bg-primary-100",
     "focus-visible:shadow-focus",
     "active:bg-primary-200",
-    "disabled:text-primary-300 disabled:bg-transparent disabled:pointer-events-none",
+    "disabled:text-text-primary-disabled disabled:bg-transparent disabled:pointer-events-none",
   ].join(" "),
 
   "danger-filled": [
-    "bg-danger-500 text-neutral-100",
-    "hover:bg-danger-300",
+    "bg-background-fill-danger-default text-text-neutral-invert",
+    "hover:bg-background-fill-danger-hover",
     "focus-visible:shadow-focus",
-    "active:bg-danger-400",
-    "disabled:bg-danger-200 disabled:pointer-events-none",
+    "active:bg-background-fill-danger-pressed",
+    "disabled:bg-background-fill-danger-disabled disabled:pointer-events-none",
   ].join(" "),
 
   "danger-outlined": [
-    "border border-danger-400 bg-transparent text-danger-500",
+    "border border-border-danger-default bg-transparent text-text-danger-default",
     "hover:bg-danger-100 hover:text-danger-400",
     "focus-visible:shadow-focus",
     "active:bg-danger-200 active:text-danger-300",
-    "disabled:border-danger-200 disabled:text-danger-200 disabled:bg-transparent disabled:pointer-events-none",
+    "disabled:border-danger-200 disabled:text-text-danger-disabled disabled:bg-transparent disabled:pointer-events-none",
   ].join(" "),
 
   "danger-link": [
-    "bg-transparent text-danger-500 underline underline-offset-2",
+    "bg-transparent text-text-danger-default underline underline-offset-2",
     "hover:text-danger-400",
     "active:text-danger-300",
-    "disabled:text-danger-200 disabled:pointer-events-none",
+    "disabled:text-text-danger-disabled disabled:pointer-events-none",
   ].join(" "),
 
   "danger-ghost": [
-    "bg-transparent text-danger-500",
+    "bg-transparent text-text-danger-default",
     "hover:bg-danger-100",
     "focus-visible:shadow-focus",
     "active:bg-danger-200",
-    "disabled:text-danger-200 disabled:bg-transparent disabled:pointer-events-none",
+    "disabled:text-text-danger-disabled disabled:bg-transparent disabled:pointer-events-none",
   ].join(" "),
 };
 

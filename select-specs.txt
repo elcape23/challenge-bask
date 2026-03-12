@@ -1,0 +1,124 @@
+SELECT COMPONENT — DETAILED SPECIFICATION
+==========================================
+Source: Figma node 2:14
+File: [Telehealth App] - Components
+
+1. COMPONENT OVERVIEW
+---------------------
+A custom select dropdown that lets users choose a single value from a
+predefined list. Built on a custom trigger + listbox pattern (not native
+<select>) for cross-browser visual consistency and full keyboard support.
+
+2. SIZES
+--------
+┌──────────┬────────┬──────────────┬──────────────────┬──────────┐
+│ Size     │ Height │ Border-rad.  │ Trigger text     │ Icon     │
+├──────────┼────────┼──────────────┼──────────────────┼──────────┤
+│ sm       │ 32 px  │ radius-sm(8) │ Body/02 (13/16)  │ 16×16 px │
+│ md       │ 40 px  │ radius-md(12)│ Body/01 (16/24)  │ 20×20 px │
+└──────────┴────────┴──────────────┴──────────────────┴──────────┘
+
+3. STATES
+---------
+• Default  — neutral border (#b7bbaf), white background.
+• Hover    — border darkens to neutral-hover (#93988d).
+• Open     — primary border (#a6bba0), shadow-focus ring, chevron rotates 180°.
+• Focus    — same as open (focus-visible ring).
+• Error    — danger border (#eb978c), error text below trigger.
+• Disabled — 50% opacity, neutral surface background, non-interactive.
+
+4. ANATOMY
+----------
+1. Label          — above trigger, Body/02 medium.
+2. Trigger        — button container with value/placeholder + chevron icon.
+3. Chevron icon   — right-aligned, rotates on open.
+4. Dropdown       — floating panel below trigger, white bg, border, shadow-md.
+5. Option         — list item, hover bg = surface/neutral/default.
+6. Checkmark      — shown for selected option (icon/primary/default).
+7. Helper / Error — below trigger, Body/03.
+
+5. TYPOGRAPHY
+-------------
+┌──────────────┬──────────────────┬──────────────────┬────────┐
+│ Element      │ md               │ sm               │ Weight │
+├──────────────┼──────────────────┼──────────────────┼────────┤
+│ Label        │ Body/02 13/16    │ Body/02 13/16    │ 500    │
+│ Trigger text │ Body/01 16/24    │ Body/02 13/16    │ 400    │
+│ Option text  │ Body/01 16/24    │ Body/02 13/16    │ 400    │
+│ Helper/Error │ Body/03 11/12    │ Body/03 11/12    │ 400    │
+└──────────────┴──────────────────┴──────────────────┴────────┘
+
+6. SPACING
+----------
+• Trigger horizontal padding: 12px (spacing/space-3) for both sizes.
+• Option padding (md): px=12, py=8.
+• Option padding (sm): px=12, py=6.
+• Label margin-bottom: 4px.
+• Helper margin-top: 4px.
+• Dropdown gap from trigger: 4px (mt-1).
+
+7. BORDER & RADIUS
+-------------------
+• Trigger border: 1px solid, radius matches size token.
+• Dropdown border: 1px solid neutral-default, same radius as trigger.
+• Dropdown shadow: shadow-md (0 4px 6px -1px rgba(0,0,0,0.1)).
+• Focus shadow: shadow-focus (0 0 0 3px rgba(0,0,0,0.2)).
+• Dropdown max-height: 240px (max-h-60), overflow-auto.
+
+8. COLORS (SEMANTIC TOKENS)
+----------------------------
+Trigger:
+  Background:       white (#ffffff)
+  Border default:   border-neutral-default (#b7bbaf)
+  Border hover:     border-neutral-hover (#93988d)
+  Border focus:     border-primary-default (#a6bba0)
+  Border error:     border-danger-default (#eb978c)
+  Disabled bg:      bg-surface-neutral-default (#f1f2ec)
+  Text value:       text-neutral-default (#1c1f1b)
+  Text placeholder: text-neutral-placeholder (#93988d)
+  Chevron:          icon-neutral-secondary (#4e534d)
+
+Dropdown:
+  Background:       white (#ffffff)
+  Border:           border-neutral-default (#b7bbaf)
+  Option hover bg:  bg-surface-neutral-default (#f1f2ec)
+  Option text:      text-neutral-default (#1c1f1b)
+  Disabled text:    text-neutral-disabled (#b7bbaf)
+  Checkmark:        icon-primary-default (#153014)
+
+Error text:         text-danger-default (#903328)
+Helper text:        text-neutral-placeholder (#93988d)
+Label text:         text-neutral-default (#1c1f1b)
+
+9. BEHAVIOR
+-----------
+• Click trigger → toggles dropdown open/closed.
+• Click option → selects value, closes dropdown, returns focus to trigger.
+• Click outside → closes dropdown.
+• Escape → closes dropdown, returns focus to trigger.
+• ArrowDown/ArrowUp → navigates options (skipping disabled).
+• Home/End → jumps to first/last enabled option.
+• Enter/Space → opens dropdown or confirms selection.
+• Tab → closes dropdown, moves focus forward.
+• Chevron icon rotates 180° when open.
+• Dropdown scrolls when options exceed max-height.
+
+10. ACCESSIBILITY
+-----------------
+• Trigger: role="combobox", aria-expanded, aria-haspopup="listbox".
+• Listbox: role="listbox", aria-labelledby → trigger id.
+• Options: role="option", aria-selected for current value.
+• Active descendant tracked via aria-activedescendant.
+• Error: aria-invalid="true", aria-describedby → error message id.
+• Label linked via htmlFor / id.
+
+11. CONTROLLED / UNCONTROLLED
+------------------------------
+• value prop → controlled mode (parent manages state).
+• defaultValue prop → uncontrolled mode (internal state).
+• onChange fires on every selection.
+
+12. FILE LOCATIONS
+------------------
+• Component: src/components/ui/Select.tsx
+• Doc page:  src/app/(docs)/components/select/page.tsx

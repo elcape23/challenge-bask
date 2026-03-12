@@ -1,6 +1,5 @@
 import Link from "next/link";
-
-
+import Card from "@/components/ui/Card";
 
 const foundations = [
   {
@@ -49,10 +48,13 @@ export default function FoundationsPage() {
   return (
     <>
       <div className="mb-10">
-        <h1 className="font-bold tracking-tight text-text-neutral-default mb-3" style={{ fontSize: "120px", lineHeight: 1 }}>
+        <h1
+          className="font-bold tracking-tight text-text-neutral-default mb-3"
+          style={{ fontSize: "120px", lineHeight: 1 }}
+        >
           Foundations
         </h1>
-        <p className="text-body-01 font-regular text-text-neutral-secondary">
+        <p className="text-heading-06 font-regular text-text-neutral-secondary">
           The visual and interaction building blocks of the Bask design system.
         </p>
       </div>
@@ -62,17 +64,19 @@ export default function FoundationsPage() {
           <Link
             key={item.name}
             href={item.href}
-            className="docs-card block p-5 border border-border-neutral-default rounded-md bg-white no-underline"
-            style={{
-              transition: "border-color 0.15s ease, box-shadow 0.15s ease",
-            }}
+            className="no-underline h-full flex"
           >
-            <span className="block text-body-01 text-text-neutral-default mb-1 font-medium">
-              {item.name}
-            </span>
-            <span className="text-body-02 text-text-neutral-secondary">
-              {item.description}
-            </span>
+            <Card
+              showHeading={false}
+              className="gap-4 h-full flex-1 min-h-[200px]"
+            >
+              <p className="text-heading-05 font-medium text-text-neutral-default m-0">
+                {item.name}
+              </p>
+              <p className="text-body-01 text-text-neutral-secondary py-4">
+                {item.description}
+              </p>
+            </Card>
           </Link>
         ))}
       </div>

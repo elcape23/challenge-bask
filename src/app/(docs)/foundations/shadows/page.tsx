@@ -43,6 +43,7 @@ export default function ShadowsPage() {
       <DocHeader
         title="Shadows"
         description="Shadows create depth and establish visual hierarchy between surface layers."
+        variant="foundations"
       />
 
       <DocSection title="Overview">

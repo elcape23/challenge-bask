@@ -108,7 +108,7 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
    TAB CONTENT
    ═══════════════════════════════════════════════════ */
 
-const ALL_TYPES: BadgeType[] = ["neutral", "success", "information", "warning", "danger"];
+const ALL_TYPES: BadgeType[] = ["neutral", "success", "info", "warning", "danger"];
 
 function OverviewTab() {
   return (
@@ -389,7 +389,7 @@ function StylesTab() {
               Appointment scheduled <Badge type="success" size="sm" label="Confirmed" />
             </p>
             <p className="text-body-01 text-text-neutral-default flex items-center gap-2">
-              Lab results <Badge type="information" size="sm" label="New" />
+              Lab results <Badge type="info" size="sm" label="New" />
             </p>
             <p className="text-body-01 text-text-neutral-default flex items-center gap-2">
               Prescription <Badge type="warning" size="sm" label="Expiring" />
@@ -439,7 +439,7 @@ function PropertiesTab() {
               options={[
                 { value: "neutral", label: "Neutral" },
                 { value: "success", label: "Success" },
-                { value: "information", label: "Info" },
+                { value: "info", label: "Info" },
                 { value: "warning", label: "Warning" },
                 { value: "danger", label: "Danger" },
               ]}
@@ -486,7 +486,7 @@ function PropertiesTab() {
         <DocTable
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
-            ["type", '"neutral" | "success" | "information" | "warning" | "danger"', '"neutral"', "Semantic color type."],
+            ["type", '"neutral" | "success" | "info" | "warning" | "danger"', '"neutral"', "Semantic color type. Uses information tokens for info."],
             ["size", '"sm" | "md"', '"md"', "Size variant — affects height, padding, typography, and icon size."],
             ["label", "string", '"Text"', "Text label displayed inside the badge."],
             ["showIcon", "boolean", "true", "Toggle the leading icon."],
@@ -512,12 +512,12 @@ function PropertiesTab() {
 
         <DocPreview title="Small badges without icon">
           <div className="flex flex-wrap items-center gap-3">
-            <Badge type="information" size="sm" label="New" showIcon={false} />
+            <Badge type="info" size="sm" label="New" showIcon={false} />
             <Badge type="neutral" size="sm" label="Draft" showIcon={false} />
           </div>
         </DocPreview>
         <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Badge type="information" size="sm" label="New" showIcon={false} />
+          <code>{`<Badge type="info" size="sm" label="New" showIcon={false} />
 <Badge type="neutral" size="sm" label="Draft" showIcon={false} />`}</code>
         </pre>
       </DocSection>

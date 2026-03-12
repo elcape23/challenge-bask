@@ -33,7 +33,7 @@ export default function DocsTopbar() {
               key={href}
               href={href}
               className={[
-                "inline-flex items-center text-body-02 font-medium underline underline-offset-2 transition-colors",
+                "inline-flex items-center text-body-01 font-medium underline underline-offset-2 transition-colors",
                 isActive
                   ? "text-text-primary-default"
                   : "text-text-neutral-secondary hover:text-text-neutral-default",

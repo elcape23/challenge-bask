@@ -30,6 +30,7 @@ export default function TypographyPage() {
       <DocHeader
         title="Typography"
         description="Typography establishes hierarchy, readability, and personality across the interface. The system is built on the Suisse Intl typeface and a purposeful scale that ensures consistency at every level."
+        variant="foundations"
       />
 
       {/* ── Overview ── */}

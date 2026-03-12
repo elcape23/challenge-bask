@@ -1,0 +1,159 @@
+RADIO COMPONENT — COMPLETE SPECIFICATION
+==========================================
+
+Figma Source:
+  File: Telehealth App — Components
+  Node: 138:1877 (❖ Radio)
+  URL:  https://www.figma.com/design/ggpAl2bdadBJPMbtSbPzoN/-Telehealth-App----Components?node-id=138-1877
+
+────────────────────────────────────────
+
+1. COMPONENT OVERVIEW
+─────────────────────
+
+Radio buttons let users select exactly one option from a mutually
+exclusive set. Best suited for short lists of 2–5 options where
+seeing every choice reduces decision-making effort.
+
+Component type: Form input (single selection)
+Interaction: Click / keyboard (arrow keys within group, tab exits)
+
+────────────────────────────────────────
+
+2. ANATOMY
+──────────
+
+  ┌──────────────────────────────────┐
+  │  ( ● )  Label text               │
+  └──────────────────────────────────┘
+
+  1. Radio circle — circular border, filled inner dot when selected
+  2. Label — text describing the option, clicking selects the radio
+
+────────────────────────────────────────
+
+3. PROPERTIES
+─────────────
+
+| Prop           | Type                    | Default   | Description                        |
+|----------------|-------------------------|-----------|------------------------------------|
+| size           | "md" | "sm"             | "md"      | Size variant                       |
+| side           | "left" | "right"        | "left"    | Radio position relative to label   |
+| label          | string                  | "Label"   | Label text                         |
+| name           | string                  | undefined | Groups radios for mutual exclusion |
+| checked        | boolean                 | undefined | Controlled checked state           |
+| defaultChecked | boolean                 | undefined | Uncontrolled initial state         |
+| disabled       | boolean                 | false     | Disables the radio                 |
+| onChange       | (e) => void             | undefined | Change handler                     |
+| className      | string                  | undefined | Additional CSS classes              |
+
+Extends: InputHTMLAttributes<HTMLInputElement> (except "size" | "type")
+
+────────────────────────────────────────
+
+4. SIZE SPECIFICATIONS (from Figma)
+───────────────────────────────────
+
+                    md              sm
+  Circle size:      24×24px         20×20px
+  Inner dot:        12×12px         10×10px
+  Border width:     2px             2px
+  Container height: 48px            36px
+  Vertical padding: 12px            8px
+  Gap:              12px            8px
+  Label text:       Body/01 (16px)  Body/02 (13px)
+  Label weight:     400 (regular)   400 (regular)
+
+────────────────────────────────────────
+
+5. SIDE PROPERTY
+────────────────
+
+  left (default): [ (●) Label ]
+  right:          [ Label (●) ]
+
+────────────────────────────────────────
+
+6. STATES
+─────────
+
+  UNSELECTED
+    Circle: 2px border, border/neutral/default (#b7bbaf)
+    Inner:  empty (transparent)
+
+  SELECTED
+    Circle: 2px border, border/primary/default (#a6bba0)
+    Inner:  filled dot, bg/fill/primary/default (#46683e)
+
+  DISABLED
+    Opacity: 50% on entire row
+    Cursor:  not-allowed
+
+────────────────────────────────────────
+
+7. DESIGN TOKENS
+────────────────
+
+  Colors:
+    border/neutral/default         #b7bbaf  (unselected circle)
+    border/primary/default         #a6bba0  (selected circle)
+    bg/fill/primary/default        #46683e  (selected inner dot)
+    text/neutral/default           #1c1f1b  (label text)
+
+  Typography:
+    Body/01/Regular  16px / 24px / 400  (md label)
+    Body/02/Regular  13px / 16px / 400  (sm label)
+
+  Spacing:
+    gap (md):  12px (gap-3)
+    gap (sm):  8px (gap-2)
+    py (md):   12px (py-3)
+    py (sm):   8px (py-2)
+
+────────────────────────────────────────
+
+8. LAYOUT
+─────────
+
+  Root: <label> flex items-center
+  Hidden input: sr-only (visually hidden, accessible)
+  Circle: shrink-0, flex center, rounded-full, border-2
+  Inner dot: rounded-full, conditionally rendered
+  Label: flex-1, min-w-0
+  Side swap: flex order changes based on side prop
+
+────────────────────────────────────────
+
+9. ACCESSIBILITY
+────────────────
+
+  - Uses native <input type="radio"> with name grouping
+  - Hidden via sr-only but remains in accessibility tree
+  - Arrow keys navigate between radios in same group
+  - Tab key exits the radio group
+  - Disabled uses native disabled attribute
+  - Label wraps the input for click-to-select
+
+────────────────────────────────────────
+
+10. CONTROLLED / UNCONTROLLED SUPPORT
+─────────────────────────────────────
+
+  Controlled mode:
+    - Pass `checked` prop — component reflects external state
+    - Must provide `onChange` handler to update state
+    - Recommended for radio groups
+
+  Uncontrolled mode:
+    - Pass `defaultChecked` prop for initial state
+    - Internal state tracks changes via `useState`
+    - Browser manages via name grouping
+
+────────────────────────────────────────
+
+11. IMPLEMENTATION FILES
+────────────────────────
+
+  Component:     src/components/ui/Radio.tsx
+  Documentation: src/app/(docs)/components/radio/page.tsx
+  CSS tokens:    src/app/globals.css (no changes needed)
