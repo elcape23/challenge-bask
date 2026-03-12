@@ -545,7 +545,7 @@ export default function SwitchPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <>
+    <div className="col-span-2 flex flex-col">
       <DocHeader
         title="Switch"
         description="Switches toggle a single setting between on and off, taking effect immediately without requiring a form submission."
@@ -557,6 +557,6 @@ export default function SwitchPage() {
       {activeTab === "Design Tokens" && <DesignTokensTab />}
       {activeTab === "Styles" && <StylesTab />}
       {activeTab === "Properties" && <PropertiesTab />}
-    </>
+    </div>
   );
 }

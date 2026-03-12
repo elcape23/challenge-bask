@@ -721,7 +721,7 @@ export default function SelectPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <>
+    <div className="col-span-2 flex flex-col">
       <DocHeader
         title="Select"
         description="Selects let users choose a single value from a predefined list of options, saving space compared to radio groups."
@@ -733,6 +733,6 @@ export default function SelectPage() {
       {activeTab === "Design Tokens" && <DesignTokensTab />}
       {activeTab === "Styles" && <StylesTab />}
       {activeTab === "Properties" && <PropertiesTab />}
-    </>
+    </div>
   );
 }

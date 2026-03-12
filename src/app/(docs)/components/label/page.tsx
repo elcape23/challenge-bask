@@ -522,7 +522,7 @@ export default function LabelPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <>
+    <div className="col-span-2 flex flex-col">
       <DocHeader
         title="Label"
         description="Labels identify form controls and provide essential context. They support three sizes (md, sm, xs) and an optional required indicator."
@@ -534,6 +534,6 @@ export default function LabelPage() {
       {activeTab === "Design Tokens" && <DesignTokensTab />}
       {activeTab === "Styles" && <StylesTab />}
       {activeTab === "Properties" && <PropertiesTab />}
-    </>
+    </div>
   );
 }

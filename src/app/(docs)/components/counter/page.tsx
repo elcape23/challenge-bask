@@ -564,7 +564,7 @@ export default function CounterPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <>
+    <div className="col-span-2 flex flex-col">
       <DocHeader
         title="Counter"
         description="Counter lets users adjust a numeric value incrementally with decrement and increment buttons, providing a controlled way to set quantities or amounts."
@@ -576,6 +576,6 @@ export default function CounterPage() {
       {activeTab === "Design Tokens" && <DesignTokensTab />}
       {activeTab === "Styles" && <StylesTab />}
       {activeTab === "Properties" && <PropertiesTab />}
-    </>
+    </div>
   );
 }

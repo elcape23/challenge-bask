@@ -185,13 +185,13 @@ function ColorCard({ name, hex }: { name: string; hex: string }) {
     >
       <p
         className="text-body-02 font-bold whitespace-nowrap"
-        style={{ fontFamily: '"Suisse Intl Trial", sans-serif' }}
+        style={{ fontFamily: '"Suisse Intl Trial Raw", sans-serif' }}
       >
         {name}
       </p>
       <p
         className="text-body-02 font-regular whitespace-nowrap"
-        style={{ fontFamily: '"Suisse Intl Trial", sans-serif' }}
+        style={{ fontFamily: '"Suisse Intl Trial Raw", sans-serif' }}
       >
         #{hex.replace("#", "").toUpperCase()}
       </p>
@@ -373,25 +373,56 @@ export default function ColorsPage() {
           ]}
         />
 
-        <h3 className="text-body-02 text-text-neutral-default mb-3 mt-6 font-medium">
-          Background tokens
-        </h3>
+        <div className="mt-8 p-6 bg-background-surface-neutral-default space-y-6">
+          <div>
+            <p className="text-body-02 font-medium text-text-neutral-default mb-2">
+              Numbers (isolated)
+            </p>
+            <p
+              className="text-body-01 text-text-neutral-secondary"
+              style={{
+                fontFamily: '"Suisse Intl Trial Raw", sans-serif',
+                fontFeatureSettings: '"lnum" 1',
+              }}
+            >
+              7575757
+            </p>
+          </div>
+          <div>
+            <p className="text-body-02 font-medium text-text-neutral-default mb-2">
+              Letters (isolated)
+            </p>
+            <p
+              className="text-body-01 text-text-neutral-secondary"
+              style={{
+                fontFamily: '"Suisse Intl Trial Raw", sans-serif',
+                fontFeatureSettings: '"lnum" 1',
+              }}
+            >
+              Accordion
+            </p>
+          </div>
+        </div>
+
         <DocTable
+          variant="surface"
+          title="Background tokens"
+          backgroundClass="bg-background-default-default"
           headers={["Token", "Light value", "Role"]}
           rows={[
             [
               "--color-bg-default",
-              "#f7f7f3 (neutral-50)",
+              "#F7F7F3 (neutral-50)",
               "Default page background",
             ],
             [
               "--color-bg-invert",
-              "#1c1f1b (neutral-900)",
+              "#1C1F1B (neutral-900)",
               "Inverted/dark surface background",
             ],
             [
               "--color-bg-fill-neutral-default",
-              "#e4e6de (neutral-200)",
+              "#E4E6DE (neutral-200)",
               "Subtle neutral fill for cards, wells",
             ],
           ]}

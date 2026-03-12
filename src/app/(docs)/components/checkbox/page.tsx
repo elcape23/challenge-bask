@@ -561,7 +561,7 @@ export default function CheckboxPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <>
+    <div className="col-span-2 flex flex-col">
       <DocHeader
         title="Checkbox"
         description="Checkbox Group pairs a square indicator with a text label, supporting checked, unchecked, and indeterminate states with two sizes and two label positions."
@@ -573,6 +573,6 @@ export default function CheckboxPage() {
       {activeTab === "Design Tokens" && <DesignTokensTab />}
       {activeTab === "Styles" && <StylesTab />}
       {activeTab === "Properties" && <PropertiesTab />}
-    </>
+    </div>
   );
 }

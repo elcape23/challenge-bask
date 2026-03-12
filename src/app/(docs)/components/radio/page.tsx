@@ -597,7 +597,7 @@ export default function RadioPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <>
+    <div className="col-span-2 flex flex-col">
       <DocHeader
         title="Radio"
         description="Radio buttons let users select exactly one option from a mutually exclusive set. They support two sizes (md, sm) and left/right positioning."
@@ -609,6 +609,6 @@ export default function RadioPage() {
       {activeTab === "Design Tokens" && <DesignTokensTab />}
       {activeTab === "Styles" && <StylesTab />}
       {activeTab === "Properties" && <PropertiesTab />}
-    </>
+    </div>
   );
 }

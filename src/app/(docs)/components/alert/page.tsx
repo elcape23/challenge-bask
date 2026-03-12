@@ -598,7 +598,7 @@ export default function AlertPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <>
+    <div className="col-span-2 flex flex-col">
       <DocHeader
         title="Alert"
         description="Alerts communicate status, feedback, or important information to users through contextual, color-coded banners."
@@ -610,6 +610,6 @@ export default function AlertPage() {
       {activeTab === "Design Tokens" && <DesignTokensTab />}
       {activeTab === "Styles" && <StylesTab />}
       {activeTab === "Properties" && <PropertiesTab />}
-    </>
+    </div>
   );
 }

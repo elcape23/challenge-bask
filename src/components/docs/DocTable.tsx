@@ -3,6 +3,7 @@ interface DocTableProps {
   rows: string[][];
   variant?: "default" | "surface";
   title?: string;
+  backgroundClass?: string;
 }
 
 export default function DocTable({
@@ -10,14 +11,16 @@ export default function DocTable({
   rows,
   variant = "default",
   title,
+  backgroundClass,
 }: DocTableProps) {
   const isSurface = variant === "surface";
+  const surfaceBg = backgroundClass ?? "bg-background-surface-neutral-default";
 
   return (
     <div
       className={`overflow-x-auto mb-6 ${
         isSurface
-          ? "bg-background-surface-neutral-default p-10"
+          ? `${surfaceBg} p-10`
           : "rounded-md border border-border-neutral-default"
       }`}
     >
@@ -26,7 +29,10 @@ export default function DocTable({
           {title}
         </h3>
       )}
-      <table className="w-full table-fixed text-left text-body-01">
+      <table
+        className="w-full table-fixed text-left text-body-01"
+        style={{ fontFamily: '"Suisse Intl Trial Raw", sans-serif' }}
+      >
         <colgroup>
           {headers.map((_, i) => (
             <col key={i} style={{ width: `${100 / headers.length}%` }} />

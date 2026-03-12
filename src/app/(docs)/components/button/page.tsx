@@ -769,7 +769,7 @@ export default function ButtonPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <>
+    <div className="col-span-2 flex flex-col">
       <DocHeader
         title="Button"
         description="Buttons trigger actions and events. Use them to let users submit forms, confirm decisions, or navigate to new tasks."
@@ -781,6 +781,6 @@ export default function ButtonPage() {
       {activeTab === "Design Tokens" && <DesignTokensTab />}
       {activeTab === "Styles" && <StylesTab />}
       {activeTab === "Properties" && <PropertiesTab />}
-    </>
+    </div>
   );
 }

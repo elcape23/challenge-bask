@@ -690,7 +690,7 @@ export default function InputPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <>
+    <div className="col-span-2 flex flex-col">
       <DocHeader
         title="Input"
         description="Input lets users enter and edit short-form text. It supports labels, helper text, error states, and leading/trailing icons across three sizes."
@@ -702,6 +702,6 @@ export default function InputPage() {
       {activeTab === "Design Tokens" && <DesignTokensTab />}
       {activeTab === "Styles" && <StylesTab />}
       {activeTab === "Properties" && <PropertiesTab />}
-    </>
+    </div>
   );
 }

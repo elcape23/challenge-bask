@@ -6,32 +6,32 @@ import "./globals.css";
 const suisseIntl = localFont({
   src: [
     {
-      path: "../../public/font/SuisseIntlTrial-Regular.otf",
+      path: "../../public/font/WOFF2/SuisseIntlTrial-Regular.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../../public/font/SuisseIntlTrial-RegularIt.otf",
+      path: "../../public/font/WOFF2/SuisseIntlTrial-RegularIt.woff2",
       weight: "400",
       style: "italic",
     },
     {
-      path: "../../public/font/SuisseIntlTrial-Medium.otf",
+      path: "../../public/font/WOFF2/SuisseIntlTrial-Medium.woff2",
       weight: "500",
       style: "normal",
     },
     {
-      path: "../../public/font/SuisseIntlTrial-MediumIt.otf",
+      path: "../../public/font/WOFF2/SuisseIntlTrial-MediumIt.woff2",
       weight: "500",
       style: "italic",
     },
     {
-      path: "../../public/font/SuisseIntlTrial-Bold.otf",
+      path: "../../public/font/WOFF2/SuisseIntlTrial-Bold.woff2",
       weight: "700",
       style: "normal",
     },
     {
-      path: "../../public/font/SuisseIntlTrial-BoldIt.otf",
+      path: "../../public/font/WOFF2/SuisseIntlTrial-BoldIt.woff2",
       weight: "700",
       style: "italic",
     },
@@ -58,7 +58,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${suisseIntl.className} ${suisseIntl.variable} ${jetbrainsMono.variable} antialiased`}>
+      <head>
+        <link
+          rel="preload"
+          href="/font/WOFF2/SuisseIntlTrial-Regular.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body
+        className={`${suisseIntl.className} ${suisseIntl.variable} ${jetbrainsMono.variable} antialiased`}
+      >
         {children}
       </body>
     </html>

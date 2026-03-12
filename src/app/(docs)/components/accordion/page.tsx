@@ -184,6 +184,8 @@ function OverviewTab() {
 
       <DocSection title="Sizes">
         <DocTable
+          variant="surface"
+          title="Sizes"
           headers={["Size", "Height (closed)", "Typography", "Icon", "Padding"]}
           rows={[
             ["Small (sm)", "48px", "Body/01 Regular (16px / 24px)", "20×20px", "px: 8px, py: 12px"],
@@ -214,6 +216,8 @@ function OverviewTab() {
 
       <DocSection title="States">
         <DocTable
+          variant="surface"
+          title="States"
           headers={["State", "Description"]}
           rows={[
             ["Default", "The resting state — border, text, and icon use neutral default tokens."],
@@ -314,6 +318,8 @@ function DesignTokensTab() {
 
       <DocSection title="Typography Tokens">
         <DocTable
+          variant="surface"
+          title="Typography Tokens"
           headers={["Token", "Size", "Size (px)", "Line Height", "Weight"]}
           rows={[
             ["Body/01/Regular (sm)", "text-body-01", "16px", "24px", "400 (regular)"],
@@ -327,6 +333,8 @@ function DesignTokensTab() {
 
       <DocSection title="Spacing Tokens">
         <DocTable
+          variant="surface"
+          title="Spacing Tokens"
           headers={["Property", "Token", "Value", "Size"]}
           rows={[
             ["Horizontal padding", "spacing/space-2", "8px", "Both"],
@@ -342,6 +350,8 @@ function DesignTokensTab() {
 
       <DocSection title="Icon Sizes">
         <DocTable
+          variant="surface"
+          title="Icon Sizes"
           headers={["Size", "Icon dimensions", "Chevron"]}
           rows={[
             ["sm", "20×20px", "chevron-down / chevron-up"],
@@ -352,6 +362,8 @@ function DesignTokensTab() {
 
       <DocSection title="Border">
         <DocTable
+          variant="surface"
+          title="Border"
           headers={["Property", "Value", "Token"]}
           rows={[
             ["Border position", "Bottom only", "—"],
@@ -365,6 +377,8 @@ function DesignTokensTab() {
 
       <DocSection title="Animation / Transition Tokens">
         <DocTable
+          variant="surface"
+          title="Animation / Transition Tokens"
           headers={["Property", "Duration", "Easing"]}
           rows={[
             ["Chevron rotation", "200ms", "ease (CSS default)"],
@@ -589,6 +603,8 @@ function PropertiesTab() {
 
       <DocSection title="Props Reference — AccordionItem">
         <DocTable
+          variant="surface"
+          title="Props Reference — AccordionItem"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             ["heading", "string", "—", "Required. The heading text displayed in the trigger row."],
@@ -605,6 +621,8 @@ function PropertiesTab() {
 
       <DocSection title="Props Reference — Accordion (group)">
         <DocTable
+          variant="surface"
+          title="Props Reference — Accordion (group)"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             ["type", '"single" | "multiple"', '"single"', "Whether one or many items can be open simultaneously."],
@@ -673,6 +691,8 @@ function PropertiesTab() {
 
       <DocSection title="Validation & Constraints">
         <DocTable
+          variant="surface"
+          title="Validation & Constraints"
           headers={["Rule", "Details"]}
           rows={[
             ["heading is required", "Every AccordionItem must have a heading prop."],
@@ -695,7 +715,7 @@ export default function AccordionPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <>
+    <div className="col-span-2 flex flex-col">
       <DocHeader
         title="Accordion"
         description="Accordions organize content into collapsible sections, letting users reveal information progressively without leaving the page."
@@ -707,6 +727,6 @@ export default function AccordionPage() {
       {activeTab === "Design Tokens" && <DesignTokensTab />}
       {activeTab === "Styles" && <StylesTab />}
       {activeTab === "Properties" && <PropertiesTab />}
-    </>
+    </div>
   );
 }

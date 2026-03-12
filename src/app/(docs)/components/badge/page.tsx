@@ -545,7 +545,7 @@ export default function BadgePage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <>
+    <div className="col-span-2 flex flex-col">
       <DocHeader
         title="Badge"
         description="Badges are compact, non-interactive indicators that surface metadata at a glance — status, category, or semantic classification."
@@ -557,6 +557,6 @@ export default function BadgePage() {
       {activeTab === "Design Tokens" && <DesignTokensTab />}
       {activeTab === "Styles" && <StylesTab />}
       {activeTab === "Properties" && <PropertiesTab />}
-    </>
+    </div>
   );
 }

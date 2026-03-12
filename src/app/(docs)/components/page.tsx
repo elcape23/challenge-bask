@@ -1,6 +1,5 @@
 import Link from "next/link";
-import DocHeader from "@/components/docs/DocHeader";
-import DocSection from "@/components/docs/DocSection";
+import Card from "@/components/ui/Card";
 
 const components = [
   { name: "Accordion", href: "/components/accordion", description: "Organizes content into collapsible sections for progressive disclosure." },
@@ -25,48 +24,40 @@ const components = [
 
 export default function ComponentsPage() {
   return (
-    <>
-      <DocHeader
-        title="Components"
-        description="Reusable UI building blocks for consistent, accessible interfaces."
-      />
-
-      <DocSection title="Overview">
-        <p className="mb-4">
-          The component library provides a curated set of production-ready UI
-          primitives designed to work together seamlessly. Each component follows
-          consistent API patterns, supports theming through design tokens, and
-          meets WCAG 2.1 AA accessibility standards out of the box.
+    <div className="col-span-2 grid grid-cols-2 gap-x-20 gap-y-20">
+      <div className="col-span-2 flex flex-col gap-4">
+        <h1
+          className="font-bold tracking-tight text-text-neutral-default leading-none"
+          style={{ fontSize: "120px", lineHeight: 1 }}
+        >
+          Components
+        </h1>
+        <p className="text-heading-06 font-regular text-text-neutral-secondary max-w-md">
+          Reusable UI building blocks for consistent, accessible interfaces.
         </p>
-        <p>
-          Components are built to be composable — combine them to construct
-          complex interfaces without sacrificing maintainability. Use this
-          catalog to explore available components, understand their intended use
-          cases, and learn best practices for implementation.
-        </p>
-      </DocSection>
+      </div>
 
-      <DocSection title="Component catalog">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-2">
-          {components.map((component) => (
-            <Link
-              key={component.name}
-              href={component.href}
-              className="docs-card block p-5 border border-border-neutral-default rounded-md no-underline"
-              style={{
-                transition: "border-color 0.15s, box-shadow 0.15s",
-              }}
+      <div className="col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {components.map((item) => (
+          <Link
+            key={item.name}
+            href={item.href}
+            className="no-underline h-full flex"
+          >
+            <Card
+              showHeading={false}
+              className="gap-4 h-full flex-1 min-h-[200px]"
             >
-              <span className="block text-body-02 text-text-neutral-default mb-1 font-medium">
-                {component.name}
-              </span>
-              <span className="text-body-03 text-text-neutral-placeholder">
-                {component.description}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </DocSection>
-    </>
+              <p className="text-heading-05 font-medium text-text-neutral-default m-0">
+                {item.name}
+              </p>
+              <p className="text-body-01 text-text-neutral-secondary py-4">
+                {item.description}
+              </p>
+            </Card>
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }

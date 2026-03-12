@@ -594,7 +594,7 @@ export default function CardPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <>
+    <div className="col-span-2 flex flex-col">
       <DocHeader
         title="Card"
         description="Cards are flexible container components that group a heading and slot content into a visually distinct surface with size, background, and heading controls."
@@ -606,6 +606,6 @@ export default function CardPage() {
       {activeTab === "Design Tokens" && <DesignTokensTab />}
       {activeTab === "Styles" && <StylesTab />}
       {activeTab === "Properties" && <PropertiesTab />}
-    </>
+    </div>
   );
 }
