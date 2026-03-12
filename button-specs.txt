@@ -1,0 +1,191 @@
+BUTTON COMPONENT — DETAILED SPECIFICATION
+==========================================
+
+Source: Figma Design File
+URL: https://www.figma.com/design/ggpAl2bdadBJPMbtSbPzoN/-Telehealth-App----Components?node-id=2-3
+Component: src/components/ui/Button.tsx
+Documentation: src/app/(docs)/components/button/page.tsx
+
+
+1. OVERVIEW
+-----------
+The Button component triggers actions and events. It supports three color
+variants (neutral, primary, danger), four visual appearances (filled,
+outlined, link, ghost), three sizes (lg, sm, icon), and five interactive
+states (default, hover, focus, pressed, disabled).
+
+Import:
+  import Button from "@/components/ui/Button";
+
+Basic usage:
+  <Button variant="primary" size="lg">Save changes</Button>
+
+
+2. PROPS
+--------
+| Prop         | Type                                     | Default     | Required |
+|--------------|------------------------------------------|-------------|----------|
+| variant      | "neutral" | "primary" | "danger"         | "neutral"   | No       |
+| size         | "lg" | "sm" | "icon"                     | "lg"        | No       |
+| appearance   | "filled" | "outlined" | "link" | "ghost" | "filled"    | No       |
+| leadingIcon  | ReactNode                                | undefined   | No       |
+| trailingIcon | ReactNode                                | undefined   | No       |
+| disabled     | boolean                                  | false       | No       |
+| className    | string                                   | undefined   | No       |
+| children     | ReactNode                                | —           | Yes      |
+
+All native <button> HTML attributes are also supported (onClick, type, etc.).
+The component uses forwardRef for ref forwarding.
+
+
+3. VARIANTS
+-----------
+NEUTRAL
+  - Filled:    Beige/sage bg (#e4e6de) with dark text (#1c1f1b)
+  - Outlined:  Transparent bg with neutral border (#b7bbaf)
+  - Link:      Text-only, underlined, no container
+  - Ghost:     Transparent bg, no border
+
+PRIMARY
+  - Filled:    Deep green bg (#153014) with light text (#e4ece2)
+  - Outlined:  Transparent bg with green border (#7e9b76)
+  - Link:      Text-only, underlined, no container
+  - Ghost:     Transparent bg, no border
+
+DANGER
+  - Filled:    Red bg (#b84335) with light text (#f1f2ec)
+  - Outlined:  Transparent bg with red border (#d86759)
+  - Link:      Text-only, underlined, no container
+  - Ghost:     Transparent bg, no border
+
+
+4. SIZES
+--------
+| Size | Height | Typography      | Icon Size | Padding     |
+|------|--------|-----------------|-----------|-------------|
+| lg   | 44px   | Body/01 (16px)  | 24×24px   | 16px horiz  |
+| sm   | 36px   | Body/02 (13px)  | 20×20px   | 16px horiz  |
+| icon | 36×36  | —               | 24×24px   | centered    |
+
+
+5. INTERACTIVE STATES
+---------------------
+NEUTRAL FILLED:
+  Default:   bg=#e4e6de  text=#1c1f1b
+  Hover:     bg=#d3d6cc  text=#31352f
+  Focus:     bg=#e4e6de  text=#1c1f1b  shadow: 0 0 0 3px rgba(0,0,0,0.2)
+  Pressed:   bg=#b7bbaf  text=#4e534d
+  Disabled:  bg=#6e736a  text=#b7bbaf
+
+PRIMARY FILLED:
+  Default:   bg=#153014  text=#e4ece2
+  Hover:     bg=#223f1e  text=#e4ece2
+  Focus:     bg=#153014  text=#e4ece2  shadow: 0 0 0 3px rgba(0,0,0,0.2)
+  Pressed:   bg=#33522d  text=#e4ece2
+  Disabled:  bg=#c9d7c6  text=#e4ece2
+
+DANGER FILLED:
+  Default:   bg=#b84335  text=#f1f2ec
+  Hover:     bg=#eb978c  text=#f1f2ec
+  Focus:     bg=#b84335  text=#f1f2ec  shadow: 0 0 0 3px rgba(0,0,0,0.2)
+  Pressed:   bg=#d86759  text=#f1f2ec
+  Disabled:  bg=#f6c4bd  text=#f1f2ec
+
+
+6. DESIGN TOKENS
+----------------
+Typography:
+  - Font family:  Suisse Intl Trial (var(--font-sans))
+  - Body/01:      16px / 24px line-height / 500 weight
+  - Body/02:      13px / 16px line-height / 500 weight
+
+Spacing:
+  - Horizontal padding:  16px (space-4)
+  - Vertical padding:    8px  (space-2)
+  - Icon gap:            8px  (space-2)
+
+Border Radius:
+  - All buttons:         9999px (pill / rounded-full)
+
+Shadows:
+  - Focus ring:          0 0 0 3px rgba(0, 0, 0, 0.20)
+
+Transitions:
+  - Property:            all (background-color, color, border-color, box-shadow)
+  - Duration:            150ms
+  - Easing:              default (ease)
+
+
+7. ANATOMY
+----------
+  1. Leading icon (optional)  — SVG icon before the label
+  2. Label                    — Action text (verb-first, 1-2 words)
+  3. Trailing icon (optional) — SVG icon after the label
+  4. Container                — Pill-shaped interactive surface
+
+For icon-only (size="icon"), only one icon is shown inside the container.
+
+
+8. ACCESSIBILITY
+----------------
+  - Uses native <button> element
+  - Focus management via focus-visible (no ring on click, only keyboard)
+  - Icon-only buttons require aria-label
+  - Disabled state uses HTML disabled attribute + pointer-events: none
+  - Touch targets: 44px (lg) or 36px (sm/icon) minimum
+  - Component supports forwardRef for ref forwarding
+
+
+9. USAGE GUIDELINES
+-------------------
+DO:
+  - Use one primary button per view for clear hierarchy
+  - Start labels with a strong verb (Save, Create, Delete)
+  - Use leading/trailing icons to reinforce directional meaning
+  - Pair danger buttons with a confirmation dialog
+  - Use ghost appearance for icon-only toolbar buttons
+
+DON'T:
+  - Don't use multiple primary buttons in the same section
+  - Don't use vague labels ("Click here", "Submit", "OK")
+  - Don't disable without context (tooltip or explanatory text)
+  - Don't mix appearances in the same button group
+  - Don't rely on color alone to convey variant meaning
+
+
+10. CODE EXAMPLES
+-----------------
+Primary CTA:
+  <Button variant="primary">Save changes</Button>
+
+Cancel / secondary:
+  <Button variant="neutral" appearance="outlined">Cancel</Button>
+
+Destructive:
+  <Button variant="danger" leadingIcon={<XIcon />}>Delete account</Button>
+
+Navigation with icons:
+  <Button variant="neutral" leadingIcon={<ChevronLeft />}>Back</Button>
+  <Button variant="neutral" trailingIcon={<ChevronRight />}>Next</Button>
+
+Icon-only toolbar:
+  <Button variant="neutral" size="icon" appearance="ghost" aria-label="Menu">
+    <MenuIcon />
+  </Button>
+
+Small inline actions:
+  <Button variant="primary" size="sm">Approve</Button>
+  <Button variant="neutral" size="sm" appearance="outlined">Reject</Button>
+
+Button group:
+  <div className="flex gap-3">
+    <Button variant="neutral" appearance="outlined">Cancel</Button>
+    <Button variant="primary">Confirm</Button>
+  </div>
+
+
+11. FILE STRUCTURE
+------------------
+  src/components/ui/Button.tsx        — Reusable component
+  src/app/(docs)/components/button/   — Documentation page
+  button-specs.txt                    — This specification file

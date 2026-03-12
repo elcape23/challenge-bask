@@ -1,0 +1,164 @@
+CHECKBOX GROUP COMPONENT — COMPLETE SPECIFICATION
+===================================================
+
+Figma Source:
+  File: Telehealth App — Components
+  Node: 2:8 (❖ Checkbox)
+  URL:  https://www.figma.com/design/ggpAl2bdadBJPMbtSbPzoN/-Telehealth-App----Components?node-id=2-8
+
+────────────────────────────────────────
+
+1. COMPONENT OVERVIEW
+─────────────────────
+
+Checkbox Group pairs a square checkbox indicator with a text label.
+It supports three visual states (unchecked, checked, indeterminate),
+two sizes (md, sm), and two label positions (left, right).
+
+Component type: Form input
+Interaction: Toggle (click / space key)
+
+────────────────────────────────────────
+
+2. ANATOMY
+──────────
+
+  side=left (default)
+  ┌──────────────────────────────────┐
+  │  ┌──┐                           │
+  │  │✓ │  Label text               │
+  │  └──┘                           │
+  └──────────────────────────────────┘
+
+  side=right
+  ┌──────────────────────────────────┐
+  │                           ┌──┐  │
+  │  Label text               │✓ │  │
+  │                           └──┘  │
+  └──────────────────────────────────┘
+
+  1. Checkbox Group — root flex container (row, items-center)
+  2. .checkbox — square indicator sub-component
+  3. Label — descriptive text
+
+────────────────────────────────────────
+
+3. PROPERTIES
+─────────────
+
+| Prop           | Type                          | Default    | Description                           |
+|----------------|-------------------------------|------------|---------------------------------------|
+| size           | "md" | "sm"                   | "md"       | Size variant                          |
+| side           | "left" | "right"              | "left"     | Checkbox position relative to label   |
+| label          | string                        | "Label"    | Descriptive text                      |
+| checked        | boolean                       | undefined  | Controlled checked state              |
+| defaultChecked | boolean                       | undefined  | Uncontrolled initial checked state    |
+| indeterminate  | boolean                       | false      | Indeterminate (mixed) visual state    |
+| disabled       | boolean                       | false      | Disables interaction                  |
+| onChange       | (e: ChangeEvent) => void      | undefined  | Change handler                        |
+| className      | string                        | undefined  | Additional CSS classes                |
+
+────────────────────────────────────────
+
+4. SIZE SPECIFICATIONS
+──────────────────────
+
+                    md              sm
+  Container height: 48px            36px
+  Checkbox size:    24×24px         20×20px
+  Gap:              12px (space-3)  8px (space-2)
+  Vertical padding: 12px (space-3)  8px (space-2)
+  Label font:       Body/01/Reg     Body/02/Reg
+  Label size:       16px / 24px     13px / 16px
+  Label weight:     400             400
+
+────────────────────────────────────────
+
+5. CHECKBOX INDICATOR STATES
+────────────────────────────
+
+  UNCHECKED (empty)
+    Background:  var(--color-background-fill-neutral-default) = #e4e6de
+    Border:      1px solid var(--color-border-neutral-default) = #b7bbaf
+    Icon:        none
+
+  CHECKED
+    Background:  var(--color-background-fill-primary-default) = #153014
+    Border:      1px solid var(--color-border-primary-default) = #a6bba0
+    Icon:        checkmark in var(--color-icon-primary-invert) = #e4ece2
+
+  INDETERMINATE (inter)
+    Background:  var(--color-background-fill-primary-default) = #153014
+    Border:      1px solid var(--color-border-primary-default) = #a6bba0
+    Icon:        minus in var(--color-icon-primary-invert) = #e4ece2
+
+  DISABLED
+    Opacity:     50% on the entire component
+    Cursor:      not-allowed
+
+  All checkbox indicators:
+    Inner padding: 2px (space-0)
+    Border radius: 4px (xs)
+    Border width:  1px
+
+────────────────────────────────────────
+
+6. DESIGN TOKENS
+────────────────
+
+  Colors (unchecked):
+    background/fill/neutral/default   #e4e6de
+    border/neutral/default            #b7bbaf
+
+  Colors (checked / indeterminate):
+    background/fill/primary/default   #153014
+    border/primary/default            #a6bba0
+    icon/primary/invert               #e4ece2
+
+  Label text:
+    text/neutral/default              #1c1f1b
+
+  Typography:
+    Body/01/Regular  16px / 24px / 400  (font/family/default)
+    Body/02/Regular  13px / 16px / 400  (font/family/default)
+
+  Spacing:
+    spacing/space-0    2px   (checkbox inner padding)
+    spacing/space-2    8px   (sm gap / sm vertical padding)
+    spacing/space-3    12px  (md gap / md vertical padding)
+
+  Border radius:
+    border-radius/xs   4px
+
+────────────────────────────────────────
+
+7. LAYOUT
+─────────
+
+  Direction:    row (horizontal)
+  Alignment:    items-center
+  Side=left:    checkbox → label
+  Side=right:   label → checkbox
+  Checkbox:     shrink-0 (does not shrink)
+  Label:        flex-1 (fills remaining space)
+
+────────────────────────────────────────
+
+8. ACCESSIBILITY
+────────────────
+
+  - Uses native <input type="checkbox"> (visually hidden, sr-only)
+  - Wrapped in <label> so clicking anywhere toggles the state
+  - Sets aria-checked="mixed" for indeterminate state
+  - Groups should use <fieldset> + <legend>
+  - Keyboard: Space to toggle, Tab to move between checkboxes
+  - Focus ring: 3px shadow (--shadow-focus)
+
+────────────────────────────────────────
+
+9. IMPLEMENTATION FILES
+───────────────────────
+
+  Component:     src/components/ui/Checkbox.tsx
+  Documentation: src/app/(docs)/components/checkbox/page.tsx
+  CSS tokens:    src/app/globals.css (no changes needed)

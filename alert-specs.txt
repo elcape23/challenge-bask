@@ -1,0 +1,145 @@
+ALERT COMPONENT — SPECIFICATION
+=================================
+Extracted from Figma node 2:5 (❖ Alert)
+File: Telehealth App — Components
+
+1. OVERVIEW
+-----------
+The Alert component communicates status, feedback, or important information
+through contextual, color-coded inline banners. Alerts persist until dismissed
+or the triggering condition resolves.
+
+2. ANATOMY
+----------
+  1. Container   — Rounded bordered surface with type-specific background.
+  2. Icon        — Leading status icon (24px md, 20px sm).
+  3. Heading     — Bold heading text summarizing the alert.
+  4. Description — Supporting text with details or instructions.
+  5. Button      — Optional underlined link-style action button.
+
+3. PROPERTIES (from Figma)
+--------------------------
+  | Property        | Values                                          | Default   |
+  |-----------------|-------------------------------------------------|-----------|
+  | type            | neutral, success, info, warning, danger          | neutral   |
+  | size            | md, sm                                          | md        |
+  | showIcon        | boolean                                         | true      |
+  | showHeading     | boolean                                         | true      |
+  | showDescription | boolean                                         | true      |
+  | showButton      | boolean                                         | true      |
+  | heading         | string                                          | "Heading" |
+  | description     | string                                          | "Description" |
+
+4. FIGMA VARIANTS (10 total)
+-----------------------------
+  - type=neutral, size=md  → 362×64px
+  - type=neutral, size=sm  → 362×44px
+  - type=success, size=md  → 362×64px
+  - type=success, size=sm  → 362×44px
+  - type=info, size=md     → 362×64px
+  - type=info, size=sm     → 362×44px
+  - type=warning, size=md  → 362×64px
+  - type=warning, size=sm  → 362×44px
+  - type=danger, size=md   → 362×64px
+  - type=danger, size=sm   → 362×44px
+
+5. DESIGN TOKENS
+----------------
+
+  5.1 COLOR TOKENS PER TYPE
+
+    | Type    | Background                        | Border                         | Text / Icon                   |
+    |---------|-----------------------------------|--------------------------------|-------------------------------|
+    | neutral | #f1f2ec (bg/surface/neutral)      | #b7bbaf (border/neutral)       | #1c1f1b (text/neutral)        |
+    | success | #f2faf5 (bg/surface/success)      | #94d7ad (border/success)       | #287d4a (text/success)        |
+    | info    | #f3f7fb (bg/surface/information)  | #adc2dd (border/information)   | #4e6d92 (text/information)    |
+    | warning | #fff8ee (bg/surface/warning)      | #eec67c (border/warning)       | #925f18 (text/warning)        |
+    | danger  | #fff4f3 (bg/surface/danger)       | #eb978c (border/danger)        | #903328 (text/danger)         |
+
+  5.2 TYPOGRAPHY TOKENS
+
+    Size MD:
+      Heading:     Body/01/Medium — 16px / 24px / 500
+      Description: Body/02/Regular — 13px / 16px / 400
+      Button:      Body/02/Underlined — 13px / 16px / 500 (underline)
+
+    Size SM:
+      Heading:     Body/02/Medium — 13px / 16px / 500
+      Description: Body/03/Regular — 11px / 12px / 400
+      Button:      Body/02/Underlined — 13px / 16px / 500 (underline)
+
+  5.3 SPACING TOKENS
+
+    | Property           | Token (md)      | Value (md) | Token (sm)      | Value (sm) |
+    |--------------------|-----------------|------------|-----------------|------------|
+    | Container padding  | spacing/space-3 | 12px       | spacing/space-2 | 8px        |
+    | Inner gap          | spacing/space-3 | 12px       | spacing/space-2 | 8px        |
+
+  5.4 ICON SIZES
+
+    | Size | Dimensions |
+    |------|------------|
+    | md   | 24×24 px   |
+    | sm   | 20×20 px   |
+
+  5.5 BORDER & RADIUS
+
+    Border width:  1px solid
+    Border radius: border-radius/sm → 8px
+
+6. LAYOUT
+---------
+  Horizontal flex row: [Icon] [Text Column: Heading + Description] [Button]
+  - All elements vertically centered (items-center)
+  - Text stacks vertically (heading on top, description below)
+  - Button aligned to the right edge
+  - Full width responsive (w-full in implementation)
+
+7. MODES
+--------
+  Semantic modes: Light and Dark.
+  Light mode uses the token set documented above.
+
+8. COMPONENT API
+----------------
+  | Prop          | Type                                               | Default       | Description                          |
+  |---------------|----------------------------------------------------|---------------|--------------------------------------|
+  | type          | "neutral" | "success" | "info" | "warning" | "danger" | "neutral"     | Semantic color variant               |
+  | size          | "sm" | "md"                                         | "md"          | Size variant                         |
+  | heading       | string                                             | "Heading"     | Heading text                         |
+  | description   | string                                             | "Description" | Description text                     |
+  | showIcon      | boolean                                            | true          | Toggle leading icon                  |
+  | showHeading   | boolean                                            | true          | Toggle heading                       |
+  | showDescription | boolean                                          | true          | Toggle description                   |
+  | showButton    | boolean                                            | true          | Toggle action button                 |
+  | buttonLabel   | string                                             | "Button"      | Action button label                  |
+  | onButtonClick | () => void                                         | undefined     | Click handler                        |
+  | icon          | ReactNode                                          | undefined     | Custom icon override                 |
+  | className     | string                                             | undefined     | Extra CSS classes                    |
+
+9. ACCESSIBILITY
+----------------
+  - Container: role="alert" for assistive technology announcements
+  - Icons: aria-hidden="true" (decorative; meaning conveyed by text)
+  - Don't rely on color alone — pair with icon and text
+  - Sufficient contrast ratios for all type/background combos
+
+10. USAGE GUIDELINES
+--------------------
+  DO:
+    ✓ Match type to message severity
+    ✓ Keep heading short and actionable
+    ✓ Place alerts near relevant content
+    ✓ Use one action per alert
+
+  DON'T:
+    ✗ Use danger for non-critical information
+    ✗ Stack multiple alerts — consolidate
+    ✗ Auto-dismiss alerts (use Toast instead)
+    ✗ Rely on color alone
+
+11. FILE LOCATIONS
+------------------
+  Component:      src/components/ui/Alert.tsx
+  Documentation:  src/app/(docs)/components/alert/page.tsx
+  Specifications: alert-specs.txt (this file)

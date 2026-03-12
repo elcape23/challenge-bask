@@ -1,0 +1,138 @@
+BADGE COMPONENT — SPECIFICATION
+=================================
+Extracted from Figma node 2:6 (❖ Badge)
+File: Telehealth App — Components
+
+1. OVERVIEW
+-----------
+The Badge component displays compact, non-interactive status indicators,
+categories, or semantic labels. Badges attach to other elements (list items,
+cards, table rows) and communicate information at a glance.
+
+2. ANATOMY
+----------
+  1. Container — Pill-shaped element (border-radius: 9999px) with a type-specific fill.
+  2. Icon      — Optional leading icon slot (24px md / 20px sm). Default is a dot indicator.
+  3. Label     — Short text label using medium-weight typography.
+
+3. PROPERTIES (from Figma)
+--------------------------
+  | Property | Values                                             | Default   |
+  |----------|----------------------------------------------------|-----------|
+  | type     | neutral, success, information, warning, danger      | neutral   |
+  | size     | sm, md                                             | md        |
+  | showIcon | boolean                                            | true      |
+  | label    | string                                             | "Text"    |
+
+4. FIGMA VARIANTS (10 total)
+-----------------------------
+  - size=md, type=neutral      → 79×24px
+  - size=md, type=success      → 79×24px
+  - size=md, type=information  → 79×24px
+  - size=md, type=warning      → 79×24px
+  - size=md, type=danger       → 79×24px
+  - size=sm, type=neutral      → 63×20px
+  - size=sm, type=success      → 63×20px
+  - size=sm, type=information  → 63×20px
+  - size=sm, type=warning      → 63×20px
+  - size=sm, type=danger       → 63×20px
+
+5. DESIGN TOKENS
+----------------
+
+  5.1 COLOR TOKENS PER TYPE
+
+    | Type        | Background               | Text/Icon                   |
+    |-------------|-------------------------|-----------------------------|
+    | neutral     | #e4e6de (fill/neutral)   | #4e534d (text/neutral/secondary) |
+    | success     | #60be81 (fill/success)   | #e0f4e7 (text/success/invert)    |
+    | information | #86a4ca (fill/info)      | #e6eef7 (text/info/invert)       |
+    | warning     | #dda146 (fill/warning)   | #fcefd9 (text/warning/invert)    |
+    | danger      | #b84335 (fill/danger)    | #f1f2ec (text/neutral/invert)    |
+
+    Note: Neutral uses dark text on light fill. All other types use light
+    (invert) text on vivid fill backgrounds.
+
+  5.2 TYPOGRAPHY TOKENS
+
+    Size MD — Body/02/Medium:
+      Font family:    font/family/default → "Suisse Intl Trial"
+      Font size:      13px
+      Line height:    16px
+      Font weight:    500 (Medium)
+      Letter spacing: 0px
+
+    Size SM — Body/03/Medium:
+      Font family:    font/family/default → "Suisse Intl Trial"
+      Font size:      11px
+      Line height:    12px
+      Font weight:    500 (Medium)
+      Letter spacing: 0px
+
+  5.3 SPACING TOKENS
+
+    | Property           | Token (md)      | Value (md) | Token (sm)      | Value (sm) |
+    |--------------------|-----------------|------------|-----------------|------------|
+    | Horizontal padding | spacing/space-3 | 12px       | spacing/space-2 | 8px        |
+    | Icon-to-label gap  | spacing/space-1 | 4px        | spacing/space-1 | 4px        |
+
+  5.4 DIMENSIONS
+
+    | Size | Container height | Icon slot |
+    |------|-----------------|-----------|
+    | md   | 24px            | 24×24px   |
+    | sm   | 20px            | 20×20px   |
+
+  5.5 BORDER RADIUS
+
+    border-radius/max → 9999px (fully rounded pill)
+
+6. LAYOUT
+---------
+  Horizontal inline-flex row: [Icon?] [Label]
+  - Items vertically centered (items-center)
+  - inline-flex so badges flow naturally in text
+
+7. MODES
+--------
+  Semantic modes: Light and Dark.
+  Light mode uses the token set documented above.
+  Dark mode inverts token references (not yet implemented).
+
+8. COMPONENT API
+----------------
+  | Prop      | Type                                                  | Default   | Description                |
+  |-----------|-------------------------------------------------------|-----------|----------------------------|
+  | type      | "neutral"|"success"|"information"|"warning"|"danger"   | "neutral" | Semantic color type        |
+  | size      | "sm" | "md"                                           | "md"      | Size variant               |
+  | label     | string                                                | "Text"    | Text label                 |
+  | showIcon  | boolean                                               | true      | Toggle leading icon        |
+  | icon      | ReactNode                                             | undefined | Custom icon override       |
+  | className | string                                                | undefined | Extra CSS classes          |
+
+9. ACCESSIBILITY
+----------------
+  - Non-interactive: badges do not receive focus or click handlers
+  - Icons use aria-hidden="true" (decorative only)
+  - Don't rely on color alone — label text must be descriptive
+  - Maintain sufficient contrast between label and background
+
+10. USAGE GUIDELINES
+--------------------
+  DO:
+    ✓ Use for short, glanceable status indicators
+    ✓ Be consistent with type-to-meaning mapping
+    ✓ Keep labels to one or two words
+    ✓ Use neutral for non-semantic labels
+
+  DON'T:
+    ✗ Use badges for long text or sentences
+    ✗ Badge every item in a list
+    ✗ Use decorative badges with no information value
+    ✗ Mix semantic colors inconsistently
+
+11. FILE LOCATIONS
+------------------
+  Component:      src/components/ui/Badge.tsx
+  Documentation:  src/app/(docs)/components/badge/page.tsx
+  Specifications: badge-specs.txt (this file)

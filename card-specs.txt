@@ -1,0 +1,169 @@
+CARD COMPONENT — COMPLETE SPECIFICATION
+========================================
+
+Figma Source:
+  File: Telehealth App — Components
+  Node: 2:7 (❖ Card)
+  URL:  https://www.figma.com/design/ggpAl2bdadBJPMbtSbPzoN/-Telehealth-App----Components?node-id=2-7
+
+────────────────────────────────────────
+
+1. COMPONENT OVERVIEW
+─────────────────────
+
+Cards are flexible container components that group a heading and a slot
+(children) into a visually distinct surface. They support three sizes,
+three background treatments, and a toggleable heading.
+
+Component type: Container / Layout
+Interaction: Non-interactive (container only)
+
+────────────────────────────────────────
+
+2. ANATOMY
+──────────
+
+  ┌───────────────────────────┐
+  │  ┌─────────────────────┐  │
+  │  │  1. .heading         │  │  (optional sub-component)
+  │  └─────────────────────┘  │
+  │  ┌─────────────────────┐  │
+  │  │                     │  │
+  │  │  2. Slot (children) │  │  (flexible content area)
+  │  │                     │  │
+  │  └─────────────────────┘  │
+  └───────────────────────────┘
+
+  1. .heading — optional text heading, typography scales with card size
+  2. Slot — main content area that fills remaining space (flex: 1)
+
+────────────────────────────────────────
+
+3. PROPERTIES
+─────────────
+
+| Prop         | Type                                 | Default    | Description                                      |
+|------------- |--------------------------------------|------------|--------------------------------------------------|
+| size         | "lg" | "md" | "sm"                   | "lg"       | Size variant — padding, gap, radius, heading     |
+| background   | "solid" | "blur" | "transparent"     | "solid"    | Background treatment                             |
+| showHeading  | boolean                              | true       | Toggle the heading sub-component                 |
+| heading      | string                               | "Heading"  | Text in the heading sub-component                |
+| children     | ReactNode                            | undefined  | Slot content                                     |
+| className    | string                               | undefined  | Additional CSS classes                            |
+
+────────────────────────────────────────
+
+4. SIZE SPECIFICATIONS
+──────────────────────
+
+                    lg              md              sm
+  Padding:          20px (space-5)  12px (space-3)  8px (space-2)
+  Gap:              12px (space-3)  8px (space-2)   4px (space-1)
+  Border radius:    20px (xl)       16px (lg)       16px (lg)
+  Border (solid):   1px solid       none            1px solid
+  Heading font:     Heading/06/Med  Body/01/Med     Body/02/Med
+  Heading size:     19px / 24px     16px / 24px     13px / 16px
+  Heading weight:   500             500             500
+  Heading padding:  8px (space-2)   4px (space-1)   2px (space-0)
+
+  Figma reference dimensions (showcase only — component is flexible width):
+    lg: 200 × 240
+    md: 172 × 206
+    sm: 100 × 120
+
+────────────────────────────────────────
+
+5. BACKGROUND SPECIFICATIONS
+─────────────────────────────
+
+  SOLID
+    Background:  var(--color-background-surface-neutral-default) = #f1f2ec
+    Border:      per size (lg/sm: 1px solid #b7bbaf, md: none)
+    Heading text: var(--color-text-neutral-default) = #1c1f1b
+
+  BLUR
+    Background:  var(--color-background-fill-neutral-muted) = rgba(28,31,27,0.4)
+    Backdrop:    blur(20px) via Blur/blur-20 token
+    Border:      none
+    Heading text: var(--color-text-neutral-invert) = #f1f2ec
+
+  TRANSPARENT
+    Background:  none
+    Border:      none
+    Padding:     12px (space-3) instead of size-specific padding
+    Heading text: var(--color-text-neutral-default) = #1c1f1b
+
+────────────────────────────────────────
+
+6. DESIGN TOKENS
+────────────────
+
+  Colors:
+    background/surface/neutral/default  #f1f2ec
+    background/fill/neutral/muted       rgba(28,31,27,0.4)
+    border/neutral/default              #b7bbaf
+    text/neutral/default                #1c1f1b
+    text/neutral/invert                 #f1f2ec
+
+  Typography:
+    Heading/06/Medium  19px / 24px / 500  (font/family/default)
+    Body/01/Medium     16px / 24px / 500  (font/family/default)
+    Body/02/Medium     13px / 16px / 500  (font/family/default)
+
+  Spacing:
+    spacing/space-0    2px
+    spacing/space-1    4px
+    spacing/space-2    8px
+    spacing/space-3    12px
+    spacing/space-5    20px
+
+  Border radius:
+    border-radius/xl   20px
+    border-radius/lg   16px
+
+  Effects:
+    Blur/blur-20       backdrop-filter: blur(20px)
+
+────────────────────────────────────────
+
+7. LAYOUT
+─────────
+
+  Direction:    column (vertical)
+  Alignment:    items-start
+  Overflow:     clip (overflow: clip)
+  Heading:      full width, shrink-0
+  Slot:         flex: 1 (fills remaining space)
+
+────────────────────────────────────────
+
+8. SUB-COMPONENT: .heading
+──────────────────────────
+
+  A sub-component that renders the heading text within the card.
+  Scales typography and padding based on the parent card's size.
+
+  | Size | Typography          | Padding         |
+  |------|---------------------|-----------------|
+  | lg   | Heading/06/Medium   | 8px (space-2)   |
+  | md   | Body/01/Medium      | 4px (space-1)   |
+  | sm   | Body/02/Medium      | 2px (space-0)   |
+
+────────────────────────────────────────
+
+9. ACCESSIBILITY
+────────────────
+
+  - Cards are non-interactive containers — no role needed by default
+  - Use semantic HTML inside the slot (headings, paragraphs, lists)
+  - If made clickable, wrap with <a> or <button> and provide aria-label
+  - Interactive children must be reachable via keyboard in logical order
+
+────────────────────────────────────────
+
+10. IMPLEMENTATION FILE
+──────────────────────
+
+  Component:     src/components/ui/Card.tsx
+  Documentation: src/app/(docs)/components/card/page.tsx
+  CSS tokens:    src/app/globals.css (added --radius-lg: 16px)

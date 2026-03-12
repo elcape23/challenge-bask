@@ -1,0 +1,691 @@
+import DocHeader from "@/components/docs/DocHeader";
+import DocSection from "@/components/docs/DocSection";
+import DocTable from "@/components/docs/DocTable";
+import DocCallout from "@/components/docs/DocCallout";
+import DoDontGrid from "@/components/docs/DoDontGrid";
+
+const colorScales = {
+  neutral: {
+    label: "Neutral (Light Gray)",
+    steps: [
+      { step: 50, hex: "#f7f7f3" },
+      { step: 100, hex: "#f1f2ec" },
+      { step: 200, hex: "#e4e6de" },
+      { step: 300, hex: "#d3d6cc" },
+      { step: 400, hex: "#b7bbaf" },
+      { step: 500, hex: "#93988d" },
+      { step: 600, hex: "#6e736a" },
+      { step: 700, hex: "#4e534d" },
+      { step: 800, hex: "#31352f" },
+      { step: 900, hex: "#1c1f1b" },
+    ],
+  },
+  primary: {
+    label: "Primary (Emerald)",
+    steps: [
+      { step: 50, hex: "#f2f6f1" },
+      { step: 100, hex: "#e4ece2" },
+      { step: 200, hex: "#c9d7c6" },
+      { step: 300, hex: "#a6bba0" },
+      { step: 400, hex: "#7e9b76" },
+      { step: 500, hex: "#5e7f55" },
+      { step: 600, hex: "#46683e" },
+      { step: 700, hex: "#33522d" },
+      { step: 800, hex: "#223f1e" },
+      { step: 900, hex: "#153014" },
+    ],
+  },
+  secondary: {
+    label: "Secondary (Sand)",
+    steps: [
+      { step: 50, hex: "#faf8f4" },
+      { step: 100, hex: "#f3eee4" },
+      { step: 200, hex: "#e5d9c4" },
+      { step: 300, hex: "#d2bea0" },
+      { step: 400, hex: "#b99e79" },
+      { step: 500, hex: "#9b7f5b" },
+      { step: 600, hex: "#7c664a" },
+      { step: 700, hex: "#625039" },
+      { step: 800, hex: "#4b3d2d" },
+      { step: 900, hex: "#352a1f" },
+    ],
+  },
+  success: {
+    label: "Success (Green)",
+    steps: [
+      { step: 50, hex: "#f2faf5" },
+      { step: 100, hex: "#e0f4e7" },
+      { step: 200, hex: "#c1e8cf" },
+      { step: 300, hex: "#94d7ad" },
+      { step: 400, hex: "#60be81" },
+      { step: 500, hex: "#369c5e" },
+      { step: 600, hex: "#287d4a" },
+    ],
+  },
+  info: {
+    label: "Info (Blue)",
+    steps: [
+      { step: 50, hex: "#f3f7fb" },
+      { step: 100, hex: "#e6eef7" },
+      { step: 200, hex: "#cedceb" },
+      { step: 300, hex: "#adc2dd" },
+      { step: 400, hex: "#86a4ca" },
+      { step: 500, hex: "#6488b4" },
+      { step: 600, hex: "#4e6d92" },
+    ],
+  },
+  warning: {
+    label: "Warning (Yellow)",
+    steps: [
+      { step: 50, hex: "#fff8ee" },
+      { step: 100, hex: "#fcefd9" },
+      { step: 200, hex: "#f7deb0" },
+      { step: 300, hex: "#eec67c" },
+      { step: 400, hex: "#dda146" },
+      { step: 500, hex: "#b97c20" },
+      { step: 600, hex: "#925f18" },
+    ],
+  },
+  danger: {
+    label: "Danger (Red)",
+    steps: [
+      { step: 50, hex: "#fff4f3" },
+      { step: 100, hex: "#fde5e2" },
+      { step: 200, hex: "#f6c4bd" },
+      { step: 300, hex: "#eb978c" },
+      { step: 400, hex: "#d86759" },
+      { step: 500, hex: "#b84335" },
+      { step: 600, hex: "#903328" },
+    ],
+  },
+};
+
+const darkScales = {
+  neutral: {
+    label: "Neutral (Dark)",
+    steps: [
+      { step: 50, hex: "#1b1f1a" },
+      { step: 100, hex: "#1c1f1b" },
+      { step: 200, hex: "#31352f" },
+      { step: 300, hex: "#4e534d" },
+      { step: 400, hex: "#6e736a" },
+      { step: 500, hex: "#93988d" },
+      { step: 600, hex: "#b7bbaf" },
+      { step: 700, hex: "#d3d6cc" },
+      { step: 800, hex: "#e4e6de" },
+      { step: 900, hex: "#f7f8f4" },
+    ],
+  },
+  primary: {
+    label: "Primary (Dark)",
+    steps: [
+      { step: 50, hex: "#16300f" },
+      { step: 100, hex: "#153014" },
+      { step: 200, hex: "#223f1e" },
+      { step: 300, hex: "#33522d" },
+      { step: 400, hex: "#46683e" },
+      { step: 500, hex: "#5e7f55" },
+      { step: 600, hex: "#7e9b76" },
+      { step: 700, hex: "#a6bba0" },
+      { step: 800, hex: "#c9d7c6" },
+      { step: 900, hex: "#f3f7f1" },
+    ],
+  },
+  secondary: {
+    label: "Secondary (Dark)",
+    steps: [
+      { step: 50, hex: "#352a1f" },
+      { step: 100, hex: "#4b3d2d" },
+      { step: 200, hex: "#625039" },
+      { step: 300, hex: "#7c664a" },
+      { step: 400, hex: "#9b7f5b" },
+      { step: 500, hex: "#b99e79" },
+      { step: 600, hex: "#d2bea0" },
+      { step: 700, hex: "#e5d9c4" },
+      { step: 800, hex: "#f3eee4" },
+      { step: 900, hex: "#faf8f4" },
+    ],
+  },
+};
+
+function ColorCard({
+  name,
+  hex,
+  step,
+}: {
+  name: string;
+  hex: string;
+  step: number;
+}) {
+  const isDark = step >= 500;
+  const textColor = isDark ? "#f1f2ec" : "#1c1f1b";
+  return (
+    <div
+      className={`relative rounded-sm ${step <= 100 ? "border border-border-neutral-default" : ""}`}
+      style={{ backgroundColor: hex, paddingTop: "72%" }}
+      title={`${name}\n${hex.toUpperCase()}`}
+    >
+      <div
+        className="absolute bottom-0 left-0 right-0 px-2 pb-2"
+        style={{ color: textColor, fontSize: 11, lineHeight: 1.3 }}
+      >
+        <div className="font-medium truncate">{name}</div>
+        <div className="truncate" style={{ opacity: 0.65 }}>
+          {hex.toUpperCase()}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ColorScaleRow({
+  label,
+  scaleKey,
+  steps,
+}: {
+  label: string;
+  scaleKey: string;
+  steps: { step: number; hex: string }[];
+}) {
+  return (
+    <div className="mb-10">
+      <div className="mb-3 flex justify-between items-baseline">
+        <span className="text-body-02 text-text-neutral-default font-medium">
+          {label}
+        </span>
+        <span
+          className="text-body-03 text-text-neutral-placeholder"
+          style={{ fontFamily: "monospace" }}
+        >
+          --color-{scaleKey}-*
+        </span>
+      </div>
+      <div className="grid grid-cols-5 gap-3">
+        {steps.map(({ step, hex }) => (
+          <ColorCard
+            key={step}
+            name={`${scaleKey}-${step}`}
+            hex={hex}
+            step={step}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function ColorsPage() {
+  return (
+    <>
+      <DocHeader
+        title="Colors"
+        description="The color system defines visual identity and ensures consistency across every surface, text element, and interactive state in the interface."
+      />
+
+      <DocSection title="Overview">
+        <p className="mb-4">
+          Our color system is built on carefully tuned scales extracted from
+          Figma, organized into core palettes (Neutral, Primary, Secondary)
+          and functional palettes (Success, Info, Warning, Danger). Each scale
+          runs from 50 (lightest) to 900 (darkest) and maps directly to CSS
+          custom properties using the{" "}
+          <code
+            className="text-body-03 bg-background-surface-neutral-default rounded-md"
+            style={{
+              padding: "2px 6px",
+              fontFamily: "monospace",
+            }}
+          >
+            --color-*
+          </code>{" "}
+          naming convention.
+        </p>
+        <p className="mb-4">
+          Components never reference raw hex values directly. Instead, they
+          consume semantic tokens that describe purpose — text, background,
+          border, feedback — so the system can adapt to light and dark modes
+          without modifying individual components.
+        </p>
+        <DocCallout variant="info" title="Token naming">
+          Scale tokens follow the pattern{" "}
+          <code style={{ fontFamily: "monospace" }}>
+            var(--color-primary-500)
+          </code>
+          . Semantic tokens use a role-based path like{" "}
+          <code style={{ fontFamily: "monospace" }}>
+            var(--color-text-neutral-default)
+          </code>
+          .
+        </DocCallout>
+      </DocSection>
+
+      <DocSection title="Principles">
+        <ul
+          className="list-none p-0 m-0 gap-3"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <li className="gap-3" style={{ display: "flex" }}>
+            <span
+              className="text-text-neutral-default font-medium"
+              style={{ minWidth: 140, flexShrink: 0 }}
+            >
+              Semantic first
+            </span>
+            <span>
+              Reference tokens by role (text, background, border), not by hue.
+              This keeps the palette decoupled from components and enables
+              theming.
+            </span>
+          </li>
+          <li className="gap-3" style={{ display: "flex" }}>
+            <span
+              className="text-text-neutral-default font-medium"
+              style={{ minWidth: 140, flexShrink: 0 }}
+            >
+              Accessible contrast
+            </span>
+            <span>
+              Every text/background pairing meets WCAG 2.1 AA — 4.5:1 for body
+              text and 3:1 for large text and UI elements. The neutral and
+              primary scales are designed so adjacent steps maintain usable
+              contrast.
+            </span>
+          </li>
+          <li className="gap-3" style={{ display: "flex" }}>
+            <span
+              className="text-text-neutral-default font-medium"
+              style={{ minWidth: 140, flexShrink: 0 }}
+            >
+              Functional color
+            </span>
+            <span>
+              Success, warning, danger, and info palettes are reserved
+              exclusively for communicating status. Never repurpose a feedback
+              color for decoration or branding.
+            </span>
+          </li>
+          <li className="gap-3" style={{ display: "flex" }}>
+            <span
+              className="text-text-neutral-default font-medium"
+              style={{ minWidth: 140, flexShrink: 0 }}
+            >
+              Restraint
+            </span>
+            <span>
+              Individual screens should feel calm. Lean on the neutral scale for
+              surfaces and text; use primary and secondary sparingly for
+              emphasis and interactive states.
+            </span>
+          </li>
+        </ul>
+      </DocSection>
+
+      {/* ── Light mode core scales ── */}
+      <DocSection title="Core scales — Light mode">
+        <p className="mb-6">
+          The three core scales form the foundation of every layout. Neutral
+          handles surfaces and text, Primary drives actions and focus, and
+          Secondary adds warmth to supporting elements.
+        </p>
+        <ColorScaleRow
+          label={colorScales.neutral.label}
+          scaleKey="neutral"
+          steps={colorScales.neutral.steps}
+        />
+        <ColorScaleRow
+          label={colorScales.primary.label}
+          scaleKey="primary"
+          steps={colorScales.primary.steps}
+        />
+        <ColorScaleRow
+          label={colorScales.secondary.label}
+          scaleKey="secondary"
+          steps={colorScales.secondary.steps}
+        />
+      </DocSection>
+
+      {/* ── Functional scales ── */}
+      <DocSection title="Functional scales — Light mode">
+        <p className="mb-6">
+          Functional colors communicate status and feedback. Each scale
+          provides a background tint (50), lighter shades for containers
+          (100–200), and saturated values (500–600) for text and icons.
+        </p>
+        <ColorScaleRow
+          label={colorScales.success.label}
+          scaleKey="success"
+          steps={colorScales.success.steps}
+        />
+        <ColorScaleRow
+          label={colorScales.info.label}
+          scaleKey="info"
+          steps={colorScales.info.steps}
+        />
+        <ColorScaleRow
+          label={colorScales.warning.label}
+          scaleKey="warning"
+          steps={colorScales.warning.steps}
+        />
+        <ColorScaleRow
+          label={colorScales.danger.label}
+          scaleKey="danger"
+          steps={colorScales.danger.steps}
+        />
+      </DocSection>
+
+      {/* ── Dark mode scales ── */}
+      <DocSection title="Core scales — Dark mode">
+        <p className="mb-6">
+          Dark mode inverts the luminance direction of each scale. Step 50
+          becomes the darkest surface and 900 becomes the lightest text value.
+          The same token names resolve to different values based on the active
+          theme.
+        </p>
+        <div
+          className="rounded-md p-6 mb-4"
+          style={{ backgroundColor: "#1b1f1a" }}
+        >
+          {Object.entries(darkScales).map(([key, scale]) => (
+            <div key={key} className="mb-10 last:mb-0">
+              <div className="mb-3 flex justify-between items-baseline">
+                <span
+                  className="text-body-02 font-medium"
+                  style={{ color: "#e4e6de" }}
+                >
+                  {scale.label}
+                </span>
+                <span
+                  className="text-body-03"
+                  style={{ color: "#93988d", fontFamily: "monospace" }}
+                >
+                  --color-{key}-*
+                </span>
+              </div>
+              <div className="grid grid-cols-5 gap-3">
+                {scale.steps.map(({ step, hex }) => {
+                  const isDark = step <= 400;
+                  const textColor = isDark ? "#e4e6de" : "#1c1f1b";
+                  return (
+                    <div
+                      key={step}
+                      className="relative rounded-sm"
+                      style={{
+                        backgroundColor: hex,
+                        paddingTop: "72%",
+                        border: step <= 100 ? "1px solid #31352f" : "none",
+                      }}
+                      title={`${key}-${step}: ${hex}`}
+                    >
+                      <div
+                        className="absolute bottom-0 left-0 right-0 px-2 pb-2"
+                        style={{ color: textColor, fontSize: 11, lineHeight: 1.3 }}
+                      >
+                        <div className="font-medium truncate">
+                          {key}-{step}
+                        </div>
+                        <div className="truncate" style={{ opacity: 0.65 }}>
+                          {hex.toUpperCase()}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </DocSection>
+
+      {/* ── Semantic tokens ── */}
+      <DocSection title="Semantic tokens">
+        <p className="mb-4">
+          Semantic tokens map scale values to specific UI roles. Components
+          consume these tokens so that switching between light and dark mode —
+          or applying a brand theme — requires zero component changes.
+        </p>
+
+        <h3 className="text-body-02 text-text-neutral-default mb-3 mt-6 font-medium">
+          Text tokens
+        </h3>
+        <DocTable
+          headers={["Token", "Light value", "Role"]}
+          rows={[
+            [
+              "--color-text-neutral-default",
+              "#1c1f1b (neutral-900)",
+              "Primary body and heading text",
+            ],
+            [
+              "--color-text-neutral-invert",
+              "#f1f2ec (neutral-100)",
+              "Text on dark/inverted backgrounds",
+            ],
+            [
+              "--color-text-primary-default",
+              "#153014 (primary-900)",
+              "Primary-tinted text for emphasis",
+            ],
+            [
+              "--color-text-primary-invert",
+              "#e4ece2 (primary-100)",
+              "Text on primary-colored surfaces",
+            ],
+          ]}
+        />
+
+        <h3 className="text-body-02 text-text-neutral-default mb-3 mt-6 font-medium">
+          Background tokens
+        </h3>
+        <DocTable
+          headers={["Token", "Light value", "Role"]}
+          rows={[
+            [
+              "--color-bg-default",
+              "#f7f7f3 (neutral-50)",
+              "Default page background",
+            ],
+            [
+              "--color-bg-invert",
+              "#1c1f1b (neutral-900)",
+              "Inverted/dark surface background",
+            ],
+            [
+              "--color-bg-fill-neutral-default",
+              "#e4e6de (neutral-200)",
+              "Subtle neutral fill for cards, wells",
+            ],
+          ]}
+        />
+
+        <h3 className="text-body-02 text-text-neutral-default mb-3 mt-6 font-medium">
+          Semantic token preview
+        </h3>
+        <div
+          className="gap-3 mb-6"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          }}
+        >
+          {[
+            {
+              label: "text/neutral/default",
+              hex: "#1c1f1b",
+              textColor: "#ffffff",
+            },
+            {
+              label: "text/neutral/invert",
+              hex: "#f1f2ec",
+              textColor: "#1c1f1b",
+            },
+            {
+              label: "text/primary/default",
+              hex: "#153014",
+              textColor: "#ffffff",
+            },
+            {
+              label: "text/primary/invert",
+              hex: "#e4ece2",
+              textColor: "#153014",
+            },
+            {
+              label: "bg/default",
+              hex: "#f7f7f3",
+              textColor: "#1c1f1b",
+            },
+            {
+              label: "bg/invert",
+              hex: "#1c1f1b",
+              textColor: "#f1f2ec",
+            },
+            {
+              label: "bg/fill/neutral",
+              hex: "#e4e6de",
+              textColor: "#1c1f1b",
+            },
+          ].map((token) => (
+            <div
+              key={token.label}
+              className="rounded-md py-3 px-4 text-body-03 border border-border-neutral-default"
+              style={{
+                backgroundColor: token.hex,
+                color: token.textColor,
+                fontFamily: "monospace",
+              }}
+            >
+              <div style={{ fontWeight: 600, marginBottom: 2 }}>
+                {token.label}
+              </div>
+              <div style={{ opacity: 0.75 }}>{token.hex}</div>
+            </div>
+          ))}
+        </div>
+      </DocSection>
+
+      {/* ── Rules ── */}
+      <DocSection title="Rules">
+        <ul
+          className="list-disc pl-5 text-text-neutral-secondary gap-2"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <li>
+            Always reference semantic tokens or scale tokens (
+            <code style={{ fontFamily: "monospace" }}>
+              var(--color-primary-500)
+            </code>
+            ) — never hard-code hex values in component styles.
+          </li>
+          <li>
+            Do not use color as the sole indicator of meaning. Pair it with
+            text labels, icons, or patterns so color-blind users receive the
+            same information.
+          </li>
+          <li>
+            Reserve feedback palettes (success, warning, danger, info) for
+            status communication only. Never repurpose them for decoration.
+          </li>
+          <li>
+            Maintain a minimum 4.5:1 contrast ratio for body text and 3:1 for
+            large text and non-text UI elements per WCAG 2.1 AA.
+          </li>
+          <li>
+            When a new color need arises, extend the token system with a new
+            semantic token rather than introducing a one-off value.
+          </li>
+          <li>
+            Use the 50–200 range for backgrounds and subtle fills, 300–400 for
+            borders and secondary elements, 500–600 for primary interactive
+            elements, and 700–900 for text.
+          </li>
+        </ul>
+      </DocSection>
+
+      {/* ── Do / Don't ── */}
+      <DocSection title="Do / Don't">
+        <DoDontGrid
+          doItems={[
+            {
+              description:
+                "Use semantic tokens like var(--color-text-neutral-default) for text and var(--color-bg-default) for backgrounds.",
+            },
+            {
+              description:
+                "Pair color indicators with a text label or icon so meaning is never conveyed by color alone.",
+            },
+            {
+              description:
+                "Use success-500/600 for positive feedback, warning-500/600 for cautionary states, and danger-500/600 for errors.",
+            },
+            {
+              description:
+                "Test color pairings with a contrast checker before shipping — aim for 4.5:1 minimum.",
+            },
+          ]}
+          dontItems={[
+            {
+              description:
+                "Hard-code hex values like #5e7f55 directly in component styles — always use the token.",
+            },
+            {
+              description:
+                "Rely on color alone to communicate errors, required fields, or status changes.",
+            },
+            {
+              description:
+                "Use danger-500 for decorative elements or branding accents — it signals errors.",
+            },
+            {
+              description:
+                "Mix light-mode scale values into dark-mode overrides. Each mode has its own resolved scale.",
+            },
+          ]}
+        />
+      </DocSection>
+
+      {/* ── Usage ── */}
+      <DocSection title="Usage">
+        <p className="mb-4">
+          Colors are applied through CSS custom properties. Reference them in
+          inline styles or CSS modules using the token name:
+        </p>
+        <div
+          className="bg-background-surface-neutral-default rounded-md p-4 text-body-03 mb-4 border border-border-neutral-default"
+          style={{
+            fontFamily: "monospace",
+            lineHeight: 1.7,
+            overflowX: "auto",
+          }}
+        >
+          <div className="text-text-neutral-placeholder">
+            {`/* Scale token */`}
+          </div>
+          <div className="text-text-neutral-default">
+            {`background-color: var(--color-primary-500);`}
+          </div>
+          <div className="text-text-neutral-placeholder mt-2">
+            {`/* Semantic token */`}
+          </div>
+          <div className="text-text-neutral-default">
+            {`color: var(--color-text-neutral-default);`}
+          </div>
+        </div>
+        <p>
+          For theming or dark mode, the token values are redefined at the root
+          level. Components that use tokens automatically adapt without any
+          code changes — the same{" "}
+          <code style={{ fontFamily: "monospace" }}>
+            var(--color-primary-500)
+          </code>{" "}
+          resolves to an emerald green in light mode and a brighter green in
+          dark mode.
+        </p>
+      </DocSection>
+    </>
+  );
+}

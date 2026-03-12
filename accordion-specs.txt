@@ -1,0 +1,199 @@
+ACCORDION COMPONENT — SPECIFICATION
+====================================
+Extracted from Figma node 0:1 (❖ Accordion)
+File: Telehealth App — Components
+
+1. OVERVIEW
+-----------
+The Accordion component organizes content into collapsible sections. Users click
+a trigger row (heading + chevron icon) to expand or collapse a content panel
+beneath it. Ideal for FAQs, settings panels, and progressive disclosure.
+
+2. ANATOMY
+----------
+  1. Container — Outer div with a bottom border. Houses trigger + content panel.
+  2. Heading  — Text label in the trigger row describing the section.
+  3. Icon     — Chevron-down when collapsed, rotates 180° (chevron-up) when expanded.
+  4. Slot     — Content panel area revealed below the trigger when opened.
+
+3. PROPERTIES (from Figma)
+--------------------------
+  | Property | Values              | Default   |
+  |----------|---------------------|-----------|
+  | size     | sm, md              | sm        |
+  | type     | closed, opened      | closed    |
+  | state    | default, disabled   | default   |
+  | slot     | ReactNode (content) | —         |
+
+4. FIGMA VARIANTS
+-----------------
+  - size=sm, type=closed, state=default  → 240×48px
+  - size=sm, type=closed, state=disabled → 240×48px
+  - size=md, type=closed, state=default  → 240×56px
+  - size=md, type=closed, state=disabled → 240×56px
+  - size=sm, type=opened, state=default  → 240×104px
+  - size=md, type=opened, state=default  → 240×116px
+
+5. DESIGN TOKENS
+----------------
+
+  5.1 COLOR TOKENS
+
+    Default state:
+      Text color:   color/text/neutral/default   → #1c1f1b
+      Icon color:   color/icon/neutral/default   → #1c1f1b
+      Border color: color/border/neutral/default → #b7bbaf
+
+    Disabled state:
+      Text color:   color/text/neutral/disabled   → #b7bbaf
+      Icon color:   color/icon/neutral/disabled   → #b7bbaf
+      Border color: color/border/neutral/disabled → #e4e6de
+
+  5.2 TYPOGRAPHY TOKENS
+
+    Size SM (Body/01/Regular):
+      Font family:    font/family/default → "Suisse Intl Trial"
+      Font size:      typescale/body/01/regular/size → 16px
+      Line height:    typescale/body/01/regular/line-height → 24px
+      Font weight:    typescale/body/01/regular/weight → 400 (Regular)
+      Letter spacing: typescale/body/01/regular/letter-spacing → 0px
+
+    Size MD (Heading/06/Regular):
+      Font family:    font/family/default → "Suisse Intl Trial"
+      Font size:      typescale/heading/06/regular/size → 19px
+      Line height:    typescale/heading/06/regular/line-height → 24px
+      Font weight:    typescale/heading/06/regular/weight → 400 (Regular)
+      Letter spacing: typescale/heading/06/regular/letter-spacing → 0px
+
+  5.3 SPACING TOKENS
+
+    | Property            | Token           | Value | Applies to      |
+    |---------------------|-----------------|-------|-----------------|
+    | Horizontal padding  | spacing/space-2 | 8px   | Both sizes      |
+    | Vertical padding SM | spacing/space-3 | 12px  | sm              |
+    | Vertical padding MD | spacing/space-4 | 16px  | md              |
+    | Header gap SM       | spacing/space-3 | 12px  | sm closed       |
+    | Header gap opened   | spacing/space-4 | 16px  | sm/md opened    |
+    | Header gap MD       | spacing/space-4 | 16px  | md              |
+    | Content pb SM       | spacing/space-3 | 12px  | sm opened       |
+    | Content pb MD       | spacing/space-4 | 16px  | md opened       |
+
+  5.4 ICON SIZES
+
+    | Size | Dimensions | Icons                        |
+    |------|------------|------------------------------|
+    | sm   | 20×20 px   | chevron-down, chevron-up     |
+    | md   | 24×24 px   | chevron-down, chevron-up     |
+
+  5.5 BORDER
+
+    Position: Bottom only (border-b)
+    Width:    1px
+    Style:    Solid
+    Color:    See Color Tokens above
+
+  5.6 ANIMATION / TRANSITIONS
+
+    | Property       | Duration | Easing   |
+    |----------------|----------|----------|
+    | Chevron rotate | 200ms    | ease     |
+    | Content height | 200ms    | ease-out |
+
+6. MODES
+--------
+  Semantic modes: Light and Dark.
+  Light mode uses the default token set above.
+  Dark mode inverts color tokens (not yet implemented in component).
+
+7. LAYOUT & SPACING (from Figma Layout and spacing section)
+-----------------------------------------------------------
+
+  SIZE SM — CLOSED:
+    ┌─────────────────────────────────────┐
+    │ px=8  ┌──────────────────────┐ px=8 │  py=12 (top)
+    │       │ Heading        ▼icon │      │
+    │       └──────────────────────┘      │  py=12 (bottom)
+    └─────────────────────────────────────┘
+    Border-bottom: 1px solid #b7bbaf
+
+  SIZE MD — CLOSED:
+    ┌─────────────────────────────────────┐
+    │ px=8  ┌──────────────────────┐ px=8 │  py=16 (top)
+    │       │ Heading        ▼icon │      │
+    │       └──────────────────────┘      │  py=16 (bottom)
+    └─────────────────────────────────────┘
+    Border-bottom: 1px solid #b7bbaf
+
+  SIZE SM — OPENED:
+    ┌─────────────────────────────────────┐
+    │ px=8  ┌──────────────────────┐ px=8 │  py=12 (header row)
+    │       │ Heading        ▲icon │      │
+    │       └──────────────────────┘      │
+    │       ┌──────────────────────┐      │
+    │       │   Content (Slot)     │      │
+    │       └──────────────────────┘      │  pb=12
+    └─────────────────────────────────────┘
+    Border-bottom: 1px solid #b7bbaf
+
+  SIZE MD — OPENED:
+    ┌─────────────────────────────────────┐
+    │ px=8  ┌──────────────────────┐ px=8 │  py=16 (header row)
+    │       │ Heading        ▲icon │      │
+    │       └──────────────────────┘      │
+    │       ┌──────────────────────┐      │
+    │       │   Content (Slot)     │      │
+    │       └──────────────────────┘      │  pb=16
+    └─────────────────────────────────────┘
+    Border-bottom: 1px solid #b7bbaf
+
+8. COMPONENT API
+----------------
+
+  AccordionItem (single item):
+    | Prop          | Type                      | Default   | Description                                  |
+    |---------------|---------------------------|-----------|----------------------------------------------|
+    | heading       | string                    | required  | Text shown in the trigger row                |
+    | size          | "sm" | "md"               | "sm"      | Size variant                                 |
+    | disabled      | boolean                   | false     | Disables interaction                         |
+    | open          | boolean                   | undefined | Controlled open state                        |
+    | defaultOpen   | boolean                   | false     | Initial open state (uncontrolled)            |
+    | onOpenChange  | (open: boolean) => void   | undefined | Callback on toggle                           |
+    | children      | ReactNode                 | —         | Content for the expandable panel             |
+    | className     | string                    | undefined | Extra CSS classes                            |
+
+  Accordion (group wrapper):
+    | Prop      | Type                    | Default  | Description                         |
+    |-----------|-------------------------|----------|-------------------------------------|
+    | type      | "single" | "multiple"   | "single" | Allow one or many open at once      |
+    | size      | "sm" | "md"             | "sm"     | Default size for all children       |
+    | disabled  | boolean                 | false    | Disable all children                |
+    | children  | ReactNode               | —        | AccordionItem elements              |
+    | className | string                  | undefined| Extra CSS classes                   |
+
+9. ACCESSIBILITY
+----------------
+  - Trigger: native <button> with aria-expanded, aria-controls
+  - Panel: role="region" with aria-labelledby pointing to the trigger
+  - Disabled: native disabled attribute on the button
+  - Keyboard: Tab to focus, Enter/Space to toggle
+  - Focus ring: focus-visible:shadow-focus (avoids showing on click)
+
+10. USAGE GUIDELINES
+--------------------
+  DO:
+    ✓ Use for FAQs, settings, and progressive disclosure
+    ✓ Keep headings short and descriptive
+    ✓ Choose single vs multiple mode based on content
+    ✓ Provide clear expanded/collapsed visual feedback
+
+  DON'T:
+    ✗ Hide critical information in accordions
+    ✗ Nest accordions inside accordions
+    ✗ Use vague headings like "Section 1" or "More info"
+    ✗ Mix sizes within the same accordion group
+
+11. FILE LOCATIONS
+------------------
+  Component:      src/components/ui/Accordion.tsx
+  Documentation:  src/app/(docs)/components/accordion/page.tsx
+  Specifications: accordion-specs.txt (this file)

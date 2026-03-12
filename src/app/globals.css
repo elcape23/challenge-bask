@@ -1,0 +1,246 @@
+@import "tailwindcss";
+
+@theme {
+  /* ─── Reset Tailwind defaults — Figma Foundations is the single source of truth ─── */
+  --color-*: initial;
+  --font-size-*: initial;
+  --font-weight-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --blur-*: initial;
+
+  /* ─── Spacing (base unit = 4px) ─── */
+  --spacing: 4px;
+
+  /* ─── Essentials ─── */
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* ═══════════════════════════════════════════
+     PRIMITIVE COLOR SCALES (raw palette)
+     ═══════════════════════════════════════════ */
+
+  --color-neutral-50: #f7f7f3;
+  --color-neutral-100: #f1f2ec;
+  --color-neutral-200: #e4e6de;
+  --color-neutral-300: #d3d6cc;
+  --color-neutral-400: #b7bbaf;
+  --color-neutral-500: #93988d;
+  --color-neutral-600: #6e736a;
+  --color-neutral-700: #4e534d;
+  --color-neutral-800: #31352f;
+  --color-neutral-900: #1c1f1b;
+
+  --color-primary-50: #f2f6f1;
+  --color-primary-100: #e4ece2;
+  --color-primary-200: #c9d7c6;
+  --color-primary-300: #a6bba0;
+  --color-primary-400: #7e9b76;
+  --color-primary-500: #5e7f55;
+  --color-primary-600: #46683e;
+  --color-primary-700: #33522d;
+  --color-primary-800: #223f1e;
+  --color-primary-900: #153014;
+
+  --color-secondary-50: #faf8f4;
+  --color-secondary-100: #f3eee4;
+  --color-secondary-200: #e5d9c4;
+  --color-secondary-300: #d2bea0;
+  --color-secondary-400: #b99e79;
+  --color-secondary-500: #9b7f5b;
+  --color-secondary-600: #7c664a;
+  --color-secondary-700: #625039;
+  --color-secondary-800: #4b3d2d;
+  --color-secondary-900: #352a1f;
+
+  --color-success-50: #f2faf5;
+  --color-success-100: #e0f4e7;
+  --color-success-200: #c1e8cf;
+  --color-success-300: #94d7ad;
+  --color-success-400: #60be81;
+  --color-success-500: #369c5e;
+  --color-success-600: #287d4a;
+
+  --color-info-50: #f3f7fb;
+  --color-info-100: #e6eef7;
+  --color-info-200: #cedceb;
+  --color-info-300: #adc2dd;
+  --color-info-400: #86a4ca;
+  --color-info-500: #6488b4;
+  --color-info-600: #4e6d92;
+
+  --color-warning-50: #fff8ee;
+  --color-warning-100: #fcefd9;
+  --color-warning-200: #f7deb0;
+  --color-warning-300: #eec67c;
+  --color-warning-400: #dda146;
+  --color-warning-500: #b97c20;
+  --color-warning-600: #925f18;
+
+  --color-danger-50: #fff4f3;
+  --color-danger-100: #fde5e2;
+  --color-danger-200: #f6c4bd;
+  --color-danger-300: #eb978c;
+  --color-danger-400: #d86759;
+  --color-danger-500: #b84335;
+  --color-danger-600: #903328;
+
+  /* ═══════════════════════════════════════════
+     SEMANTIC TOKENS (from Figma variables)
+     ═══════════════════════════════════════════ */
+
+  /* ─── color/text ─── */
+  --color-text-neutral-default: #1c1f1b;
+  --color-text-neutral-secondary: #4e534d;
+  --color-text-neutral-hover: #31352f;
+  --color-text-neutral-pressed: #4e534d;
+  --color-text-neutral-disabled: #b7bbaf;
+  --color-text-neutral-invert: #f1f2ec;
+  --color-text-neutral-placeholder: #93988d;
+  --color-text-primary-default: #153014;
+  --color-text-primary-invert: #e4ece2;
+  --color-text-primary-disabled: #7e9b76;
+  --color-text-success-default: #287d4a;
+  --color-text-success-invert: #e0f4e7;
+  --color-text-information-default: #4e6d92;
+  --color-text-information-invert: #e6eef7;
+  --color-text-warning-default: #925f18;
+  --color-text-warning-invert: #fcefd9;
+  --color-text-danger-default: #903328;
+  --color-text-danger-invert: #903328;
+
+  /* ─── color/icon ─── */
+  --color-icon-neutral-default: #1c1f1b;
+  --color-icon-neutral-secondary: #4e534d;
+  --color-icon-neutral-hover: #31352f;
+  --color-icon-neutral-pressed: #4e534d;
+  --color-icon-neutral-disabled: #b7bbaf;
+  --color-icon-neutral-invert: #f1f2ec;
+  --color-icon-primary-default: #153014;
+  --color-icon-primary-invert: #e4ece2;
+  --color-icon-primary-disabled: #7e9b76;
+  --color-icon-success-default: #287d4a;
+  --color-icon-success-invert: #e0f4e7;
+  --color-icon-information-default: #4e6d92;
+  --color-icon-information-invert: #e6eef7;
+  --color-icon-warning-default: #925f18;
+  --color-icon-warning-invert: #fcefd9;
+  --color-icon-danger-default: #903328;
+
+  /* ─── color/background/default ─── */
+  --color-background-default-default: #f7f7f3;
+
+  /* ─── color/background/fill ─── */
+  --color-background-fill-neutral-default: #e4e6de;
+  --color-background-fill-neutral-hover: #d3d6cc;
+  --color-background-fill-neutral-pressed: #b7bbaf;
+  --color-background-fill-neutral-disabled: #6e736a;
+  --color-background-fill-neutral-muted: #1c1f1b66;
+  --color-background-fill-primary-default: #153014;
+  --color-background-fill-primary-hover: #223f1e;
+  --color-background-fill-primary-pressed: #33522d;
+  --color-background-fill-primary-disabled: #c9d7c6;
+  --color-background-fill-success-default: #60be81;
+  --color-background-fill-information-default: #86a4ca;
+  --color-background-fill-warning-default: #dda146;
+  --color-background-fill-danger-default: #b84335;
+  --color-background-fill-danger-hover: #eb978c;
+  --color-background-fill-danger-disabled: #f6c4bd;
+
+  /* ─── color/background/surface ─── */
+  --color-background-surface-neutral-default: #f1f2ec;
+  --color-background-surface-neutral-hover: #d3d6cc;
+  --color-background-surface-success-default: #f2faf5;
+  --color-background-surface-information-default: #f3f7fb;
+  --color-background-surface-warning-default: #fff8ee;
+  --color-background-surface-danger-default: #fff4f3;
+
+  /* ─── color/border ─── */
+  --color-border-neutral-default: #b7bbaf;
+  --color-border-neutral-hover: #93988d;
+  --color-border-neutral-disabled: #e4e6de;
+  --color-border-primary-default: #a6bba0;
+  --color-border-primary-disabled: #c9d7c6;
+  --color-border-success-default: #94d7ad;
+  --color-border-information-default: #adc2dd;
+  --color-border-warning-default: #eec67c;
+  --color-border-danger-default: #eb978c;
+
+  /* ─── Font Family ─── */
+  --font-sans: var(--font-suisse-intl), "Suisse Intl", "Suisse Intl Trial", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  /* ─── Font Size + paired Line Height ─── */
+  --font-size-heading-01: 48px;
+  --font-size-heading-01--line-height: 60px;
+  --font-size-heading-02: 40px;
+  --font-size-heading-02--line-height: 48px;
+  --font-size-heading-03: 33px;
+  --font-size-heading-03--line-height: 36px;
+  --font-size-heading-04: 28px;
+  --font-size-heading-04--line-height: 32px;
+  --font-size-heading-05: 23px;
+  --font-size-heading-05--line-height: 28px;
+  --font-size-heading-06: 19px;
+  --font-size-heading-06--line-height: 24px;
+  --font-size-body-01: 16px;
+  --font-size-body-01--line-height: 24px;
+  --font-size-body-02: 13px;
+  --font-size-body-02--line-height: 16px;
+  --font-size-body-03: 11px;
+  --font-size-body-03--line-height: 12px;
+
+  /* ─── Font Weight ─── */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* ─── Border Radius ─── */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-4xl: 32px;
+  --radius-max: 9999px;
+
+  /* ─── Shadows ─── */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.10);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.10), 0 1px 2px -1px rgba(0, 0, 0, 0.10);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.10), 0 2px 4px -2px rgba(0, 0, 0, 0.10);
+  --shadow-focus: 0 0 0 3px rgba(0, 0, 0, 0.20);
+
+  /* ─── Blur ─── */
+  --blur-20: 20px;
+
+  /* ─── Layout ─── */
+  --width-sidebar: 260px;
+  --max-width-content: 768px;
+  --height-topbar: 56px;
+}
+
+:root {
+  /* ─── Grid (no Tailwind theme equivalent) ─── */
+  --ds-grid-columns: 4;
+  --ds-grid-margin: 20px;
+  --ds-grid-gutter: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--color-background-default-default);
+  color: var(--color-text-neutral-default);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-body-01);
+  line-height: var(--font-size-body-01--line-height);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.docs-card:hover {
+  border-color: var(--color-border-neutral-hover);
+  box-shadow: var(--shadow-xs);
+}
