@@ -125,10 +125,13 @@ const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
       "shrink-0 inline-flex items-center rounded-max transition-colors duration-150 ease-out",
       SIZE_TRACK[size],
       SIZE_PADDING[size],
-      resolvedChecked
-        ? "bg-background-fill-primary-default hover:bg-background-fill-primary-hover"
-        : "bg-neutral-300 hover:bg-neutral-400",
-      disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
+      disabled
+        ? resolvedChecked
+          ? "bg-background-fill-primary-disabled cursor-not-allowed"
+          : "bg-background-fill-neutral-default cursor-not-allowed"
+        : resolvedChecked
+          ? "bg-background-fill-primary-default hover:bg-background-fill-primary-hover cursor-pointer"
+          : "bg-background-fill-neutral-hover hover:bg-background-fill-neutral-pressed cursor-pointer",
     ].join(" ");
 
     const thumbTranslate =
@@ -156,8 +159,8 @@ const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
       <span className="flex flex-col min-w-0">
         {label && (
           <span
-            className={`${LABEL_TEXT[size]} text-text-neutral-default ${
-              disabled ? "opacity-50" : ""
+            className={`${LABEL_TEXT[size]} ${
+              disabled ? "text-text-neutral-disabled" : "text-text-neutral-default"
             }`}
           >
             {label}
@@ -165,8 +168,8 @@ const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
         )}
         {description && (
           <span
-            className={`${DESC_TEXT[size]} text-text-neutral-placeholder mt-0.5 ${
-              disabled ? "opacity-50" : ""
+            className={`${DESC_TEXT[size]} mt-0.5 ${
+              disabled ? "text-text-neutral-disabled" : "text-text-neutral-placeholder"
             }`}
           >
             {description}
@@ -192,7 +195,7 @@ const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           disabled={disabled}
           onClick={handleClick}
           onKeyDown={handleKeyDown}
-          className={`inline-flex items-center p-0 border-0 bg-transparent cursor-inherit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500 disabled:cursor-not-allowed ${SIZE_GAP[size]}`}
+          className={`inline-flex items-center p-0 border-0 bg-transparent cursor-inherit focus-visible:outline-none focus-visible:shadow-focus disabled:cursor-not-allowed ${SIZE_GAP[size]}`}
           {...restProps}
         >
           {side === "left" ? (

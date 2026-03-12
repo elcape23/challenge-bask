@@ -11,7 +11,7 @@ export default function DocsLayout({
       <DocsTopbar />
       <div className="flex">
         <DocsSidebar />
-        <main className="flex-1 min-w-0 px-8 py-10 grid grid-cols-2 gap-x-20 gap-y-8">
+        <main className="flex-1 min-w-0 px-8 py-10 grid grid-cols-2 gap-x-20 gap-y-20">
           {children}
         </main>
       </div>

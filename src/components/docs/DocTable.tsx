@@ -1,18 +1,51 @@
 interface DocTableProps {
   headers: string[];
   rows: string[][];
+  variant?: "default" | "surface";
+  title?: string;
 }
 
-export default function DocTable({ headers, rows }: DocTableProps) {
+export default function DocTable({
+  headers,
+  rows,
+  variant = "default",
+  title,
+}: DocTableProps) {
+  const isSurface = variant === "surface";
+
   return (
-    <div className="overflow-x-auto mb-6 rounded-md border border-border-neutral-default">
-      <table className="w-full text-left text-body-02">
+    <div
+      className={`overflow-x-auto mb-6 ${
+        isSurface
+          ? "bg-background-surface-neutral-default p-10"
+          : "rounded-md border border-border-neutral-default"
+      }`}
+    >
+      {isSurface && title && (
+        <h3 className="text-heading-04 font-medium text-text-neutral-default mb-6">
+          {title}
+        </h3>
+      )}
+      <table className="w-full table-fixed text-left text-body-01">
+        <colgroup>
+          {headers.map((_, i) => (
+            <col key={i} style={{ width: `${100 / headers.length}%` }} />
+          ))}
+        </colgroup>
         <thead>
-          <tr className="bg-background-surface-neutral-default">
-            {headers.map((header) => (
+          <tr
+            className={
+              isSurface
+                ? "border-b border-border-neutral-default"
+                : "bg-background-surface-neutral-default border-b border-border-neutral-default"
+            }
+          >
+            {headers.map((header, j) => (
               <th
                 key={header}
-                className="px-4 py-3 text-text-neutral-default font-medium border-b border-border-neutral-default"
+                className={`text-text-neutral-default ${
+                  isSurface ? "py-10 font-medium" : "py-3 font-medium"
+                } ${j === 0 && isSurface ? "pl-0 pr-4" : "px-4"}`}
               >
                 {header}
               </th>
@@ -24,13 +57,21 @@ export default function DocTable({ headers, rows }: DocTableProps) {
             <tr
               key={i}
               className={
-                i < rows.length - 1 ? "border-b border-border-neutral-disabled" : ""
+                isSurface
+                  ? i < rows.length - 1
+                    ? "border-b border-border-neutral-default"
+                    : ""
+                  : i < rows.length - 1
+                    ? "border-b border-border-neutral-disabled"
+                    : ""
               }
             >
               {row.map((cell, j) => (
                 <td
                   key={j}
-                  className="px-4 py-3 text-text-neutral-secondary font-regular"
+                  className={`text-text-neutral-secondary font-regular ${
+                    isSurface ? "py-10" : "py-3"
+                  } ${j === 0 && isSurface ? "pl-0 pr-4" : "px-4"}`}
                 >
                   {cell}
                 </td>

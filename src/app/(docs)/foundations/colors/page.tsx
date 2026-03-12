@@ -183,10 +183,16 @@ function ColorCard({ name, hex }: { name: string; hex: string }) {
       }}
       title={`${name}\n#${hex.replace("#", "").toUpperCase()}`}
     >
-      <p className="text-body-02 font-bold whitespace-nowrap" style={{ fontFamily: '"Suisse Intl Trial", sans-serif' }}>
+      <p
+        className="text-body-02 font-bold whitespace-nowrap"
+        style={{ fontFamily: '"Suisse Intl Trial", sans-serif' }}
+      >
         {name}
       </p>
-      <p className="text-body-02 font-regular whitespace-nowrap" style={{ fontFamily: '"Suisse Intl Trial", sans-serif' }}>
+      <p
+        className="text-body-02 font-regular whitespace-nowrap"
+        style={{ fontFamily: '"Suisse Intl Trial", sans-serif' }}
+      >
         #{hex.replace("#", "").toUpperCase()}
       </p>
     </div>
@@ -231,7 +237,7 @@ export default function ColorsPage() {
       </div>
 
       {/* Core scales — Light mode */}
-      <div className="col-span-2 flex flex-col gap-20">
+      <section className="col-span-2 mt-20 flex flex-col gap-20">
         <div className="grid grid-cols-2 gap-x-[40px]">
           <h2 className="text-heading-01 font-medium text-text-neutral-default leading-none self-start">
             Core scales <br className="hidden md:block" /> Light mode
@@ -257,20 +263,20 @@ export default function ColorsPage() {
           scaleKey="secondary"
           steps={colorScales.secondary.steps}
         />
-      </div>
+      </section>
 
-      {/* ── Functional scales ── */}
-      <div className="col-span-2 mt-12 grid grid-cols-2 gap-x-[40px]">
-        <h2 className="text-heading-01 font-medium text-text-neutral-default leading-none self-start">
-          Functional scales <br className="hidden md:block" /> Light mode
-        </h2>
-        <p className="text-body-01 font-regular text-text-neutral-secondary max-w-md self-start">
-          Functional colors communicate status and feedback. Each scale provides
-          a background tint (50), lighter shades for containers (100–200), and
-          saturated values (500–600) for text and icons.
-        </p>
-      </div>
-      <div className="col-span-2">
+      {/* Functional scales — Light mode */}
+      <section className="col-span-2 mt-20 flex flex-col gap-20">
+        <div className="grid grid-cols-2 gap-x-[40px]">
+          <h2 className="text-heading-01 font-medium text-text-neutral-default leading-none self-start">
+            Functional scales <br className="hidden md:block" /> Light mode
+          </h2>
+          <p className="text-body-01 font-regular text-text-neutral-secondary max-w-md self-start">
+            Functional colors communicate status and feedback. Each scale
+            provides a background tint (50), lighter shades for containers
+            (100–200), and saturated values (500–600) for text and icons.
+          </p>
+        </div>
         <ColorScaleRow
           label={colorScales.success.label}
           scaleKey="success"
@@ -291,27 +297,24 @@ export default function ColorsPage() {
           scaleKey="danger"
           steps={colorScales.danger.steps}
         />
-      </div>
+      </section>
 
-      {/* ── Core scales — Dark mode ── */}
-      <div className="col-span-2 mt-12 grid grid-cols-2 gap-x-[40px]">
-        <h2 className="text-heading-01 font-medium text-text-neutral-default leading-none self-start">
-          Core scales <br className="hidden md:block" /> Dark mode
-        </h2>
-        <p className="text-body-01 font-regular text-text-neutral-secondary max-w-md self-start">
-          Dark mode inverts the luminance direction of each scale. Step 50
-          becomes the darkest surface and 900 becomes the lightest text value.
-          The same token names resolve to different values based on the active
-          theme.
-        </p>
-      </div>
-      <div className="col-span-2">
-        <div
-          className="rounded-md p-6"
-          style={{ backgroundColor: "#1b1f1a" }}
-        >
+      {/* Core scales — Dark mode */}
+      <section className="col-span-2 mt-20 flex flex-col gap-20">
+        <div className="grid grid-cols-2 gap-x-[40px]">
+          <h2 className="text-heading-01 font-medium text-text-neutral-default leading-none self-start">
+            Core scales <br className="hidden md:block" /> Dark mode
+          </h2>
+          <p className="text-body-01 font-regular text-text-neutral-secondary max-w-md self-start">
+            Dark mode inverts the luminance direction of each scale. Step 50
+            becomes the darkest surface and 900 becomes the lightest text value.
+            The same token names resolve to different values based on the active
+            theme.
+          </p>
+        </div>
+        <div className="rounded-md p-6" style={{ backgroundColor: "#1b1f1a" }}>
           {Object.entries(darkScales).map(([key, scale]) => (
-            <div key={key} className="mb-10 last:mb-0">
+            <div key={key} className="mb-20 last:mb-0">
               <div className="mb-4">
                 <span
                   className="text-heading-04 font-medium"
@@ -328,30 +331,33 @@ export default function ColorsPage() {
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* ── Semantic tokens ── */}
-      <DocSection title="Semantic tokens">
-        <p className="mb-4">
-          Semantic tokens map scale values to specific UI roles. Components
-          consume these tokens so that switching between light and dark mode —
-          or applying a brand theme — requires zero component changes.
-        </p>
-
-        <h3 className="text-body-02 text-text-neutral-default mb-3 mt-6 font-medium">
-          Text tokens
-        </h3>
+      {/* Semantic tokens */}
+      <section className="col-span-2 mt-20 flex flex-col gap-20">
+        <div className="grid grid-cols-2 gap-x-[40px]">
+          <h2 className="text-heading-01 font-medium text-text-neutral-default leading-none self-start">
+            Semantic tokens
+          </h2>
+          <p className="text-body-01 font-regular text-text-neutral-secondary max-w-md self-start">
+            Semantic tokens map scale values to specific UI roles. Components
+            consume these tokens so that switching between light and dark mode —
+            or applying a brand theme — requires zero component changes.
+          </p>
+        </div>
         <DocTable
+          variant="surface"
+          title="Text tokens"
           headers={["Token", "Light value", "Role"]}
           rows={[
             [
               "--color-text-neutral-default",
-              "#1c1f1b (neutral-900)",
+              "#1C1F1B (neutral-900)",
               "Primary body and heading text",
             ],
             [
               "--color-text-neutral-invert",
-              "#f1f2ec (neutral-100)",
+              "#F1F2EC (neutral-100)",
               "Text on dark/inverted backgrounds",
             ],
             [
@@ -361,7 +367,7 @@ export default function ColorsPage() {
             ],
             [
               "--color-text-primary-invert",
-              "#e4ece2 (primary-100)",
+              "#E4ECE2 (primary-100)",
               "Text on primary-colored surfaces",
             ],
           ]}
@@ -454,9 +460,9 @@ export default function ColorsPage() {
             </div>
           ))}
         </div>
-      </DocSection>
+      </section>
 
-      {/* ── Rules ── */}
+      {/* Rules */}
       <DocSection title="Rules">
         <ul
           className="list-disc pl-5 text-text-neutral-secondary gap-2"

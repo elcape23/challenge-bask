@@ -192,7 +192,12 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
       if (disabled) return;
       setIsOpen(true);
       const idx = enabledOptions.findIndex((o) => o.value === resolvedValue);
-      setActiveIndex(idx >= 0 ? options.indexOf(enabledOptions[idx]) : 0);
+      if (idx >= 0) {
+        setActiveIndex(options.indexOf(enabledOptions[idx]));
+      } else {
+        const firstEnabledIdx = options.findIndex((o) => !o.disabled);
+        setActiveIndex(firstEnabledIdx >= 0 ? firstEnabledIdx : 0);
+      }
     }, [disabled, enabledOptions, options, resolvedValue]);
 
     const closeDropdown = useCallback(() => {
@@ -314,14 +319,15 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
         {label && (
           <label
             htmlFor={triggerId}
-            className={`${LABEL_TEXT[size]} text-text-neutral-default mb-1 ${
-              disabled ? "opacity-50" : ""
+            className={`${LABEL_TEXT[size]} mb-1 ${
+              disabled ? "text-text-neutral-disabled" : "text-text-neutral-default"
             }`}
           >
             {label}
           </label>
         )}
 
+        <div className="relative">
         <button
           ref={triggerRef}
           id={triggerId}
@@ -345,28 +351,30 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
             SIZE_HEIGHT[size],
             SIZE_PADDING[size],
             SIZE_RADIUS[size],
-            borderColor,
-            "focus-visible:shadow-focus focus-visible:border-border-primary-default focus-visible:outline-none",
             disabled
-              ? "opacity-50 !cursor-not-allowed bg-background-surface-neutral-default"
-              : "",
+              ? "border-border-neutral-disabled !cursor-not-allowed bg-background-surface-neutral-default"
+              : borderColor,
+            "focus-visible:shadow-focus focus-visible:border-border-primary-default focus-visible:outline-none",
           ].join(" ")}
         >
           <span
             className={[
               SIZE_TEXT[size],
               "truncate",
-              selectedOption
-                ? "text-text-neutral-default"
-                : "text-text-neutral-placeholder",
+              disabled
+                ? "text-text-neutral-disabled"
+                : selectedOption
+                  ? "text-text-neutral-default"
+                  : "text-text-neutral-placeholder",
             ].join(" ")}
           >
             {selectedOption ? selectedOption.label : placeholder}
           </span>
           <ChevronDownIcon
             className={[
-              "shrink-0 text-icon-neutral-secondary transition-transform ml-2",
+              "shrink-0 transition-transform ml-2",
               SIZE_ICON[size],
+              disabled ? "text-icon-neutral-disabled" : "text-icon-neutral-secondary",
               isOpen ? "rotate-180" : "",
             ].join(" ")}
           />
@@ -381,12 +389,10 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
             aria-labelledby={triggerId}
             onKeyDown={handleListKeyDown}
             className={[
-              "absolute z-50 left-0 right-0 mt-1 border border-border-neutral-default bg-white overflow-auto outline-none",
+              "absolute z-50 left-0 right-0 top-full mt-1 border border-border-neutral-default bg-white overflow-auto outline-none",
               SIZE_RADIUS[size],
               "shadow-md max-h-60",
-              label ? "top-[calc(100%-4px)]" : "top-full",
             ].join(" ")}
-            style={{ top: "100%" }}
           >
             {options.map((option, idx) => {
               const isSelected = option.value === resolvedValue;
@@ -416,7 +422,7 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
                 >
                   <span className="truncate">{option.label}</span>
                   {isSelected && (
-                    <span className="text-icon-primary-default ml-2">
+                    <span className={`ml-2 ${option.disabled ? "text-icon-neutral-disabled" : "text-icon-primary-default"}`}>
                       <CheckIcon />
                     </span>
                   )}
@@ -430,6 +436,7 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
             )}
           </ul>
         )}
+        </div>
 
         {bottomText && (
           <p
@@ -437,9 +444,11 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
             className={[
               "mt-1",
               HELPER_TEXT[size],
-              isError
-                ? "text-text-danger-default"
-                : "text-text-neutral-placeholder",
+              disabled
+                ? "text-text-neutral-disabled"
+                : isError
+                  ? "text-text-danger-default"
+                  : "text-text-neutral-placeholder",
             ].join(" ")}
             role={isError ? "alert" : undefined}
           >

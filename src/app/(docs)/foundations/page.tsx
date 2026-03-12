@@ -46,20 +46,20 @@ const foundations = [
 
 export default function FoundationsPage() {
   return (
-    <>
-      <div className="mb-10">
+    <div className="col-span-2 grid grid-cols-2 gap-x-20 gap-y-20">
+      <div className="col-span-2 flex flex-col gap-4">
         <h1
-          className="font-bold tracking-tight text-text-neutral-default mb-3"
+          className="font-bold tracking-tight text-text-neutral-default leading-none"
           style={{ fontSize: "120px", lineHeight: 1 }}
         >
           Foundations
         </h1>
-        <p className="text-heading-06 font-regular text-text-neutral-secondary">
+        <p className="text-heading-06 font-regular text-text-neutral-secondary max-w-md">
           The visual and interaction building blocks of the Bask design system.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {foundations.map((item) => (
           <Link
             key={item.name}
@@ -80,6 +80,6 @@ export default function FoundationsPage() {
           </Link>
         ))}
       </div>
-    </>
+    </div>
   );
 }
