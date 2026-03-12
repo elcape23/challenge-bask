@@ -148,32 +148,29 @@ const darkScales = {
   },
 };
 
-function ColorCard({
-  name,
-  hex,
-  step,
-}: {
-  name: string;
-  hex: string;
-  step: number;
-}) {
-  const isDark = step >= 500;
-  const textColor = isDark ? "#f1f2ec" : "#1c1f1b";
+function contrastTextColor(hex: string): string {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return L > 0.45
+    ? "var(--color-text-neutral-default)"
+    : "var(--color-text-neutral-invert)";
+}
+
+function ColorCard({ name, hex }: { name: string; hex: string }) {
   return (
     <div
-      className={`relative rounded-sm ${step <= 100 ? "border border-border-neutral-default" : ""}`}
-      style={{ backgroundColor: hex, paddingTop: "72%" }}
-      title={`${name}\n${hex.toUpperCase()}`}
+      className="flex flex-col items-start justify-end overflow-clip p-3 gap-1 aspect-square"
+      style={{ backgroundColor: hex, color: contrastTextColor(hex) }}
+      title={`${name}\n#${hex.replace("#", "").toUpperCase()}`}
     >
-      <div
-        className="absolute bottom-0 left-0 right-0 px-2 pb-2"
-        style={{ color: textColor, fontSize: 11, lineHeight: 1.3 }}
-      >
-        <div className="font-medium truncate">{name}</div>
-        <div className="truncate" style={{ opacity: 0.65 }}>
-          {hex.toUpperCase()}
-        </div>
-      </div>
+      <p className="text-body-02 font-bold whitespace-nowrap leading-4">
+        {name}
+      </p>
+      <p className="text-body-02 whitespace-nowrap leading-4">
+        #{hex.replace("#", "").toUpperCase()}
+      </p>
     </div>
   );
 }
@@ -189,24 +186,17 @@ function ColorScaleRow({
 }) {
   return (
     <div className="mb-10">
-      <div className="mb-3 flex justify-between items-baseline">
-        <span className="text-body-02 text-text-neutral-default font-medium">
+      <div className="mb-4">
+        <span className="text-heading-04 text-text-neutral-default font-medium">
           {label}
         </span>
-        <span
-          className="text-body-03 text-text-neutral-placeholder"
-          style={{ fontFamily: "monospace" }}
-        >
-          --color-{scaleKey}-*
-        </span>
       </div>
-      <div className="grid grid-cols-5 gap-3">
+      <div className="grid grid-cols-5">
         {steps.map(({ step, hex }) => (
           <ColorCard
             key={step}
             name={`${scaleKey}-${step}`}
             hex={hex}
-            step={step}
           />
         ))}
       </div>
@@ -390,49 +380,22 @@ export default function ColorsPage() {
         >
           {Object.entries(darkScales).map(([key, scale]) => (
             <div key={key} className="mb-10 last:mb-0">
-              <div className="mb-3 flex justify-between items-baseline">
+              <div className="mb-4">
                 <span
-                  className="text-body-02 font-medium"
+                  className="text-heading-04 font-medium"
                   style={{ color: "#e4e6de" }}
                 >
                   {scale.label}
                 </span>
-                <span
-                  className="text-body-03"
-                  style={{ color: "#93988d", fontFamily: "monospace" }}
-                >
-                  --color-{key}-*
-                </span>
               </div>
-              <div className="grid grid-cols-5 gap-3">
-                {scale.steps.map(({ step, hex }) => {
-                  const isDark = step <= 400;
-                  const textColor = isDark ? "#e4e6de" : "#1c1f1b";
-                  return (
-                    <div
-                      key={step}
-                      className="relative rounded-sm"
-                      style={{
-                        backgroundColor: hex,
-                        paddingTop: "72%",
-                        border: step <= 100 ? "1px solid #31352f" : "none",
-                      }}
-                      title={`${key}-${step}: ${hex}`}
-                    >
-                      <div
-                        className="absolute bottom-0 left-0 right-0 px-2 pb-2"
-                        style={{ color: textColor, fontSize: 11, lineHeight: 1.3 }}
-                      >
-                        <div className="font-medium truncate">
-                          {key}-{step}
-                        </div>
-                        <div className="truncate" style={{ opacity: 0.65 }}>
-                          {hex.toUpperCase()}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="grid grid-cols-5">
+                {scale.steps.map(({ step, hex }) => (
+                  <ColorCard
+                    key={step}
+                    name={`${key}-${step}`}
+                    hex={hex}
+                  />
+                ))}
               </div>
             </div>
           ))}

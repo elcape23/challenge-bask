@@ -1,6 +1,6 @@
 import Link from "next/link";
-import DocHeader from "@/components/docs/DocHeader";
-import DocSection from "@/components/docs/DocSection";
+
+
 
 const foundations = [
   {
@@ -48,45 +48,34 @@ const foundations = [
 export default function FoundationsPage() {
   return (
     <>
-      <DocHeader
-        title="Foundations"
-        description="The visual and interaction building blocks of the Bask design system."
-      />
-
-      <DocSection title="Overview">
-        <p className="mb-4">
-          Foundations define the core visual language that every component and
-          layout is built upon. They ensure a unified look and feel by
-          establishing shared rules for color, type, spacing, shadows, and more.
+      <div className="mb-10">
+        <h1 className="font-bold tracking-tight text-text-neutral-default mb-3" style={{ fontSize: "120px", lineHeight: 1 }}>
+          Foundations
+        </h1>
+        <p className="text-body-01 font-regular text-text-neutral-secondary">
+          The visual and interaction building blocks of the Bask design system.
         </p>
-        <p>
-          Each foundation is documented with its scale, intended usage, and clear
-          rules so that designers and developers make consistent decisions
-          without guesswork.
-        </p>
-      </DocSection>
+      </div>
 
-      <DocSection title="What's included">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {foundations.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="docs-card block p-5 border border-border-neutral-default rounded-md bg-white no-underline"
-              style={{
-                transition: "border-color 0.15s ease, box-shadow 0.15s ease",
-              }}
-            >
-              <span className="block text-body-01 text-text-neutral-default mb-1 font-medium">
-                {item.name}
-              </span>
-              <span className="text-body-02 text-text-neutral-secondary">
-                {item.description}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </DocSection>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {foundations.map((item) => (
+          <Link
+            key={item.name}
+            href={item.href}
+            className="docs-card block p-5 border border-border-neutral-default rounded-md bg-white no-underline"
+            style={{
+              transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+            }}
+          >
+            <span className="block text-body-01 text-text-neutral-default mb-1 font-medium">
+              {item.name}
+            </span>
+            <span className="text-body-02 text-text-neutral-secondary">
+              {item.description}
+            </span>
+          </Link>
+        ))}
+      </div>
     </>
   );
 }

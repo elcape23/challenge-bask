@@ -7,7 +7,7 @@ export default function DocHeader({ title, description }: DocHeaderProps) {
   return (
     <div className="mb-10">
       <h1
-        className={`text-heading-04 font-bold tracking-tight text-text-neutral-default ${
+        className={`text-heading-01 font-bold tracking-tight text-text-neutral-default ${
           description ? "mb-3" : ""
         }`}
       >

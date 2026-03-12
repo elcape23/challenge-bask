@@ -1,0 +1,175 @@
+COUNTER COMPONENT — COMPLETE SPECIFICATION
+============================================
+
+Figma Source:
+  File: Telehealth App — Components
+  Node: 97:281 (❖ Counter)
+  URL:  https://www.figma.com/design/ggpAl2bdadBJPMbtSbPzoN/-Telehealth-App----Components?node-id=97-281
+
+────────────────────────────────────────
+
+1. COMPONENT OVERVIEW
+─────────────────────
+
+Counter lets users adjust a numeric value incrementally with
+decrement (−) and increment (+) buttons. It combines both buttons
+and a value display in a bordered, compact layout.
+
+Component type: Form input / Stepper
+Interaction: Click buttons to step value up or down
+
+────────────────────────────────────────
+
+2. ANATOMY
+──────────
+
+  ┌───┬──────┬───┐
+  │ − │  3   │ + │
+  └───┴──────┴───┘
+
+  1. Container — bordered flex row, rounded corners
+  2. Decrement button — minus icon, left position
+  3. Value display — centered text showing current number
+  4. Increment button — plus icon, right position
+
+────────────────────────────────────────
+
+3. PROPERTIES
+─────────────
+
+| Prop         | Type                     | Default    | Description                        |
+|--------------|--------------------------|------------|------------------------------------|
+| size         | "md" | "sm"              | "md"       | Size variant                       |
+| value        | number                   | undefined  | Controlled numeric value           |
+| defaultValue | number                   | 0          | Uncontrolled initial value         |
+| min          | number                   | 0          | Minimum allowed value              |
+| max          | number                   | 99         | Maximum allowed value              |
+| step         | number                   | 1          | Increment/decrement amount         |
+| disabled     | boolean                  | false      | Disables the entire counter        |
+| onChange     | (value: number) => void  | undefined  | Called when value changes           |
+| className    | string                   | undefined  | Additional CSS classes              |
+
+────────────────────────────────────────
+
+4. SIZE SPECIFICATIONS
+──────────────────────
+
+                        md              sm
+  Button size:          40×40px         32×32px
+  Value min-width:      48px            40px
+  Value typography:     Body/02/Med     Body/03/Med
+  Value font:           13px/16px/500   11px/12px/500
+  Button icon:          16×16px         16×16px
+  Button text token:    Body/01/Med     Body/02/Med
+  Container radius:     12px (md)       12px (md)
+
+────────────────────────────────────────
+
+5. STATES
+─────────
+
+  DEFAULT
+    All buttons interactive
+    Value within min/max range
+
+  HOVER (button)
+    Background: var(--color-background-surface-neutral-hover) = #d3d6cc
+
+  ACTIVE (button)
+    Background: var(--color-background-fill-neutral-default) = #e4e6de
+
+  MIN REACHED
+    Decrement button: disabled (opacity 50%, cursor not-allowed)
+    Increment button: still active
+
+  MAX REACHED
+    Increment button: disabled (opacity 50%, cursor not-allowed)
+    Decrement button: still active
+
+  DISABLED (whole component)
+    Opacity: 50% on the entire container
+    Cursor: not-allowed
+    Both buttons disabled
+
+────────────────────────────────────────
+
+6. DESIGN TOKENS
+────────────────
+
+  Container:
+    border/neutral/default            #b7bbaf  (1px solid)
+    border-radius/md                  12px
+    background                        transparent
+
+  Buttons:
+    icon/neutral/secondary            #4e534d
+    hover: bg/surface/neutral/hover   #d3d6cc
+    active: bg/fill/neutral/default   #e4e6de
+
+  Value text:
+    text/neutral/default              #1c1f1b
+
+  Typography:
+    Body/02/Medium  13px / 16px / 500  (md value)
+    Body/03/Medium  11px / 12px / 500  (sm value)
+    Body/01/Medium  16px / 24px / 500  (md button)
+    Body/02/Medium  13px / 16px / 500  (sm button)
+
+  Spacing:
+    Button separators: 1px border-neutral-default
+    Value px (md): 12px (space-3)
+    Value px (sm): 8px (space-2)
+    Value py: 8px (space-2)
+
+  Disabled:
+    opacity: 50% on container or individual buttons at bounds
+
+────────────────────────────────────────
+
+7. LAYOUT
+─────────
+
+  Direction:    row (horizontal)
+  Alignment:    items-center
+  Order:        decrement → value → increment
+  Overflow:     hidden (clip to rounded container)
+  Buttons:      shrink-0, flex centered
+  Value:        text-center, select-none
+
+────────────────────────────────────────
+
+8. ACCESSIBILITY
+────────────────
+
+  - Container: role="group" aria-label="Counter"
+  - Decrement: aria-label="Decrease"
+  - Increment: aria-label="Increase"
+  - Value: aria-valuenow, aria-valuemin, aria-valuemax, aria-live="polite"
+  - Disabled buttons use native disabled attribute
+  - Keyboard: Tab between buttons, Enter/Space to activate
+  - Focus ring: shadow-focus (3px)
+
+────────────────────────────────────────
+
+9. CONTROLLED / UNCONTROLLED SUPPORT
+─────────────────────────────────────
+
+  Controlled mode:
+    - Pass `value` prop — component reflects external state
+    - Must provide `onChange` handler to update state
+
+  Uncontrolled mode:
+    - Pass `defaultValue` prop for initial state
+    - Internal state tracks changes via useState
+
+  The component determines mode from `value !== undefined`.
+  Values are always clamped to [min, max] on each update.
+
+────────────────────────────────────────
+
+10. IMPLEMENTATION FILES
+────────────────────────
+
+  Component:     src/components/ui/Counter.tsx
+  Documentation: src/app/(docs)/components/counter/page.tsx
+  CSS tokens:    src/app/globals.css (no changes needed)

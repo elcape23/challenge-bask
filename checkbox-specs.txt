@@ -93,7 +93,7 @@ Interaction: Toggle (click / space key)
     Icon:        minus in var(--color-icon-primary-invert) = #e4ece2
 
   DISABLED
-    Opacity:     50% on the entire component
+    Opacity:     50% on the entire component (root label)
     Cursor:      not-allowed
 
   All checkbox indicators:
@@ -156,8 +156,25 @@ Interaction: Toggle (click / space key)
 
 ────────────────────────────────────────
 
-9. IMPLEMENTATION FILES
-───────────────────────
+9. CONTROLLED / UNCONTROLLED SUPPORT
+─────────────────────────────────────
+
+  Controlled mode:
+    - Pass `checked` prop — component reflects external state
+    - Must provide `onChange` handler to update state
+    - Native input uses `checked` attribute
+
+  Uncontrolled mode:
+    - Pass `defaultChecked` prop for initial state
+    - Internal state tracks changes via `useState`
+    - Native input uses `defaultChecked` attribute
+
+  The component determines mode from `checked !== undefined`.
+
+────────────────────────────────────────
+
+10. IMPLEMENTATION FILES
+────────────────────────
 
   Component:     src/components/ui/Checkbox.tsx
   Documentation: src/app/(docs)/components/checkbox/page.tsx

@@ -1,0 +1,126 @@
+LABEL COMPONENT — COMPLETE SPECIFICATION
+==========================================
+
+Figma Source:
+  File: Telehealth App — Components
+  Node: 2:11 (❖ Label)
+  URL:  https://www.figma.com/design/ggpAl2bdadBJPMbtSbPzoN/-Telehealth-App----Components?node-id=2-11
+
+────────────────────────────────────────
+
+1. COMPONENT OVERVIEW
+─────────────────────
+
+Labels identify form controls and provide essential context,
+ensuring users understand what information is expected. Every
+form control should have a visible label — never rely on
+placeholder text alone.
+
+Component type: Text label
+Interaction: Click to focus associated input (via htmlFor/id)
+
+────────────────────────────────────────
+
+2. ANATOMY
+──────────
+
+  ┌──────────────────┐
+  │  Label text  *   │
+  └──────────────────┘
+
+  1. Label text — the primary text identifying the control
+  2. Required indicator (optional) — asterisk (*) in danger color
+
+────────────────────────────────────────
+
+3. PROPERTIES
+─────────────
+
+| Prop      | Type                     | Default   | Description                        |
+|-----------|--------------------------|-----------|------------------------------------|
+| size      | "md" | "sm" | "xs"      | "md"      | Size variant                       |
+| children  | string                   | "Label"   | Label text content                 |
+| required  | boolean                  | false     | Shows required asterisk            |
+| disabled  | boolean                  | false     | Applies disabled styling           |
+| htmlFor   | string                   | undefined | Associates label with input        |
+| className | string                   | undefined | Additional CSS classes              |
+
+Extends: LabelHTMLAttributes<HTMLLabelElement> (except "children")
+
+────────────────────────────────────────
+
+4. SIZE SPECIFICATIONS (from Figma)
+───────────────────────────────────
+
+                    md              sm              xs
+  Text style:       Body/01/Regular Body/02/Regular Body/03/Regular
+  Font size:        16px            13px            11px
+  Line height:      24px            16px            12px
+  Font weight:      400 (regular)   400 (regular)   400 (regular)
+
+────────────────────────────────────────
+
+5. STATES
+─────────
+
+  DEFAULT
+    Color:  text/neutral/default (#1c1f1b)
+    Weight: 400 (regular)
+
+  REQUIRED
+    Same as default, plus asterisk (*)
+    Asterisk color: text/danger/default (#903328)
+    Asterisk: aria-hidden="true"
+
+  DISABLED
+    Opacity: 50%
+    Cursor: not-allowed
+
+────────────────────────────────────────
+
+6. DESIGN TOKENS
+────────────────
+
+  Colors:
+    text/neutral/default     #1c1f1b  (label text)
+    text/danger/default      #903328  (required asterisk)
+
+  Typography:
+    Body/01/Regular  16px / 24px / 400  (md)
+    Body/02/Regular  13px / 16px / 400  (sm)
+    Body/03/Regular  11px / 12px / 400  (xs)
+
+  Spacing:
+    gap (label ↔ asterisk):  2px (space-0.5)
+
+  Modes:
+    Semantic Light: text/neutral/default (#1C1F1B)
+    Semantic Dark:  (inverted token, defined in variables)
+
+────────────────────────────────────────
+
+7. LAYOUT
+─────────
+
+  Root: inline-flex, items-center, gap-0.5
+  Label text: inline
+  Required indicator: inline span after text
+
+────────────────────────────────────────
+
+8. ACCESSIBILITY
+────────────────
+
+  - Label uses native <label> element
+  - htmlFor links to input id for click-to-focus
+  - Required asterisk uses aria-hidden="true"
+  - Minimum 4.5:1 contrast ratio for label text
+
+────────────────────────────────────────
+
+9. IMPLEMENTATION FILES
+───────────────────────
+
+  Component:     src/components/ui/Label.tsx
+  Documentation: src/app/(docs)/components/label/page.tsx
+  CSS tokens:    src/app/globals.css (no changes needed)

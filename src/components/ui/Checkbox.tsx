@@ -3,8 +3,11 @@
 import {
   forwardRef,
   useRef,
+  useState,
   useEffect,
+  useCallback,
   type InputHTMLAttributes,
+  type ChangeEvent,
 } from "react";
 
 export type CheckboxSize = "md" | "sm";
@@ -98,44 +101,58 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       checked,
       defaultChecked,
       disabled,
+      onChange,
       className,
       ...props
     },
     forwardedRef
   ) => {
     const innerRef = useRef<HTMLInputElement>(null);
+    const isControlled = checked !== undefined;
+    const [internalChecked, setInternalChecked] = useState(defaultChecked ?? false);
 
-    const ref = (forwardedRef as React.RefObject<HTMLInputElement>) ?? innerRef;
-    const inputRef = ref ?? innerRef;
+    const resolvedChecked = isControlled ? checked : internalChecked;
 
     useEffect(() => {
-      const el =
-        (inputRef as React.RefObject<HTMLInputElement>)?.current ??
-        innerRef.current;
+      const el = innerRef.current;
       if (el) el.indeterminate = indeterminate;
-    }, [indeterminate, inputRef]);
+    }, [indeterminate]);
 
-    const isChecked = checked ?? defaultChecked ?? false;
-    const isActive = isChecked || indeterminate;
-
-    const boxClasses = `
-      shrink-0 flex items-center justify-center
-      rounded-xs border p-0.5
-      ${SIZE_BOX[size]}
-      ${
-        isActive
-          ? "bg-background-fill-primary-default border-border-primary-default"
-          : "bg-background-fill-neutral-default border-border-neutral-default"
+    useEffect(() => {
+      if (forwardedRef) {
+        if (typeof forwardedRef === "function") {
+          forwardedRef(innerRef.current);
+        } else {
+          (forwardedRef as React.MutableRefObject<HTMLInputElement | null>).current = innerRef.current;
+        }
       }
-      ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
-    `;
+    }, [forwardedRef]);
+
+    const handleChange = useCallback(
+      (e: ChangeEvent<HTMLInputElement>) => {
+        if (!isControlled) setInternalChecked(e.target.checked);
+        onChange?.(e);
+      },
+      [isControlled, onChange]
+    );
+
+    const isActive = resolvedChecked || indeterminate;
+
+    const boxClasses = [
+      "shrink-0 flex items-center justify-center",
+      "rounded-xs border p-0.5",
+      SIZE_BOX[size],
+      isActive
+        ? "bg-background-fill-primary-default border-border-primary-default"
+        : "bg-background-fill-neutral-default border-border-neutral-default",
+    ].join(" ");
 
     const checkboxIndicator = (
       <div className={`shrink-0 flex items-start ${SIZE_PY[size]}`}>
         <div className={boxClasses}>
           {indeterminate ? (
             <MinusIcon className="text-icon-primary-invert" />
-          ) : isChecked ? (
+          ) : resolvedChecked ? (
             <CheckIcon className="text-icon-primary-invert" />
           ) : null}
         </div>
@@ -145,9 +162,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const labelElement = (
       <div className={`flex-1 min-w-0 flex items-center ${SIZE_PY[size]}`}>
         <span
-          className={`${LABEL_STYLE[size]} text-text-neutral-default ${
-            disabled ? "opacity-50" : ""
-          }`}
+          className={`${LABEL_STYLE[size]} text-text-neutral-default`}
         >
           {label}
         </span>
@@ -156,18 +171,21 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 
     return (
       <label
-        className={`
-          flex items-center ${SIZE_GAP[size]} ${SIZE_HEIGHT[size]}
-          ${disabled ? "cursor-not-allowed" : "cursor-pointer"}
-          ${className ?? ""}
-        `}
+        className={[
+          "flex items-center",
+          SIZE_GAP[size],
+          SIZE_HEIGHT[size],
+          disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
+          className ?? "",
+        ].join(" ")}
       >
         <input
           ref={innerRef}
           type="checkbox"
-          checked={checked}
-          defaultChecked={defaultChecked}
+          checked={isControlled ? checked : undefined}
+          defaultChecked={isControlled ? undefined : defaultChecked}
           disabled={disabled}
+          onChange={handleChange}
           className="sr-only peer"
           aria-checked={indeterminate ? "mixed" : undefined}
           {...props}

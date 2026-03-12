@@ -1,0 +1,169 @@
+INPUT COMPONENT — COMPLETE SPECIFICATION
+==========================================
+
+Figma Source:
+  File: Telehealth App — Components
+  Node: 137:572 (❖ Input)
+  URL:  https://www.figma.com/design/ggpAl2bdadBJPMbtSbPzoN/-Telehealth-App----Components?node-id=137-572
+
+────────────────────────────────────────
+
+1. COMPONENT OVERVIEW
+─────────────────────
+
+Input lets users enter and edit short-form text. It is the most
+common form control and the foundation of data collection. Each
+input has a visible label, an editable field, and optional
+helper/error text. Leading and trailing icons provide context.
+
+Component type: Form input
+Interaction: Text entry (keyboard)
+
+────────────────────────────────────────
+
+2. ANATOMY
+──────────
+
+  ┌────────────────────────────────┐
+  │  Label                        │
+  ├────────────────────────────────┤
+  │ [icon] Placeholder       [icon]│
+  ├────────────────────────────────┤
+  │  Helper text / Error text     │
+  └────────────────────────────────┘
+
+  1. Label — descriptive text above the field (linked via htmlFor)
+  2. Input container — bordered box with padding
+  3. Input text / placeholder — the editable area
+  4. Leading icon (optional) — left icon inside input
+  5. Trailing icon (optional) — right icon inside input
+  6. Helper / Error text — guidance or error below the field
+
+────────────────────────────────────────
+
+3. PROPERTIES
+─────────────
+
+| Prop         | Type                         | Default    | Description                        |
+|--------------|------------------------------|------------|------------------------------------|
+| size         | "lg" | "md" | "sm"           | "md"       | Size variant                       |
+| state        | "default" | "error"          | "default"  | Validation state                   |
+| label        | string                       | undefined  | Label text above the input         |
+| helperText   | string                       | undefined  | Helper text below the input        |
+| errorMessage | string                       | undefined  | Error text (replaces helper)       |
+| leadingIcon  | ReactNode                    | undefined  | Left icon inside the input         |
+| trailingIcon | ReactNode                    | undefined  | Right icon inside the input        |
+| placeholder  | string                       | undefined  | Placeholder text                   |
+| disabled     | boolean                      | false      | Disables the input                 |
+| id           | string                       | auto-gen   | HTML id for label association      |
+| className    | string                       | undefined  | Additional CSS classes             |
+
+Extends: InputHTMLAttributes<HTMLInputElement> (except "size")
+
+────────────────────────────────────────
+
+4. SIZE SPECIFICATIONS
+──────────────────────
+
+                    lg              md              sm
+  Container height: 48px            40px            32px
+  Horizontal pad:   16px (space-4)  12px (space-3)  12px (space-3)
+  Icon gap:         12px (space-3)  8px (space-2)   8px (space-2)
+  Input text:       Body/01 (16px)  Body/02 (13px)  Body/02 (13px)
+  Label text:       Body/01/Med     Body/02/Med     Body/02/Med
+  Helper text:      Body/02 (13px)  Body/03 (11px)  Body/03 (11px)
+  Icon size:        20×20px         16×16px         16×16px
+
+────────────────────────────────────────
+
+5. STATES
+─────────
+
+  DEFAULT
+    Border:     1px solid border/neutral/default (#b7bbaf)
+    Background: white
+    Text:       text/neutral/default (#1c1f1b)
+    Placeholder: text/neutral/placeholder (#93988d)
+
+  FOCUS
+    Border:     1px solid border/primary/default (#a6bba0)
+    Shadow:     shadow-focus (0 0 0 3px rgba(0,0,0,0.2))
+
+  ERROR
+    Border:     1px solid border/danger/default (#eb978c)
+    Error text: text/danger/default (#903328)
+    Trailing icon (if present): icon/danger/default (#903328)
+    Error message replaces helper text
+
+  DISABLED
+    Opacity:    50% on the entire container + label
+    Background: bg/surface/neutral/default (#f1f2ec)
+    Cursor:     not-allowed
+
+────────────────────────────────────────
+
+6. DESIGN TOKENS
+────────────────
+
+  Colors:
+    border/neutral/default            #b7bbaf
+    border/primary/default            #a6bba0
+    border/danger/default             #eb978c
+    text/neutral/default              #1c1f1b
+    text/neutral/placeholder          #93988d
+    text/danger/default               #903328
+    icon/neutral/secondary            #4e534d
+    icon/danger/default               #903328
+    bg/surface/neutral/default        #f1f2ec (disabled)
+
+  Typography:
+    Body/01          16px / 24px / 400  (lg input + placeholder)
+    Body/01/Medium   16px / 24px / 500  (lg label)
+    Body/02          13px / 16px / 400  (md/sm input + placeholder)
+    Body/02/Medium   13px / 16px / 500  (md/sm label)
+    Body/03          11px / 12px / 400  (md/sm helper/error)
+
+  Spacing:
+    spacing/space-1   4px   (label margin-bottom, helper margin-top)
+    spacing/space-2   8px   (md/sm icon gap)
+    spacing/space-3   12px  (lg icon gap, md/sm horizontal padding)
+    spacing/space-4   16px  (lg horizontal padding)
+
+  Border radius:
+    border-radius/md  12px
+
+  Shadow:
+    shadow-focus      0 0 0 3px rgba(0,0,0,0.2)
+
+────────────────────────────────────────
+
+7. LAYOUT
+─────────
+
+  Root: flex column
+  Label: block, above input container
+  Input container: flex row, items-center
+  Icons: shrink-0
+  Input element: flex-1, min-w-0
+  Helper/Error: block, below input container
+
+────────────────────────────────────────
+
+8. ACCESSIBILITY
+────────────────
+
+  - Label linked via htmlFor → id (auto-generated if not provided)
+  - Helper/error linked via aria-describedby
+  - Error state: aria-invalid="true" on <input>
+  - Error message: role="alert" for screen reader announcements
+  - Focus ring: 3px shadow (shadow-focus)
+  - Disabled uses native disabled attribute
+
+────────────────────────────────────────
+
+9. IMPLEMENTATION FILES
+───────────────────────
+
+  Component:     src/components/ui/Input.tsx
+  Documentation: src/app/(docs)/components/input/page.tsx
+  CSS tokens:    src/app/globals.css (no changes needed)
