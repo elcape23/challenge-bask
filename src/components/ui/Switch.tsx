@@ -7,14 +7,13 @@ import {
   useEffect,
   useCallback,
   type ButtonHTMLAttributes,
-  type ChangeEvent,
 } from "react";
 
 export type SwitchSize = "md" | "sm";
 export type SwitchSide = "left" | "right";
 
 export interface SwitchProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children" | "onChange"> {
   /** Size variant */
   size?: SwitchSize;
   /** Label position relative to track */

@@ -293,16 +293,21 @@ export default function ColorsPage() {
         />
       </div>
 
-      {/* ── Dark mode scales ── */}
-      <DocSection title="Core scales — Dark mode">
-        <p className="mb-6">
+      {/* ── Core scales — Dark mode ── */}
+      <div className="col-span-2 mt-12 grid grid-cols-2 gap-x-[40px]">
+        <h2 className="text-heading-01 font-medium text-text-neutral-default leading-none self-start">
+          Core scales <br className="hidden md:block" /> Dark mode
+        </h2>
+        <p className="text-body-01 font-regular text-text-neutral-secondary max-w-md self-start">
           Dark mode inverts the luminance direction of each scale. Step 50
           becomes the darkest surface and 900 becomes the lightest text value.
           The same token names resolve to different values based on the active
           theme.
         </p>
+      </div>
+      <div className="col-span-2">
         <div
-          className="rounded-md p-6 mb-4"
+          className="rounded-md p-6"
           style={{ backgroundColor: "#1b1f1a" }}
         >
           {Object.entries(darkScales).map(([key, scale]) => (
@@ -323,7 +328,7 @@ export default function ColorsPage() {
             </div>
           ))}
         </div>
-      </DocSection>
+      </div>
 
       {/* ── Semantic tokens ── */}
       <DocSection title="Semantic tokens">

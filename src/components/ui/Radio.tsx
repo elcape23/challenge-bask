@@ -99,18 +99,24 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
     const circleClasses = [
       "shrink-0 flex items-center justify-center rounded-full border-2",
       SIZE_BOX[size],
-      resolvedChecked
-        ? "border-border-primary-default"
-        : "border-border-neutral-default",
+      disabled
+        ? "border-border-neutral-disabled"
+        : resolvedChecked
+          ? "border-border-primary-default"
+          : "border-border-neutral-default",
+    ].join(" ");
+
+    const dotClasses = [
+      "rounded-full",
+      SIZE_DOT[size],
+      disabled ? "bg-background-fill-primary-disabled" : "bg-background-fill-primary-default",
     ].join(" ");
 
     const radioIndicator = (
-      <div className={`shrink-0 flex items-start ${SIZE_PY[size]}`}>
+      <div className={`shrink-0 flex items-start rounded-full peer-focus-visible:shadow-focus ${SIZE_PY[size]}`}>
         <div className={circleClasses}>
           {resolvedChecked && (
-            <div
-              className={`rounded-full bg-background-fill-primary-default ${SIZE_DOT[size]}`}
-            />
+            <div className={dotClasses} />
           )}
         </div>
       </div>
@@ -118,7 +124,7 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
 
     const labelElement = (
       <div className={`flex-1 min-w-0 flex items-center ${SIZE_PY[size]}`}>
-        <span className={`${LABEL_STYLE[size]} text-text-neutral-default`}>
+        <span className={`${LABEL_STYLE[size]} ${disabled ? "text-text-neutral-disabled" : "text-text-neutral-default"}`}>
           {label}
         </span>
       </div>
@@ -130,7 +136,7 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
           "flex items-center",
           SIZE_GAP[size],
           SIZE_HEIGHT[size],
-          disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
+          disabled ? "cursor-not-allowed" : "cursor-pointer",
           className ?? "",
         ].join(" ")}
       >

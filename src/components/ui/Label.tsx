@@ -38,15 +38,14 @@ const Label = forwardRef<HTMLLabelElement, LabelProps>(
         className={[
           "inline-flex items-center gap-0.5",
           SIZE_TEXT[size],
-          "text-text-neutral-default",
-          disabled ? "opacity-50 cursor-not-allowed" : "",
+          disabled ? "text-text-neutral-disabled cursor-not-allowed" : "text-text-neutral-default",
           className ?? "",
         ].join(" ")}
         {...props}
       >
         {children}
         {required && (
-          <span className="text-text-danger-default" aria-hidden="true">
+          <span className={disabled ? "text-text-danger-disabled" : "text-text-danger-default"} aria-hidden="true">
             *
           </span>
         )}
