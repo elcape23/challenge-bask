@@ -198,11 +198,14 @@
   --font-weight-bold: 700;
 
   /* ─── Border Radius ─── */
+  --radius-min: 2px;
   --radius-xs: 4px;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-3xl: 28px;
   --radius-4xl: 32px;
   --radius-max: 9999px;
 
@@ -227,7 +230,7 @@
   /* ─── Grid (no Tailwind theme equivalent) ─── */
   --ds-grid-columns: 4;
   --ds-grid-margin: 20px;
-  --ds-grid-gutter: 12px;
+  --ds-grid-gutter: 16px;
 }
 
 * {

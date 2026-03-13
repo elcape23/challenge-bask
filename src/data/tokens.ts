@@ -144,20 +144,82 @@ export const colors = {
     },
   },
   semantic: {
-    light: {
-      textNeutral: "#1c1f1b",
-      textNeutralInvert: "#f1f2ec",
-      textPrimary: "#153014",
-      textPrimaryInvert: "#e4ece2",
-      bgDefault: "#f7f7f3",
-      bgInvert: "#1c1f1b",
-      bgFillNeutral: "#e4e6de",
+    text: {
+      neutral: {
+        default: "#1c1f1b",
+        secondary: "#4e534d",
+        hover: "#31352f",
+        pressed: "#4e534d",
+        disabled: "#b7bbaf",
+        invert: "#f1f2ec",
+        placeholder: "#93988d",
+      },
+      primary: {
+        default: "#153014",
+        invert: "#e4ece2",
+        disabled: "#7e9b76",
+      },
+      success: { default: "#287d4a", invert: "#e0f4e7" },
+      information: { default: "#4e6d92", invert: "#e6eef7" },
+      warning: { default: "#925f18", invert: "#fcefd9" },
+      danger: { default: "#903328", invert: "#903328", disabled: "#f6c4bd" },
     },
-    dark: {
-      textNeutral: "#f7f8f4",
-      textNeutralInvert: "#31362f",
-      textPrimary: "#f3f7f1",
-      textPrimaryInvert: "#16300f",
+    icon: {
+      neutral: {
+        default: "#1c1f1b",
+        secondary: "#4e534d",
+        hover: "#31352f",
+        pressed: "#4e534d",
+        disabled: "#b7bbaf",
+        invert: "#f1f2ec",
+      },
+      primary: { default: "#153014", invert: "#e4ece2", disabled: "#7e9b76" },
+      success: { default: "#287d4a", invert: "#e0f4e7" },
+      information: { default: "#4e6d92", invert: "#e6eef7" },
+      warning: { default: "#925f18", invert: "#fcefd9" },
+      danger: { default: "#903328" },
+    },
+    background: {
+      default: { default: "#f7f7f3" },
+      fill: {
+        neutral: {
+          default: "#e4e6de",
+          hover: "#d3d6cc",
+          pressed: "#b7bbaf",
+          disabled: "#6e736a",
+          muted: "#1c1f1b66",
+        },
+        primary: {
+          default: "#153014",
+          hover: "#223f1e",
+          pressed: "#33522d",
+          disabled: "#c9d7c6",
+        },
+        success: { default: "#60be81" },
+        information: { default: "#86a4ca" },
+        warning: { default: "#dda146" },
+        danger: {
+          default: "#b84335",
+          hover: "#eb978c",
+          pressed: "#d86759",
+          disabled: "#f6c4bd",
+        },
+      },
+      surface: {
+        neutral: { default: "#f1f2ec", hover: "#d3d6cc" },
+        success: { default: "#f2faf5" },
+        information: { default: "#f3f7fb" },
+        warning: { default: "#fff8ee" },
+        danger: { default: "#fff4f3" },
+      },
+    },
+    border: {
+      neutral: { default: "#b7bbaf", hover: "#93988d", disabled: "#e4e6de" },
+      primary: { default: "#a6bba0", disabled: "#c9d7c6" },
+      success: { default: "#94d7ad" },
+      information: { default: "#adc2dd" },
+      warning: { default: "#eec67c" },
+      danger: { default: "#eb978c" },
     },
   },
 } as const;
@@ -184,7 +246,16 @@ export const spacing = {
 } as const;
 
 export const borderRadius = {
+  min: 2,
+  xs: 4,
+  sm: 8,
   md: 12,
+  lg: 16,
+  xl: 20,
+  "2xl": 24,
+  "3xl": 28,
+  "4xl": 32,
+  max: 9999,
 } as const;
 
 export const shadows = {
@@ -202,7 +273,7 @@ export const grid = {
   mobile: {
     columns: 4,
     margin: 20,
-    gutter: 12,
+    gutter: 16,
   },
 } as const;
 

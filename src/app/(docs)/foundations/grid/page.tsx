@@ -38,7 +38,7 @@ export default function GridPage() {
           rows={[
             ["Columns", "4", "--ds-grid-columns: 4"],
             ["Margin", "20px", "--ds-grid-margin: 20px"],
-            ["Gutter", "12px", "--ds-grid-gutter: 12px"],
+            ["Gutter", "16px", "--ds-grid-gutter: 16px"],
           ]}
         />
 
@@ -48,7 +48,7 @@ export default function GridPage() {
           style={{ overflow: "hidden" }}
         >
           <div className="py-2 px-4 bg-background-surface-neutral-default text-text-neutral-secondary border-b border-border-neutral-default text-body-03 font-medium">
-            Mobile grid — 4 columns, 20px margins, 12px gutters
+            Mobile grid — 4 columns, 20px margins, 16px gutters
           </div>
           <div
             className="py-4 bg-background-default-default"
@@ -58,7 +58,7 @@ export default function GridPage() {
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(4, 1fr)",
-                gap: "12px",
+                gap: "16px",
               }}
             >
               {[1, 2, 3, 4].map((col) => (
@@ -86,7 +86,7 @@ export default function GridPage() {
             }}
           >
             <span>← 20px margin</span>
-            <span>12px gutters between columns</span>
+            <span>16px gutters between columns</span>
             <span>20px margin →</span>
           </div>
         </div>
@@ -171,7 +171,7 @@ export default function GridPage() {
             (icons, badges) do not need to snap to columns.
           </li>
           <li>
-            Use the gutter value from the grid tokens (12px on mobile) — do not
+            Use the gutter value from the grid tokens (16px on mobile) — do not
             create custom gutter widths.
           </li>
           <li>
