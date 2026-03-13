@@ -38,7 +38,7 @@ function TabBar({ active, onChange }: { active: TabName; onChange: (t: TabName) 
 function ColorSwatch({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="size-8 rounded-md border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
+      <div className="size-12 rounded-sm border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
       <div>
         <p className="text-body-02 font-medium">{label}</p>
         <p className="text-body-03 text-text-neutral-placeholder">{color}</p>
@@ -104,21 +104,11 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
   );
 }
 
-/* ─── Inline SVG icons for demos ─── */
-function SearchIcon() {
+/* ─── Figma Input: trailing check icon (20×20) ─── */
+function CheckIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M11 11L14 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function MailIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M1 5L8 9L15 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 6 9 17l-5-5" />
     </svg>
   );
 }
@@ -133,15 +123,6 @@ function AlertCircleIcon() {
   );
 }
 
-function EyeIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M1 8C1 8 4 3 8 3C12 3 15 8 15 8C15 8 12 13 8 13C4 13 1 8 1 8Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-      <circle cx="8" cy="8" r="2" stroke="currentColor" strokeWidth="1.5" />
-    </svg>
-  );
-}
-
 /* ═══════════════════════════════════════════════════
    TAB CONTENT
    ═══════════════════════════════════════════════════ */
@@ -149,156 +130,142 @@ function EyeIcon() {
 function OverviewTab() {
   return (
     <>
-      <DocSection title="Overview">
+      <div className="col-start-1">
+        <DocSection title="Overview">
         <p className="mb-4">
-          The Input component lets users enter and edit short-form text. It is
-          the most common form control and the foundation of data collection in
-          the Telehealth app.
+          The Input component lets users enter and edit short-form text.
         </p>
         <p>
-          Every input has a visible label, an editable field, and optional
-          helper or error text. Inputs support leading and trailing icons to
-          provide additional context without requiring extra labels.
+          It consists of an input container with placeholder text, an optional
+          trailing icon, and feedback text below.
         </p>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Anatomy">
+      <div className="col-span-2">
+        <DocSection title="Anatomy">
         <DocAnatomy
           items={[
             {
-              label: "Label",
-              description:
-                "A short, descriptive text above the field. Always visible — never rely on placeholder text as the only label.",
-            },
-            {
               label: "Input container",
               description:
-                "The bordered box containing the text field, optional icons, and padding. Changes border color across states.",
+                "The bordered box with placeholder text, optional trailing icon, and padding.",
             },
             {
-              label: "Input text / placeholder",
+              label: "Placeholder",
               description:
-                "The editable area where users type. Placeholder text provides a hint in the empty state.",
-            },
-            {
-              label: "Leading icon (optional)",
-              description:
-                "An icon on the left side of the input to reinforce meaning — e.g., a search or mail icon.",
+                "Hint text when the field is empty.",
             },
             {
               label: "Trailing icon (optional)",
               description:
-                "An icon on the right side — often used for actions (clear, reveal password) or status (error indicator).",
+                "Icon on the right — e.g. checkmark for valid state.",
             },
             {
-              label: "Helper / Error text",
+              label: "Feedback",
               description:
-                "Guidance below the field. Replaced by error text when validation fails.",
+                "Helper or error text below the field.",
             },
           ]}
         />
-        <DocPreview title="Anatomy example">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare>
           <div className="w-72">
             <Input
               size="md"
-              label="Email address"
-              placeholder="you@example.com"
-              helperText="We'll never share your email."
-              leadingIcon={<MailIcon />}
+              placeholder="Placeholder"
+              helperText="Input feedback"
+              trailingIcon={<CheckIcon />}
             />
           </div>
         </DocPreview>
       </DocSection>
+      </div>
 
-      <DocSection title="Sizes">
+      <div className="col-span-2">
+        <DocSection title="Sizes" hideTitle>
         <DocTable
-          headers={["Size", "Height", "Input text", "Label text", "Helper text", "Use case"]}
+          variant="surface"
+          headers={["Size", "Height", "Input text", "Use case"]}
           rows={[
-            ["Large (lg)", "48px", "Body/01 — 16px", "Body/01/Medium", "Body/02", "Prominent inputs — search bars, onboarding."],
-            ["Medium (md)", "40px", "Body/02 — 13px", "Body/02/Medium", "Body/03", "Default for most form contexts."],
-            ["Small (sm)", "32px", "Body/02 — 13px", "Body/02/Medium", "Body/03", "Compact forms, table editing, filters."],
+            ["Medium (md)", "48px", "Body/01 — 16px", "Default input."],
+            ["Small (sm)", "32px", "Body/02 — 13px", "Compact forms."],
           ]}
         />
-        <DocPreview title="Size comparison">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4 w-72">
-            <Input size="lg" label="Large" placeholder="Large input" />
-            <Input size="md" label="Medium" placeholder="Medium input" />
-            <Input size="sm" label="Small" placeholder="Small input" />
+            <Input size="md" placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
+            <Input size="sm" placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="States">
+      <div className="col-span-2">
+        <DocSection title="States" hideTitle>
         <DocTable
+          variant="surface"
           headers={["State", "Visual treatment", "Behavior"]}
           rows={[
-            ["Default", "Neutral border (#b7bbaf), white background", "Ready for input. Placeholder text may be shown."],
+            ["Default", "Neutral border (#b7bbaf), background #f7f7f3", "Ready for input. Placeholder and feedback shown."],
             ["Focus", "Primary border (#a6bba0), focus ring (shadow-focus)", "The field is active and receiving keystrokes."],
             ["Error", "Danger border (#eb978c), error text replaces helper", "Validation has failed. Error message is shown below."],
             ["Disabled", "50% opacity, neutral surface background", "Non-interactive. The value is visible but cannot be changed."],
           ]}
         />
-        <DocPreview title="All states">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl">
-            <Input label="Default" placeholder="Enter text" />
-            <Input label="With value" defaultValue="Hello world" />
-            <Input label="Error" state="error" defaultValue="ab" errorMessage="Must be at least 3 characters." />
-            <Input label="Disabled" defaultValue="Cannot edit" disabled />
+            <Input placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
+            <Input placeholder="Placeholder" helperText="Input feedback" defaultValue="Hello world" trailingIcon={<CheckIcon />} />
+            <Input placeholder="Placeholder" state="error" errorMessage="Input feedback" trailingIcon={<AlertCircleIcon />} />
+            <Input placeholder="Placeholder" helperText="Input feedback" defaultValue="Cannot edit" disabled />
           </div>
         </DocPreview>
+        </div>
         <DocCallout variant="info" title="Focus state">
           Click any input above to see the focus ring in action. The border
           transitions to the primary color and a 3px focus shadow appears.
         </DocCallout>
       </DocSection>
+      </div>
 
-      <DocSection title="Variants">
+      <div className="col-span-2">
+        <DocSection title="Variants" hideTitle>
         <DocTable
-          headers={["Variant", "Description", "When to use"]}
+          variant="surface"
+          headers={["Element", "Description"]}
           rows={[
-            ["Plain", "Standard text input with label", "Most form fields — name, email, address."],
-            ["With leading icon", "Icon on the left to reinforce meaning", "Search fields, email fields, phone inputs."],
-            ["With trailing icon", "Icon on the right for actions or status", "Password reveal, clear button, error indicator."],
-            ["With both icons", "Icons on both sides", "Search with clear button, validated fields."],
+            ["Input container", "Placeholder text, optional trailing icon, feedback text below."],
           ]}
         />
-        <DocPreview title="Variant examples">
-          <div className="flex flex-col gap-4 w-72">
-            <Input label="Plain" placeholder="Enter text" />
-            <Input label="With leading icon" placeholder="Search..." leadingIcon={<SearchIcon />} />
-            <Input label="Password" placeholder="••••••••" type="password" trailingIcon={<EyeIcon />} />
-            <Input
-              label="Error with icon"
-              state="error"
-              defaultValue="invalid"
-              errorMessage="Please enter a valid value."
-              trailingIcon={<AlertCircleIcon />}
-            />
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+          <div className="w-72">
+            <Input placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Behavior">
+      <div className="col-span-2">
+        <DocSection title="Behavior">
         <p className="mb-4">
           Validate inputs on blur by default — this avoids distracting the user
           mid-typing. For fields with strict formatting (e.g., credit card
           numbers), inline validation on each keystroke can help users correct
           errors early.
         </p>
-        <DocCallout variant="warning" title="Avoid placeholder-only labels">
-          Placeholder text disappears on focus, which means users lose context
-          about what the field expects. Always pair placeholders with a
-          persistent label.
-        </DocCallout>
       </DocSection>
+      </div>
 
-      <DocSection title="Accessibility">
+      <div className="col-span-2">
+        <DocSection title="Accessibility">
         <ul className="pl-5 mb-4">
           <li className="mb-2">
-            Labels are linked to inputs via <code>htmlFor</code> / <code>id</code> (auto-generated if not provided).
-          </li>
-          <li className="mb-2">
-            Helper/error text is linked via <code>aria-describedby</code>.
+            Feedback text is linked via <code>aria-describedby</code>.
           </li>
           <li className="mb-2">
             Error state sets <code>aria-invalid=&quot;true&quot;</code> on the input.
@@ -311,23 +278,27 @@ function OverviewTab() {
           </li>
         </ul>
       </DocSection>
+      </div>
 
-      <DocSection title="Usage guidelines">
+      <div className="col-span-2">
+        <DocSection title="Usage guidelines">
+          <div
+            className="overflow-hidden flex flex-row gap-10 w-full items-start justify-between"
+            style={{ backgroundColor: "#FFFFFF", padding: "200px" }}
+          >
         <DoDontGrid
           doItems={[
-            { description: "Always show a visible label above the input." },
             { description: "Size input widths proportionally to the expected content." },
-            { description: "Provide specific error messages that tell users how to fix the issue." },
-            { description: 'Use helper text for formatting hints (e.g., "MM/DD/YYYY").' },
+            { description: "Provide specific feedback messages when validation fails." },
           ]}
           dontItems={[
-            { description: "Don't rely on placeholder text as the only label." },
-            { description: "Don't validate on every keystroke unless formatting guidance is necessary." },
-            { description: 'Don\'t use generic errors like "Invalid input" — be specific.' },
-            { description: "Don't remove the label when the field is focused." },
+            { description: "Don't add design elements not present in the Figma spec." },
+            { description: 'Don\'t use generic feedback like "Invalid input" — be specific.' },
           ]}
         />
-      </DocSection>
+          </div>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -335,46 +306,56 @@ function OverviewTab() {
 function DesignTokensTab() {
   return (
     <>
-      <DocSection title="Color Tokens — Default State">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Default State">
         <TokenGroup title="Input container">
-          <ColorSwatch color="#ffffff" label="background (white)" />
-          <ColorSwatch color="#b7bbaf" label="border / neutral / default" />
+          <ColorSwatch color="#F7F7F3" label="background (default)" />
+          <ColorSwatch color="#B7BBAF" label="border / neutral / default" />
         </TokenGroup>
         <TokenGroup title="Text">
-          <ColorSwatch color="#1c1f1b" label="text / neutral / default (value)" />
-          <ColorSwatch color="#93988d" label="text / neutral / placeholder" />
-          <ColorSwatch color="#1c1f1b" label="text / neutral / default (label)" />
-          <ColorSwatch color="#93988d" label="text / neutral / placeholder (helper)" />
+          <ColorSwatch color="#1C1F1B" label="text / neutral / default (value)" />
+          <ColorSwatch color="#93988D" label="text / neutral / placeholder" />
+          <ColorSwatch color="#1C1F1B" label="text / neutral / default (label)" />
+          <ColorSwatch color="#93988D" label="text / neutral / placeholder (helper)" />
         </TokenGroup>
         <TokenGroup title="Icons">
-          <ColorSwatch color="#4e534d" label="icon / neutral / secondary" />
+          <ColorSwatch color="#4E534D" label="icon / neutral / secondary" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Focus State">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Focus State">
         <TokenGroup title="Border & shadow">
-          <ColorSwatch color="#a6bba0" label="border / primary / default" />
+          <ColorSwatch color="#A6BBA0" label="border / primary / default" />
           <ColorSwatch color="rgba(0,0,0,0.2)" label="shadow-focus (3px ring)" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Error State">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Error State">
         <TokenGroup title="Border & text">
-          <ColorSwatch color="#eb978c" label="border / danger / default" />
+          <ColorSwatch color="#EB978C" label="border / danger / default" />
           <ColorSwatch color="#903328" label="text / danger / default" />
           <ColorSwatch color="#903328" label="icon / danger / default" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Disabled State">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Disabled State">
         <TokenGroup title="Container">
-          <ColorSwatch color="#f1f2ec" label="bg / surface / neutral / default" />
+          <ColorSwatch color="#F1F2EC" label="bg / surface / neutral / default" />
           <ColorSwatch color="rgba(0,0,0,0.5)" label="opacity-50 on container" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Typography Tokens">
+      <div className="col-span-2">
+        <DocSection title="Typography Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Element", "Size (lg)", "Size (md/sm)", "Weight"]}
           rows={[
             ["Label", "Body/01 — 16px/24px", "Body/02 — 13px/16px", "500 (medium)"],
@@ -383,10 +364,13 @@ function DesignTokensTab() {
             ["Helper/Error", "Body/02 — 13px/16px", "Body/03 — 11px/12px", "400 (regular)"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Spacing Tokens">
+      <div className="col-span-2">
+        <DocSection title="Spacing Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Token (lg)", "Value (lg)", "Token (md/sm)", "Value (md/sm)"]}
           rows={[
             ["Container height", "—", "48px", "—", "40px / 32px"],
@@ -396,10 +380,13 @@ function DesignTokensTab() {
             ["Helper margin-top", "spacing/space-1", "4px", "spacing/space-1", "4px"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Border & Radius">
+      <div className="col-span-2">
+        <DocSection title="Border & Radius" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Token", "Value"]}
           rows={[
             ["Container radius", "border-radius/md", "12px"],
@@ -407,7 +394,8 @@ function DesignTokensTab() {
             ["Focus shadow", "shadow-focus", "0 0 0 3px rgba(0,0,0,0.2)"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -415,89 +403,33 @@ function DesignTokensTab() {
 function StylesTab() {
   return (
     <>
-      <DocSection title="Sizes — Side by Side">
-        <DocPreview title="lg / md / sm">
+      <div className="col-span-2">
+        <DocSection title="Sizes">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4 w-72">
-            <Input size="lg" label="Large" placeholder="Large input" />
-            <Input size="md" label="Medium" placeholder="Medium input" />
-            <Input size="sm" label="Small" placeholder="Small input" />
+            <Input size="md" placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
+            <Input size="sm" placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="States — Default">
-        <DocPreview title="Empty / With value / With placeholder">
+      <div className="col-span-2">
+        <DocSection title="States">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4 w-72">
-            <Input label="Empty" placeholder="Type here..." />
-            <Input label="With value" defaultValue="John Doe" />
+            <Input placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
+            <Input placeholder="Placeholder" helperText="Input feedback" defaultValue="Hello world" trailingIcon={<CheckIcon />} />
+            <Input placeholder="Placeholder" state="error" errorMessage="Input feedback" trailingIcon={<AlertCircleIcon />} />
+            <Input placeholder="Placeholder" helperText="Input feedback" disabled />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
-
-      <DocSection title="States — Error">
-        <DocPreview title="Error with message">
-          <div className="flex flex-col gap-4 w-72">
-            <Input
-              label="Email"
-              state="error"
-              defaultValue="invalid-email"
-              errorMessage="Please enter a valid email address."
-              trailingIcon={<AlertCircleIcon />}
-            />
-            <Input
-              label="Username"
-              state="error"
-              defaultValue="ab"
-              errorMessage="Username must be at least 3 characters."
-            />
-          </div>
-        </DocPreview>
-      </DocSection>
-
-      <DocSection title="States — Disabled">
-        <DocPreview title="Disabled empty / Disabled with value">
-          <div className="flex flex-col gap-4 w-72">
-            <Input label="Disabled" placeholder="Cannot type" disabled />
-            <Input label="Disabled with value" defaultValue="Read only" disabled />
-          </div>
-        </DocPreview>
-      </DocSection>
-
-      <DocSection title="With Icons">
-        <DocPreview title="Leading / Trailing / Both">
-          <div className="flex flex-col gap-4 w-72">
-            <Input label="Search" placeholder="Search..." leadingIcon={<SearchIcon />} />
-            <Input label="Password" placeholder="••••••••" type="password" trailingIcon={<EyeIcon />} />
-            <Input label="Email" placeholder="you@example.com" leadingIcon={<MailIcon />} helperText="We'll never share your email." />
-          </div>
-        </DocPreview>
-      </DocSection>
-
-      <DocSection title="With Helper Text">
-        <DocPreview title="Helper text examples">
-          <div className="flex flex-col gap-4 w-72">
-            <Input label="Date of birth" placeholder="MM/DD/YYYY" helperText="Format: month/day/year" />
-            <Input label="Phone" placeholder="+1 (555) 000-0000" helperText="Include area code" leadingIcon={
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M14 11.5V13.5C14 14.05 13.55 14.5 13 14.5C7.2 14.5 1.5 8.8 1.5 3C1.5 2.45 1.95 2 2.5 2H4.5L6 6L4.5 7C5.4 8.9 7.1 10.6 9 11.5L10 10L14 11.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-              </svg>
-            } />
-          </div>
-        </DocPreview>
-      </DocSection>
-
-      <DocSection title="In Context — Form">
-        <DocPreview title="Registration form">
-          <div className="flex flex-col gap-4" style={{ maxWidth: 360 }}>
-            <div className="grid grid-cols-2 gap-3">
-              <Input label="First name" placeholder="Jane" />
-              <Input label="Last name" placeholder="Doe" />
-            </div>
-            <Input label="Email" placeholder="jane@example.com" leadingIcon={<MailIcon />} />
-            <Input label="Password" placeholder="••••••••" type="password" trailingIcon={<EyeIcon />} helperText="At least 8 characters." />
-          </div>
-        </DocPreview>
-      </DocSection>
+      </div>
     </>
   );
 }
@@ -505,21 +437,19 @@ function StylesTab() {
 function PropertiesTab() {
   const [size, setSize] = useState<InputSize>("md");
   const [inputState, setInputState] = useState<InputState>("default");
-  const [showLabel, setShowLabel] = useState(true);
-  const [showHelper, setShowHelper] = useState(false);
-  const [showLeadingIcon, setShowLeadingIcon] = useState(false);
-  const [showTrailingIcon, setShowTrailingIcon] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [labelText, setLabelText] = useState("Label");
   const [placeholderText, setPlaceholderText] = useState("Placeholder");
+  const [helperText, setHelperText] = useState("Input feedback");
 
   const codeSnippet = `<Input
-  size="${size}"${inputState !== "default" ? `\n  state="${inputState}"` : ""}${showLabel ? `\n  label="${labelText}"` : ""}
-  placeholder="${placeholderText}"${showHelper && inputState === "error" ? '\n  errorMessage="Error message here."' : ""}${showHelper && inputState !== "error" ? '\n  helperText="Helper text here."' : ""}${showLeadingIcon ? "\n  leadingIcon={<SearchIcon />}" : ""}${showTrailingIcon ? "\n  trailingIcon={<EyeIcon />}" : ""}${isDisabled ? "\n  disabled" : ""}
+  size="${size}"${inputState !== "default" ? `\n  state="${inputState}"` : ""}
+  placeholder="${placeholderText}"
+  helperText="${helperText}"${inputState === "error" ? `\n  errorMessage="${helperText}"` : ""}
+  trailingIcon={<CheckIcon />}${isDisabled ? "\n  disabled" : ""}
 />`;
 
   return (
-    <>
+    <div className="col-span-2">
       <DocSection title="Interactive Playground">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Preview */}
@@ -532,12 +462,10 @@ function PropertiesTab() {
                 <Input
                   size={size}
                   state={inputState}
-                  label={showLabel ? labelText : undefined}
                   placeholder={placeholderText}
-                  helperText={!showHelper || inputState === "error" ? undefined : "Helper text here."}
-                  errorMessage={inputState === "error" ? "Error message here." : undefined}
-                  leadingIcon={showLeadingIcon ? <SearchIcon /> : undefined}
-                  trailingIcon={showTrailingIcon ? <EyeIcon /> : undefined}
+                  helperText={inputState === "error" ? undefined : helperText}
+                  errorMessage={inputState === "error" ? helperText : undefined}
+                  trailingIcon={inputState === "error" ? <AlertCircleIcon /> : <CheckIcon />}
                   disabled={isDisabled}
                 />
               </div>
@@ -551,7 +479,6 @@ function PropertiesTab() {
             <RadioGroup
               label="Size"
               options={[
-                { value: "lg", label: "Large" },
                 { value: "md", label: "Medium" },
                 { value: "sm", label: "Small" },
               ]}
@@ -570,16 +497,6 @@ function PropertiesTab() {
             />
 
             <div className="mb-4">
-              <p className="text-body-03 font-medium text-text-neutral-secondary mb-2">Label text</p>
-              <input
-                type="text"
-                value={labelText}
-                onChange={(e) => setLabelText(e.target.value)}
-                className="w-full px-3 py-1.5 text-body-02 border border-border-neutral-default rounded-md bg-white focus:outline-none focus:shadow-focus"
-              />
-            </div>
-
-            <div className="mb-4">
               <p className="text-body-03 font-medium text-text-neutral-secondary mb-2">Placeholder</p>
               <input
                 type="text"
@@ -589,10 +506,16 @@ function PropertiesTab() {
               />
             </div>
 
-            <Toggle label="Show label" checked={showLabel} onChange={setShowLabel} />
-            <Toggle label="Helper text" checked={showHelper} onChange={setShowHelper} />
-            <Toggle label="Leading icon" checked={showLeadingIcon} onChange={setShowLeadingIcon} />
-            <Toggle label="Trailing icon" checked={showTrailingIcon} onChange={setShowTrailingIcon} />
+            <div className="mb-4">
+              <p className="text-body-03 font-medium text-text-neutral-secondary mb-2">Feedback</p>
+              <input
+                type="text"
+                value={helperText}
+                onChange={(e) => setHelperText(e.target.value)}
+                className="w-full px-3 py-1.5 text-body-02 border border-border-neutral-default rounded-md bg-white focus:outline-none focus:shadow-focus"
+              />
+            </div>
+
             <Toggle label="Disabled" checked={isDisabled} onChange={setIsDisabled} />
           </div>
         </div>
@@ -608,8 +531,9 @@ function PropertiesTab() {
         </div>
       </DocSection>
 
-      <DocSection title="Props Reference">
+      <DocSection title="Props Reference" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             ["size", '"lg" | "md" | "sm"', '"md"', "Size variant — affects height, typography, and padding."],
@@ -627,48 +551,9 @@ function PropertiesTab() {
         />
       </DocSection>
 
-      <DocSection title="Code Examples">
-        <DocPreview title="Basic form input">
-          <div className="w-72">
-            <Input label="Full name" placeholder="Jane Doe" />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Input label="Full name" placeholder="Jane Doe" />`}</code>
-        </pre>
-
-        <DocPreview title="With icon and helper text">
-          <div className="w-72">
-            <Input label="Email" placeholder="you@example.com" leadingIcon={<MailIcon />} helperText="We'll never share your email." />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Input
-  label="Email"
-  placeholder="you@example.com"
-  leadingIcon={<MailIcon />}
-  helperText="We'll never share your email."
-/>`}</code>
-        </pre>
-
-        <DocPreview title="Error state">
-          <div className="w-72">
-            <Input label="Username" state="error" defaultValue="ab" errorMessage="Must be at least 3 characters." trailingIcon={<AlertCircleIcon />} />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Input
-  label="Username"
-  state="error"
-  defaultValue="ab"
-  errorMessage="Must be at least 3 characters."
-  trailingIcon={<AlertCircleIcon />}
-/>`}</code>
-        </pre>
-      </DocSection>
-
-      <DocSection title="Validation & Constraints">
+      <DocSection title="Validation & Constraints" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Rule", "Details"]}
           rows={[
             ["Label required", "Every input should have a label for accessibility. Unlabeled inputs should use aria-label."],
@@ -678,7 +563,7 @@ function PropertiesTab() {
           ]}
         />
       </DocSection>
-    </>
+    </div>
   );
 }
 
@@ -690,13 +575,16 @@ export default function InputPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <div className="col-span-2 flex flex-col">
-      <DocHeader
-        title="Input"
-        description="Input lets users enter and edit short-form text. It supports labels, helper text, error states, and leading/trailing icons across three sizes."
-      />
+    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-10">
+      <div className="col-start-1 flex flex-col">
+        <DocHeader
+          title="Input"
+          description="Input lets users enter and edit short-form text. It supports labels, helper text, error states, and leading/trailing icons across three sizes."
+          variant="foundations"
+        />
 
-      <TabBar active={activeTab} onChange={setActiveTab} />
+        <TabBar active={activeTab} onChange={setActiveTab} />
+      </div>
 
       {activeTab === "Overview" && <OverviewTab />}
       {activeTab === "Design Tokens" && <DesignTokensTab />}

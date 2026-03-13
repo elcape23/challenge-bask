@@ -8,10 +8,12 @@ import {
 } from "react";
 
 export type InputSize = "lg" | "md" | "sm";
-export type InputState = "default" | "error";
+export type InputState = "default" | "error" | "success";
 
-export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+export interface InputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "size"
+> {
   /** Size variant */
   size?: InputSize;
   /** Validation state */
@@ -28,33 +30,38 @@ export interface InputProps
   trailingIcon?: ReactNode;
 }
 
+/** Figma: md 48px (py-3+body01+py-3), sm 32px (py-2+body02+py-2) */
 const SIZE_HEIGHT: Record<InputSize, string> = {
   lg: "h-12",
-  md: "h-10",
+  md: "h-12",
   sm: "h-8",
 };
 
+/** Figma md: px-4 py-3 (16/12), sm: px-3 py-2 (12/8) */
 const SIZE_PADDING: Record<InputSize, string> = {
-  lg: "px-4",
-  md: "px-3",
-  sm: "px-3",
+  lg: "px-4 py-3",
+  md: "px-4 py-3",
+  sm: "px-3 py-2",
 };
 
+/** Figma md: Body/01 16px, sm: Body/02 13px */
 const SIZE_TEXT: Record<InputSize, string> = {
   lg: "text-body-01",
-  md: "text-body-02",
+  md: "text-body-01",
   sm: "text-body-02",
 };
 
+/** Figma: 20×20 icon for both sizes */
 const SIZE_ICON: Record<InputSize, string> = {
   lg: "[&_svg]:size-5",
-  md: "[&_svg]:size-4",
-  sm: "[&_svg]:size-4",
+  md: "[&_svg]:size-5",
+  sm: "[&_svg]:size-5",
 };
 
+/** Figma: space-3 (12px) for lg/md, space-2 (8px) for sm */
 const SIZE_GAP: Record<InputSize, string> = {
   lg: "gap-3",
-  md: "gap-2",
+  md: "gap-3",
   sm: "gap-2",
 };
 
@@ -64,8 +71,9 @@ const LABEL_TEXT: Record<InputSize, string> = {
   sm: "text-body-02 font-medium",
 };
 
+/** Figma: Body/03 11px for feedback */
 const HELPER_TEXT: Record<InputSize, string> = {
-  lg: "text-body-02",
+  lg: "text-body-03",
   md: "text-body-03",
   sm: "text-body-03",
 };
@@ -85,17 +93,26 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       id: externalId,
       ...props
     },
-    ref
+    ref,
   ) => {
     const autoId = useId();
     const inputId = externalId ?? autoId;
     const helperId = `${inputId}-helper`;
     const isError = state === "error";
+    const isSuccess = state === "success";
     const bottomText = isError ? errorMessage : helperText;
 
     const borderColor = isError
       ? "border-border-danger-default focus-within:border-border-danger-default"
-      : "border-border-neutral-default focus-within:border-border-primary-default";
+      : isSuccess
+        ? "border-border-success-default focus-within:border-border-success-default"
+        : "border-border-neutral-default focus-within:border-border-primary-default";
+
+    const bgColor = isError
+      ? "bg-background-surface-danger-default"
+      : isSuccess
+        ? "bg-background-surface-success-default"
+        : "bg-[var(--color-background-default-default)]";
 
     return (
       <div className={`flex flex-col ${className ?? ""}`}>
@@ -103,7 +120,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <label
             htmlFor={inputId}
             className={`${LABEL_TEXT[size]} mb-1 ${
-              disabled ? "text-text-neutral-disabled" : "text-text-neutral-default"
+              disabled
+                ? "text-text-neutral-disabled"
+                : "text-text-neutral-default"
             }`}
           >
             {label}
@@ -112,20 +131,22 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
         <div
           className={[
-            "flex items-center rounded-md border bg-white transition-colors",
+            "flex items-center justify-between rounded-md border transition-colors",
             SIZE_HEIGHT[size],
             SIZE_PADDING[size],
             SIZE_GAP[size],
             disabled
               ? "border-border-neutral-disabled bg-background-surface-neutral-default cursor-not-allowed"
-              : borderColor,
+              : bgColor + " " + borderColor,
             "focus-within:shadow-focus",
           ].join(" ")}
         >
           {leadingIcon && (
             <span
               className={`shrink-0 ${SIZE_ICON[size]} ${
-                disabled ? "text-icon-neutral-disabled" : "text-icon-neutral-secondary"
+                disabled
+                  ? "text-icon-neutral-disabled"
+                  : "text-icon-neutral-secondary"
               }`}
             >
               {leadingIcon}
@@ -138,19 +159,31 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             disabled={disabled}
             aria-invalid={isError || undefined}
             aria-describedby={bottomText ? helperId : undefined}
-            className={[
-              "flex-1 min-w-0 bg-transparent outline-none",
-              SIZE_TEXT[size],
-              disabled ? "text-text-neutral-disabled cursor-not-allowed" : "text-text-neutral-default",
-              "placeholder:text-text-neutral-placeholder",
-            ].join(" ")}
+          className={[
+            "flex-1 min-w-0 bg-transparent outline-none",
+            SIZE_TEXT[size],
+            disabled
+              ? "text-text-neutral-disabled cursor-not-allowed"
+              : isError
+                ? "text-text-danger-default"
+                : isSuccess
+                  ? "text-text-success-default"
+                  : "text-text-neutral-default",
+            "placeholder:text-text-neutral-placeholder",
+          ].join(" ")}
             {...props}
           />
 
           {trailingIcon && (
             <span
               className={`shrink-0 ${SIZE_ICON[size]} ${
-                disabled ? "text-icon-neutral-disabled" : isError ? "text-icon-danger-default" : "text-icon-neutral-secondary"
+                disabled
+                  ? "text-icon-neutral-disabled"
+                  : isError
+                    ? "text-icon-danger-default"
+                    : isSuccess
+                      ? "text-icon-success-default"
+                      : "text-icon-neutral-secondary"
               }`}
             >
               {trailingIcon}
@@ -162,9 +195,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <p
             id={helperId}
             className={[
-              "mt-1",
+              "mt-1 px-3 py-1",
               HELPER_TEXT[size],
-              disabled ? "text-text-neutral-disabled" : isError ? "text-text-danger-default" : "text-text-neutral-placeholder",
+              disabled
+                ? "text-text-neutral-disabled"
+                : isError
+                  ? "text-text-danger-default"
+                  : isSuccess
+                    ? "text-text-success-default"
+                    : "text-text-neutral-secondary",
             ].join(" ")}
             role={isError ? "alert" : undefined}
           >
@@ -173,7 +212,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";

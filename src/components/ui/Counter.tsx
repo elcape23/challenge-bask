@@ -29,11 +29,11 @@ export interface CounterProps
   onChange?: (value: number) => void;
 }
 
-function ChevronUpIcon({ className }: { className?: string }) {
+function MinusIcon({ className }: { className?: string }) {
   return (
     <svg
-      width="16"
-      height="16"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -43,16 +43,16 @@ function ChevronUpIcon({ className }: { className?: string }) {
       className={className}
       aria-hidden="true"
     >
-      <path d="m18 15-6-6-6 6" />
+      <path d="M5 12h14" />
     </svg>
   );
 }
 
-function ChevronDownIcon({ className }: { className?: string }) {
+function PlusIcon({ className }: { className?: string }) {
   return (
     <svg
-      width="16"
-      height="16"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -62,29 +62,21 @@ function ChevronDownIcon({ className }: { className?: string }) {
       className={className}
       aria-hidden="true"
     >
-      <path d="m6 9 6 6 6-6" />
+      <path d="M12 5v14M5 12h14" />
     </svg>
   );
 }
 
+/** Figma: 36×36 icon buttons, gap 8px (space-2) */
 const SIZE_BUTTON: Record<CounterSize, string> = {
-  md: "h-5 w-10",
-  sm: "h-4 w-8",
+  md: "size-9",
+  sm: "size-8",
 };
 
-const SIZE_VALUE_TEXT: Record<CounterSize, string> = {
-  md: "text-body-02 font-medium",
-  sm: "text-body-03 font-medium",
-};
-
-const SIZE_VALUE_MIN_W: Record<CounterSize, string> = {
-  md: "min-w-12",
-  sm: "min-w-10",
-};
-
-const SIZE_VALUE_PADDING: Record<CounterSize, string> = {
-  md: "px-3 py-2",
-  sm: "px-2 py-2",
+/** Figma: Body 01 Medium for number display */
+const SIZE_VALUE: Record<CounterSize, string> = {
+  md: "text-body-01 font-medium min-w-6",
+  sm: "text-body-02 font-medium min-w-5",
 };
 
 const Counter = forwardRef<HTMLDivElement, CounterProps>(
@@ -136,16 +128,15 @@ const Counter = forwardRef<HTMLDivElement, CounterProps>(
     const atMax = currentValue >= max;
 
     const btnBase = [
-      "flex items-center justify-center shrink-0 transition-colors",
+      "flex items-center justify-center shrink-0 rounded-full transition-colors",
       "focus-visible:outline-none focus-visible:shadow-focus",
       "cursor-pointer border-0",
       "disabled:cursor-not-allowed",
     ].join(" ");
 
-    const btnDisabled =
-      disabled
-        ? "text-icon-neutral-disabled border-border-neutral-disabled"
-        : "text-icon-neutral-secondary border-border-neutral-default hover:bg-background-surface-neutral-hover active:bg-background-fill-neutral-default";
+    const btnDisabled = disabled
+      ? "text-text-neutral-disabled"
+      : "text-icon-neutral-secondary hover:text-icon-neutral-hover active:text-icon-neutral-pressed";
 
     return (
       <div
@@ -153,7 +144,7 @@ const Counter = forwardRef<HTMLDivElement, CounterProps>(
         role="group"
         aria-label="Counter"
         className={[
-          "inline-flex items-stretch rounded-md overflow-hidden",
+          "inline-flex items-center gap-2 rounded-full overflow-hidden",
           disabled
             ? "border border-border-neutral-disabled cursor-not-allowed opacity-50"
             : "border border-border-neutral-default",
@@ -161,49 +152,42 @@ const Counter = forwardRef<HTMLDivElement, CounterProps>(
         ].join(" ")}
         {...props}
       >
-        {/* Value display — left side */}
+        {/* Decrement — left */}
+        <button
+          type="button"
+          aria-label="Decrease"
+          disabled={disabled || atMin}
+          onClick={decrement}
+          className={[btnBase, SIZE_BUTTON[size], btnDisabled].join(" ")}
+        >
+          <MinusIcon />
+        </button>
+
+        {/* Value display — center */}
         <span
           aria-live="polite"
           aria-valuenow={currentValue}
           aria-valuemin={min}
           aria-valuemax={max}
           className={[
-            "flex items-center justify-center select-none",
+            "flex items-center justify-center select-none shrink-0",
             disabled ? "text-text-neutral-disabled" : "text-text-neutral-default",
-            SIZE_VALUE_TEXT[size],
-            SIZE_VALUE_MIN_W[size],
-            SIZE_VALUE_PADDING[size],
+            SIZE_VALUE[size],
           ].join(" ")}
         >
           {currentValue}
         </span>
 
-        {/* Buttons — right side, stacked vertically: + on top, − on bottom */}
-        <div className="flex flex-col border-l border-inherit">
-          <button
-            type="button"
-            aria-label="Increase"
-            disabled={disabled || atMax}
-            onClick={increment}
-            className={[
-              btnBase,
-              SIZE_BUTTON[size],
-              "border-b border-inherit",
-              btnDisabled,
-            ].join(" ")}
-          >
-            <ChevronUpIcon />
-          </button>
-          <button
-            type="button"
-            aria-label="Decrease"
-            disabled={disabled || atMin}
-            onClick={decrement}
-            className={[btnBase, SIZE_BUTTON[size], btnDisabled].join(" ")}
-          >
-            <ChevronDownIcon />
-          </button>
-        </div>
+        {/* Increment — right */}
+        <button
+          type="button"
+          aria-label="Increase"
+          disabled={disabled || atMax}
+          onClick={increment}
+          className={[btnBase, SIZE_BUTTON[size], btnDisabled].join(" ")}
+        >
+          <PlusIcon />
+        </button>
       </div>
     );
   }
