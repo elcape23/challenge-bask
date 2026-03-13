@@ -4,6 +4,19 @@ import DocTable from "@/components/docs/DocTable";
 import DocCallout from "@/components/docs/DocCallout";
 import DoDontGrid from "@/components/docs/DoDontGrid";
 
+const radiusTokens = [
+  { token: "radius-min", value: "2px", css: "--radius-min", usage: "Subtle rounding for small indicators and badges" },
+  { token: "radius-xs", value: "4px", css: "--radius-xs", usage: "Checkboxes, small tags, compact elements" },
+  { token: "radius-sm", value: "8px", css: "--radius-sm", usage: "Buttons, inputs, alerts, sidebar items" },
+  { token: "radius-md", value: "12px", css: "--radius-md", usage: "Cards, modals, containers, dropdowns" },
+  { token: "radius-lg", value: "16px", css: "--radius-lg", usage: "Large cards, panels, dialog boxes" },
+  { token: "radius-xl", value: "20px", css: "--radius-xl", usage: "Hero sections, prominent containers" },
+  { token: "radius-2xl", value: "24px", css: "--radius-2xl", usage: "Feature cards, onboarding panels" },
+  { token: "radius-3xl", value: "28px", css: "--radius-3xl", usage: "Large promotional areas" },
+  { token: "radius-4xl", value: "32px", css: "--radius-4xl", usage: "Full-width banners, sheet handles" },
+  { token: "radius-max", value: "9999px", css: "--radius-max", usage: "Circular elements: avatars, pills, status dots" },
+];
+
 export default function RadiusPage() {
   return (
     <>
@@ -21,150 +34,58 @@ export default function RadiusPage() {
           and intentional.
         </p>
         <p>
-          The design system currently defines one core radius token. As the
-          system grows, additional values may be introduced for specific use
-          cases.
+          The design system defines a full radius scale from <code>min</code> (2px) to{" "}
+          <code>max</code> (9999px). Use the appropriate token based on the
+          element size and visual hierarchy.
         </p>
       </DocSection>
 
       <DocSection title="Scale">
         <DocTable
           headers={["Token", "Value", "CSS Variable", "Usage"]}
-          rows={[
-            [
-              "radius-md",
-              "12px",
-              "--radius-md",
-              "Default radius for cards, inputs, buttons, containers, and modals",
-            ],
-          ]}
+          rows={radiusTokens.map((t) => [t.token, t.value, t.css, t.usage])}
         />
 
-        {/* Visual examples: with and without radius */}
+        {/* Visual examples of each radius */}
         <div
-          className="gap-4 mb-6"
+          className="gap-3 mb-6"
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: "repeat(5, 1fr)",
           }}
         >
-          <div
-            className="border border-border-neutral-default rounded-md"
-            style={{ overflow: "hidden" }}
-          >
-            <div className="py-2 px-3 bg-background-surface-neutral-default text-text-neutral-secondary border-b border-border-neutral-default text-body-03 font-medium">
-              With radius-md (12px)
-            </div>
+          {radiusTokens.map((t) => (
             <div
-              className="p-5 gap-3"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
+              key={t.token}
+              className="border border-border-neutral-default"
+              style={{ overflow: "hidden", borderRadius: "var(--radius-md)" }}
             >
               <div
-                className="bg-primary-100 border border-primary-300 text-body-02 text-primary-600"
+                className="bg-primary-100 border border-dashed border-primary-400"
                 style={{
-                  width: "100%",
-                  height: "48px",
-                  borderRadius: "12px",
+                  height: "64px",
+                  borderRadius: t.value === "9999px" ? "9999px" : t.value,
+                  margin: "12px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                 }}
               >
-                Button
+                <span className="text-body-03 text-primary-700 font-medium">
+                  {t.value}
+                </span>
               </div>
-              <div
-                className="bg-background-surface-neutral-default border border-border-neutral-default text-body-02 text-text-neutral-secondary"
-                style={{
-                  width: "100%",
-                  height: "80px",
-                  borderRadius: "12px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                Card
-              </div>
-              <div
-                className="bg-background-default-default border border-border-neutral-default text-body-02 text-text-neutral-placeholder pl-3"
-                style={{
-                  width: "100%",
-                  height: "40px",
-                  borderRadius: "12px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                Input field
+              <div className="py-1.5 px-2 bg-background-surface-neutral-default border-t border-border-neutral-default text-body-03 text-text-neutral-secondary text-center font-medium">
+                {t.token}
               </div>
             </div>
-          </div>
-
-          <div
-            className="border border-border-neutral-default rounded-md"
-            style={{ overflow: "hidden" }}
-          >
-            <div className="py-2 px-3 bg-background-surface-neutral-default text-text-neutral-secondary border-b border-border-neutral-default text-body-03 font-medium">
-              Without radius (0px)
-            </div>
-            <div
-              className="p-5 gap-3"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <div
-                className="bg-primary-100 border border-primary-300 text-body-02 text-primary-600"
-                style={{
-                  width: "100%",
-                  height: "48px",
-                  borderRadius: "0px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                Button
-              </div>
-              <div
-                className="bg-background-surface-neutral-default border border-border-neutral-default text-body-02 text-text-neutral-secondary"
-                style={{
-                  width: "100%",
-                  height: "80px",
-                  borderRadius: "0px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                Card
-              </div>
-              <div
-                className="bg-background-default-default border border-border-neutral-default text-body-02 text-text-neutral-placeholder pl-3"
-                style={{
-                  width: "100%",
-                  height: "40px",
-                  borderRadius: "0px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                Input field
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
 
-        <DocCallout variant="info" title="Single token approach">
-          The design system uses a single radius value (12px) applied
-          consistently across all rounded elements. This simplifies decisions
-          and keeps the interface visually cohesive.
+        <DocCallout variant="info" title="Choosing the right radius">
+          Match the radius to the element size: smaller elements use smaller
+          radii (min–xs), standard components use sm–md, and large containers
+          use lg–4xl. Use max only for intentionally circular or pill shapes.
         </DocCallout>
       </DocSection>
 
@@ -177,21 +98,21 @@ export default function RadiusPage() {
           }}
         >
           <li>
-            Always use the <code>--radius-md</code> token instead of
-            arbitrary values. Every rounded corner should reference this token.
+            Always use a radius token instead of arbitrary values. Every
+            rounded corner should reference a token from the scale.
           </li>
           <li>
             Apply the same radius to all elements of the same type — all cards,
             all buttons, and all inputs should share the same roundness.
           </li>
           <li>
-            Nested elements may use a slightly smaller radius to prevent inner
-            rounding from clipping against the outer rounding.
+            Nested elements should use a smaller radius than their parent to
+            prevent inner rounding from clipping against the outer rounding.
           </li>
           <li>
-            Use <code>border-radius: 9999px</code> only for intentionally
+            Use <code>radius-max</code> (9999px) only for intentionally
             circular elements like avatars and status indicators — this is a
-            separate pattern from the radius scale.
+            separate pattern from the rest of the scale.
           </li>
           <li>
             Do not mix sharp corners and rounded corners on elements at the
@@ -205,11 +126,11 @@ export default function RadiusPage() {
           doItems={[
             {
               description:
-                "Use --radius-md (12px) for all standard rounded elements: cards, buttons, inputs, modals.",
+                "Use the appropriate radius token for the element size — sm for buttons/inputs, md for cards, lg+ for large panels.",
             },
             {
               description:
-                "Apply the token via the CSS variable so the value updates globally if it changes.",
+                "Apply tokens via CSS variables so values update globally if the scale changes.",
             },
             {
               description:
@@ -219,11 +140,11 @@ export default function RadiusPage() {
           dontItems={[
             {
               description:
-                "Use arbitrary values like 4px, 8px, or 16px — the system has one defined radius.",
+                "Use arbitrary values like 6px, 10px, or 14px — always pick the closest token from the scale.",
             },
             {
               description:
-                "Apply the 12px radius to very small elements (under 24px) where it would distort the shape.",
+                "Apply a large radius (lg+) to very small elements where it would distort the shape.",
             },
             {
               description:
@@ -235,9 +156,9 @@ export default function RadiusPage() {
 
       <DocSection title="Usage">
         <p className="mb-4">
-          Apply the radius token through the <code>border-radius</code> CSS
-          property using the custom property. Every component with rounded
-          corners should reference the token.
+          Apply radius tokens through the <code>border-radius</code> CSS
+          property using custom properties. Choose the token that best matches
+          the element type.
         </p>
         <div
           className="bg-background-surface-neutral-default rounded-md p-4 mb-4 text-body-02 text-text-neutral-secondary border border-border-neutral-default"
@@ -255,15 +176,22 @@ export default function RadiusPage() {
           <br />
           .button &#123;
           <br />
-          &nbsp;&nbsp;border-radius: var(--radius-md);
+          &nbsp;&nbsp;border-radius: var(--radius-sm);
+          <br />
+          &#125;
+          <br />
+          <br />
+          .avatar &#123;
+          <br />
+          &nbsp;&nbsp;border-radius: var(--radius-max);
           <br />
           &#125;
         </div>
         <p>
-          When creating new components, apply <code>--radius-md</code> by
-          default. Only deviate for intentionally circular elements (avatars,
-          pills) which use <code>9999px</code>, or for elements that must have
-          sharp corners for functional reasons.
+          When creating new components, select the radius token that matches
+          the component scale. Only use <code>radius-max</code> for circular
+          elements (avatars, pills), and <code>radius-min</code> for
+          subtle micro-rounding.
         </p>
       </DocSection>
     </>
