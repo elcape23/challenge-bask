@@ -29,10 +29,12 @@ const DEFAULT_SECTIONS: MenuSection[] = [
       {
         heading: "Minoxidil 5% Topical",
         description: "Higher-strength topical",
+        imageSrc: "/images/prototype/minoxidil-5-transparent.webp",
       },
       {
         heading: "Minoxidil 2% Topical",
         description: "Gentler starting strength",
+        imageSrc: "/images/prototype/minoxidil-2-transparent.webp",
       },
     ],
   },
@@ -42,10 +44,12 @@ const DEFAULT_SECTIONS: MenuSection[] = [
       {
         heading: "Hair Regrowth",
         description: "Grow visibility thicker, fuller hair",
+        imageSrc: "/images/prototype/hair-regrowth.webp",
       },
       {
         heading: "Mental Health",
         description: "Go beyond traditional services",
+        imageSrc: "/images/prototype/mental-health.webp",
       },
     ],
   },
