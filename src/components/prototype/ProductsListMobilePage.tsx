@@ -6,12 +6,12 @@ import TopBar from "@/components/prototype/globals/TopBar";
 import type { BadgeType } from "@/components/ui/Badge";
 
 const HERO_IMAGE =
-  "/images/prototype/category-top-background.png";
+  "/images/prototype/category-top-background.webp";
 
 const PRODUCT_IMAGES = {
-  minoxidil: "/images/prototype/minoxidil-5-transparent.png",
-  biotin: "/images/prototype/biotin-gummies-transparent.png",
-  shampoo: "/images/prototype/scalp-shampoo-transparent.png",
+  minoxidil: "/images/prototype/minoxidil-5-transparent.webp",
+  biotin: "/images/prototype/biotin-gummies-transparent.webp",
+  shampoo: "/images/prototype/scalp-shampoo-transparent.webp",
 } as const;
 
 type ProductCardProps = {

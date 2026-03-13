@@ -51,7 +51,7 @@ export default function DocsSidebar() {
       <aside className="fixed left-[120px] top-0 h-screen w-sidebar overflow-y-auto px-4 pt-10 pb-6 flex flex-col bg-background-default-default z-10">
       <Link href="/" className="h-10 flex items-center shrink-0 mb-20">
         <Image
-          src="/logo.png"
+          src="/logo.webp"
           alt="Sena Design System"
           width={120}
           height={40}
