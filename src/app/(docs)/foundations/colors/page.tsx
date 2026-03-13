@@ -185,13 +185,13 @@ function ColorCard({ name, hex }: { name: string; hex: string }) {
     >
       <p
         className="text-body-02 font-bold whitespace-nowrap"
-        style={{ fontFamily: '"Suisse Intl Trial Raw", sans-serif' }}
+        style={{ fontFamily: "var(--font-sans)" }}
       >
         {name}
       </p>
       <p
         className="text-body-02 font-regular whitespace-nowrap"
-        style={{ fontFamily: '"Suisse Intl Trial Raw", sans-serif' }}
+        style={{ fontFamily: "var(--font-sans)" }}
       >
         #{hex.replace("#", "").toUpperCase()}
       </p>
@@ -381,8 +381,8 @@ export default function ColorsPage() {
             <p
               className="text-body-01 text-text-neutral-secondary"
               style={{
-                fontFamily: '"Suisse Intl Trial Raw", sans-serif',
-                fontFeatureSettings: '"lnum" 1',
+                fontFamily: "var(--font-sans)",
+                fontVariantNumeric: "lining-nums",
               }}
             >
               7575757
@@ -395,8 +395,8 @@ export default function ColorsPage() {
             <p
               className="text-body-01 text-text-neutral-secondary"
               style={{
-                fontFamily: '"Suisse Intl Trial Raw", sans-serif',
-                fontFeatureSettings: '"lnum" 1',
+                fontFamily: "var(--font-sans)",
+                fontVariantNumeric: "lining-nums",
               }}
             >
               Accordion
@@ -432,63 +432,22 @@ export default function ColorsPage() {
           Semantic token preview
         </h3>
         <div
-          className="gap-3 mb-6"
+          className="gap-4 mb-6"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
           }}
         >
           {[
-            {
-              label: "text/neutral/default",
-              hex: "#1c1f1b",
-              textColor: "#ffffff",
-            },
-            {
-              label: "text/neutral/invert",
-              hex: "#f1f2ec",
-              textColor: "#1c1f1b",
-            },
-            {
-              label: "text/primary/default",
-              hex: "#153014",
-              textColor: "#ffffff",
-            },
-            {
-              label: "text/primary/invert",
-              hex: "#e4ece2",
-              textColor: "#153014",
-            },
-            {
-              label: "bg/default",
-              hex: "#f7f7f3",
-              textColor: "#1c1f1b",
-            },
-            {
-              label: "bg/invert",
-              hex: "#1c1f1b",
-              textColor: "#f1f2ec",
-            },
-            {
-              label: "bg/fill/neutral",
-              hex: "#e4e6de",
-              textColor: "#1c1f1b",
-            },
+            { name: "text/neutral/default", hex: "#1c1f1b" },
+            { name: "text/neutral/invert", hex: "#f1f2ec" },
+            { name: "text/primary/default", hex: "#153014" },
+            { name: "text/primary/invert", hex: "#e4ece2" },
+            { name: "bg/default", hex: "#f7f7f3" },
+            { name: "bg/invert", hex: "#1c1f1b" },
+            { name: "bg/fill/neutral", hex: "#e4e6de" },
           ].map((token) => (
-            <div
-              key={token.label}
-              className="rounded-md py-3 px-4 text-body-03 border border-border-neutral-default"
-              style={{
-                backgroundColor: token.hex,
-                color: token.textColor,
-                fontFamily: "monospace",
-              }}
-            >
-              <div style={{ fontWeight: 600, marginBottom: 2 }}>
-                {token.label}
-              </div>
-              <div style={{ opacity: 0.75 }}>{token.hex}</div>
-            </div>
+            <ColorCard key={token.name} name={token.name} hex={token.hex} />
           ))}
         </div>
       </section>
@@ -504,7 +463,7 @@ export default function ColorsPage() {
         >
           <li>
             Always reference semantic tokens or scale tokens (
-            <code style={{ fontFamily: "monospace" }}>
+            <code style={{ fontFamily: "var(--font-mono)" }}>
               var(--color-primary-500)
             </code>
             ) — never hard-code hex values in component styles.
@@ -585,7 +544,7 @@ export default function ColorsPage() {
         <div
           className="bg-background-surface-neutral-default rounded-md p-4 text-body-03 mb-4 border border-border-neutral-default"
           style={{
-            fontFamily: "monospace",
+            fontFamily: "var(--font-mono)",
             lineHeight: 1.7,
             overflowX: "auto",
           }}
@@ -607,7 +566,7 @@ export default function ColorsPage() {
           For theming or dark mode, the token values are redefined at the root
           level. Components that use tokens automatically adapt without any code
           changes — the same{" "}
-          <code style={{ fontFamily: "monospace" }}>
+          <code style={{ fontFamily: "var(--font-mono)" }}>
             var(--color-primary-500)
           </code>{" "}
           resolves to an emerald green in light mode and a brighter green in

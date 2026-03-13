@@ -1,0 +1,5 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="sun-medium">
+<path id="Vector" d="M10 3V3.77778M10 16.2222V17M3 10H3.77778M16.2222 10H17M14.9498 5.05022L14.3999 5.60011M5.60011 14.3999L5.05022 14.9498M5.05022 5.05022L5.60011 5.60011M14.3999 14.3999L14.9498 14.9498M13.1111 10C13.1111 11.7182 11.7182 13.1111 10 13.1111C8.28178 13.1111 6.88889 11.7182 6.88889 10C6.88889 8.28178 8.28178 6.88889 10 6.88889C11.7182 6.88889 13.1111 8.28178 13.1111 10Z" stroke="var(--stroke-0, #1C1F1B)" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>

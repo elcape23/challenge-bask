@@ -22,6 +22,65 @@ export interface BadgeProps extends Omit<HTMLAttributes<HTMLSpanElement>, "child
   icon?: ReactNode;
 }
 
+/* ─── Icons per type (matches Alert / Figma) ─── */
+function NeutralIcon({ size }: { size: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 16v-4" />
+      <path d="M12 8h.01" />
+    </svg>
+  );
+}
+
+function SuccessIcon({ size }: { size: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  );
+}
+
+function InfoIcon({ size }: { size: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 16v-4" />
+      <path d="M12 8h.01" />
+    </svg>
+  );
+}
+
+function WarningIcon({ size }: { size: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+    </svg>
+  );
+}
+
+function DangerIcon({ size }: { size: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <path d="m15 9-6 6" />
+      <path d="m9 9 6 6" />
+    </svg>
+  );
+}
+
+const ICON_MAP: Record<BadgeType, React.FC<{ size: number }>> = {
+  neutral: NeutralIcon,
+  success: SuccessIcon,
+  info: InfoIcon,
+  information: InfoIcon,
+  warning: WarningIcon,
+  danger: DangerIcon,
+};
+
 const TYPE_STYLES: Record<
   BadgeType,
   { bg: string; text: string; icon: string }
@@ -63,9 +122,9 @@ const SIZE_CONTAINER: Record<BadgeSize, string> = {
   sm: "h-5 px-2",
 };
 
-const SIZE_ICON: Record<BadgeSize, string> = {
-  md: "size-6",
-  sm: "size-5",
+const ICON_PX: Record<BadgeSize, number> = {
+  md: 24,
+  sm: 20,
 };
 
 const LABEL_STYLE: Record<BadgeSize, string> = {
@@ -79,7 +138,7 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
       type = "neutral",
       size = "md",
       label = "Text",
-      showIcon = false,
+      showIcon = true,
       icon,
       className,
       ...props
@@ -87,6 +146,8 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     ref
   ) => {
     const styles = TYPE_STYLES[type];
+    const IconComponent = ICON_MAP[type];
+    const iconSize = ICON_PX[size];
 
     return (
       <span
@@ -98,11 +159,12 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
         `}
         {...props}
       >
-        {showIcon && icon && (
+        {showIcon && (
           <span
-            className={`shrink-0 flex items-center justify-center overflow-hidden ${styles.icon} ${SIZE_ICON[size]}`}
+            className={`shrink-0 flex items-center justify-center overflow-hidden ${styles.icon}`}
+            aria-hidden="true"
           >
-            {icon}
+            {icon ?? <IconComponent size={iconSize} />}
           </span>
         )}
         <span className={`${LABEL_STYLE[size]} ${styles.text}`}>{label}</span>

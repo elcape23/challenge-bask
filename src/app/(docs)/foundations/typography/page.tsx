@@ -62,8 +62,8 @@ export default function TypographyPage() {
           rows={[
             [
               "--font-sans",
-              "Suisse Intl, Suisse Intl Trial, sans-serif",
-              "All UI text — headings, body copy, labels, and controls",
+              "var(--font-suisse-intl), Arial, sans-serif",
+              "All UI text — headings, body copy, labels, and controls (Suisse Intl via next/font/local)",
             ],
           ]}
         />

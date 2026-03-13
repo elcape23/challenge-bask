@@ -4,7 +4,8 @@
  */
 
 export const fontFamily = {
-  default: "'Suisse Intl', 'Suisse Intl Trial', system-ui, -apple-system, sans-serif",
+  /** Use var(--font-sans) in CSS; loaded via next/font/local */
+  default: "var(--font-sans)",
 };
 
 export const typescale = {

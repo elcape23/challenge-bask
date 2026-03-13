@@ -182,7 +182,7 @@ function OverviewTab() {
         </DocPreview>
       </DocSection>
 
-      <DocSection title="Sizes">
+      <DocSection title="Sizes" hideTitle>
         <DocTable
           variant="surface"
           title="Sizes"
@@ -214,7 +214,7 @@ function OverviewTab() {
         </DocPreview>
       </DocSection>
 
-      <DocSection title="States">
+      <DocSection title="States" hideTitle>
         <DocTable
           variant="surface"
           title="States"
@@ -316,7 +316,7 @@ function DesignTokensTab() {
         </TokenGroup>
       </DocSection>
 
-      <DocSection title="Typography Tokens">
+      <DocSection title="Typography Tokens" hideTitle>
         <DocTable
           variant="surface"
           title="Typography Tokens"
@@ -331,7 +331,7 @@ function DesignTokensTab() {
         </DocCallout>
       </DocSection>
 
-      <DocSection title="Spacing Tokens">
+      <DocSection title="Spacing Tokens" hideTitle>
         <DocTable
           variant="surface"
           title="Spacing Tokens"
@@ -348,7 +348,7 @@ function DesignTokensTab() {
         />
       </DocSection>
 
-      <DocSection title="Icon Sizes">
+      <DocSection title="Icon Sizes" hideTitle>
         <DocTable
           variant="surface"
           title="Icon Sizes"
@@ -360,7 +360,7 @@ function DesignTokensTab() {
         />
       </DocSection>
 
-      <DocSection title="Border">
+      <DocSection title="Border" hideTitle>
         <DocTable
           variant="surface"
           title="Border"
@@ -375,7 +375,7 @@ function DesignTokensTab() {
         />
       </DocSection>
 
-      <DocSection title="Animation / Transition Tokens">
+      <DocSection title="Animation / Transition Tokens" hideTitle>
         <DocTable
           variant="surface"
           title="Animation / Transition Tokens"
@@ -601,7 +601,7 @@ function PropertiesTab() {
         </div>
       </DocSection>
 
-      <DocSection title="Props Reference — AccordionItem">
+      <DocSection title="Props Reference — AccordionItem" hideTitle>
         <DocTable
           variant="surface"
           title="Props Reference — AccordionItem"
@@ -619,7 +619,7 @@ function PropertiesTab() {
         />
       </DocSection>
 
-      <DocSection title="Props Reference — Accordion (group)">
+      <DocSection title="Props Reference — Accordion (group)" hideTitle>
         <DocTable
           variant="surface"
           title="Props Reference — Accordion (group)"
@@ -689,7 +689,7 @@ function PropertiesTab() {
         </pre>
       </DocSection>
 
-      <DocSection title="Validation & Constraints">
+      <DocSection title="Validation & Constraints" hideTitle>
         <DocTable
           variant="surface"
           title="Validation & Constraints"

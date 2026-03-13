@@ -97,7 +97,7 @@ export default function GridPage() {
             className="mt-2 text-body-02"
             style={{
               display: "block",
-              fontFamily: "monospace",
+              fontFamily: "var(--font-mono)",
             }}
           >
             grid-template-columns: repeat(var(--ds-grid-columns), 1fr);
@@ -231,7 +231,7 @@ export default function GridPage() {
         <div
           className="bg-background-surface-neutral-default rounded-md p-4 mb-4 text-body-02 text-text-neutral-secondary border border-border-neutral-default"
           style={{
-            fontFamily: "monospace",
+            fontFamily: "var(--font-mono)",
             lineHeight: 1.6,
           }}
         >

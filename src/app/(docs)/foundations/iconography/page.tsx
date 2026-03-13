@@ -3,8 +3,9 @@ import DocSection from "@/components/docs/DocSection";
 import DocTable from "@/components/docs/DocTable";
 import DocCallout from "@/components/docs/DocCallout";
 import DoDontGrid from "@/components/docs/DoDontGrid";
+import Icon, { type IconType } from "@/components/ui/Icon";
 
-const UI_ICONS = [
+const UI_ICONS: IconType[] = [
   "house",
   "chevron-right",
   "chevron-left",
@@ -190,33 +191,44 @@ export default function IconographyPage() {
 
       <DocSection title="Available icons">
         <p className="mb-4">
-          The following icons are available in the design system. All icons
-          follow the Lucide naming convention.
+          The following icons are available in the design system. Each icon
+          uses Figma-accurate padding for optical balance. Icons are shown in
+          sm (20×20) and md (24×24 or 20×20 per icon) sizes.
         </p>
 
-        <div className="mb-4">
-          <h3 className="text-text-neutral-default mb-3 font-medium text-body-02">
+        <div className="mb-6">
+          <h3 className="text-text-neutral-default mb-4 font-medium text-body-02">
             UI icons (sm / md)
           </h3>
           <div
-            className="gap-2 mb-4"
+            className="gap-0 border border-border-neutral-default rounded-md overflow-hidden bg-background-surface-neutral-default"
             style={{
-              display: "flex",
-              flexWrap: "wrap",
+              display: "grid",
+              gridTemplateColumns: "1fr auto",
+              maxWidth: 360,
             }}
           >
+            <div className="py-2 px-4 border-b border-r border-border-neutral-default bg-background-fill-neutral-default text-body-03 font-medium text-text-neutral-placeholder">
+              md
+            </div>
+            <div className="py-2 px-4 border-b border-border-neutral-default bg-background-fill-neutral-default text-body-03 font-medium text-text-neutral-placeholder w-20 text-center">
+              sm
+            </div>
             {UI_ICONS.map((name) => (
-              <span
-                key={name}
-                className="py-1 px-3 bg-background-surface-neutral-default border border-border-neutral-default rounded-md text-body-02 text-text-neutral-secondary"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  fontFamily: "monospace",
-                }}
-              >
-                {name}
-              </span>
+              <div key={name} className="contents">
+                <div className="flex items-center gap-3 py-3 px-4 border-b border-r border-border-neutral-default">
+                  <Icon type={name} size="md" />
+                  <span
+                    className="text-body-03 text-text-neutral-secondary"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {name}
+                  </span>
+                </div>
+                <div className="flex items-center justify-center py-3 px-4 border-b border-border-neutral-default">
+                  <Icon type={name} size="sm" />
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -239,7 +251,7 @@ export default function IconographyPage() {
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  fontFamily: "monospace",
+                  fontFamily: "var(--font-mono)",
                 }}
               >
                 {name}
@@ -248,10 +260,10 @@ export default function IconographyPage() {
           </div>
         </div>
 
-        <DocCallout variant="info" title="Lucide icon library">
-          All icons are sourced from or styled after the Lucide icon set. When
-          adding new icons, ensure they match the existing stroke width,
-          corner rounding, and optical alignment.
+        <DocCallout variant="info" title="Figma design (node 29-1135)">
+          Icons use the exact SVG assets and padding from Figma. Each icon has
+          a specific container size (24×24 or 20×20) and padding (e.g. chevrons
+          px-9 py-6, compact icons p-2 to p-5). Do not override these values.
         </DocCallout>
       </DocSection>
 
@@ -326,32 +338,27 @@ export default function IconographyPage() {
 
       <DocSection title="Usage">
         <p className="mb-4">
-          Import icons from the Lucide React library and render them at one of
-          the three defined sizes. Apply color through semantic color tokens.
+          Import the <code>Icon</code> component and use the <code>type</code> and{" "}
+          <code>size</code> props. Padding is applied per Figma spec.
         </p>
         <div
           className="bg-background-surface-neutral-default rounded-md p-4 mb-4 text-body-02 text-text-neutral-secondary border border-border-neutral-default"
           style={{
-            fontFamily: "monospace",
+            fontFamily: "var(--font-mono)",
             lineHeight: 1.6,
           }}
         >
-          {`import { House, ChevronRight } from "lucide-react";`}
+          {`import Icon from "@/components/ui/Icon";`}
           <br />
           <br />
           {`// sm size (20×20)`}
           <br />
-          {`<House size={20} />`}
+          {`<Icon type="house" size="sm" />`}
           <br />
           <br />
-          {`// md size (24×24)`}
+          {`// md size (24×24 or 20×20 per icon)`}
           <br />
-          {`<ChevronRight size={24} />`}
-          <br />
-          <br />
-          {`// decorative size (40×40)`}
-          <br />
-          {`<House size={40} />`}
+          {`<Icon type="chevron-right" size="md" />`}
         </div>
         <p>
           When placing icons next to text, vertically center them and use a

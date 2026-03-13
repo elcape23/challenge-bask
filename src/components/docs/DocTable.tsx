@@ -31,7 +31,7 @@ export default function DocTable({
       )}
       <table
         className="w-full table-fixed text-left text-body-01"
-        style={{ fontFamily: '"Suisse Intl Trial Raw", sans-serif' }}
+        style={{ fontFamily: "var(--font-sans)" }}
       >
         <colgroup>
           {headers.map((_, i) => (

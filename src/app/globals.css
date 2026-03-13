@@ -1,53 +1,5 @@
 @import "tailwindcss";
 
-/* ─── Suisse Intl Trial (official WOFF2 from Swiss Typefaces) ─── */
-@font-face {
-  font-family: "Suisse Intl Trial";
-  src: url("/font/WOFF2/SuisseIntlTrial-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Suisse Intl Trial";
-  src: url("/font/WOFF2/SuisseIntlTrial-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* ─── Suisse Intl Trial Raw (WOFF2 for tokens/hex - bypasses Next.js processing) ─── */
-@font-face {
-  font-family: "Suisse Intl Trial Raw";
-  src: url("/font/WOFF2/SuisseIntlTrial-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Suisse Intl Trial Raw";
-  src: url("/font/WOFF2/SuisseIntlTrial-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* ─── Suisse Int'l Mono Trial (matches Figma mono variable) ─── */
-@font-face {
-  font-family: "Suisse Int'l Mono Trial";
-  src: url("/font/SuisseIntlMonoTrial-Regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Suisse Int'l Mono Trial";
-  src: url("/font/SuisseIntlMonoTrial-Bold.otf") format("opentype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 @theme {
   /* ─── Reset Tailwind defaults — Figma Foundations is the single source of truth ─── */
   --color-*: initial;
@@ -217,10 +169,8 @@
   --color-border-danger-default: #eb978c;
 
   /* ─── Font Family ─── */
-  --font-sans:
-    var(--font-suisse-intl, "Suisse Intl Trial"),
-    --font-mono: var(--font-jetbrains-mono, "Suisse Int'l Mono Trial"),
-    "Suisse Int'l Mono Trial", "JetBrains Mono", monospace;
+  --font-sans: var(--font-suisse-intl), Arial, sans-serif;
+  --font-mono: var(--font-suisse-mono), "JetBrains Mono", monospace;
 
   /* ─── Font Size + paired Line Height ─── */
   --font-size-heading-01: 48px;
@@ -290,6 +240,7 @@ body {
   font-family: var(--font-sans);
   font-size: var(--font-size-body-01);
   line-height: var(--font-size-body-01--line-height);
+  /* font-variant-numeric: lining-nums; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

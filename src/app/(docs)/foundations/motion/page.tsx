@@ -243,7 +243,7 @@ export default function MotionPage() {
         <div
           className="bg-background-surface-neutral-default rounded-md p-4 mb-4 text-body-02 text-text-neutral-secondary border border-border-neutral-default"
           style={{
-            fontFamily: "monospace",
+            fontFamily: "var(--font-mono)",
             lineHeight: 1.6,
           }}
         >

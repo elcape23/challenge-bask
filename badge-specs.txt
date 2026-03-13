@@ -12,7 +12,7 @@ cards, table rows) and communicate information at a glance.
 2. ANATOMY
 ----------
   1. Container — Pill-shaped element (border-radius: 9999px) with a type-specific fill.
-  2. Icon      — Optional leading icon slot (24px md / 20px sm). Default is a dot indicator.
+  2. Icon      — Optional leading icon slot (24px md / 20px sm). Type-specific icons: circle-info (neutral/info), check-circle (success), alert-triangle (warning), x-circle (danger).
   3. Label     — Short text label using medium-weight typography.
 
 3. PROPERTIES (from Figma)
