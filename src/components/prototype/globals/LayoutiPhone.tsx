@@ -126,7 +126,7 @@ export default function LayoutiPhone({
 
   return (
     <div
-      className={`flex flex-col h-[874px] w-[402px] items-stretch relative ${
+      className={`relative flex min-h-screen w-full flex-col items-stretch overflow-hidden md:h-[874px] md:min-h-0 md:w-[402px] ${
         isOverlay ? "" : "bg-background-default-default"
       } ${className ?? ""}`}
     >

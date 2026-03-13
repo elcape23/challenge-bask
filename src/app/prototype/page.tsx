@@ -8,10 +8,16 @@ import ProductsListMobilePage from "@/components/prototype/ProductsListMobilePag
  */
 export default function PrototypePage() {
   return (
-    <div className="hidden min-h-screen w-full items-start justify-center px-4 py-16 md:flex">
-      <LayoutiPhone>
+    <div className="min-h-screen w-full bg-background-default-default">
+      <div className="min-h-screen md:hidden">
         <ProductsListMobilePage />
-      </LayoutiPhone>
+      </div>
+
+      <div className="hidden min-h-screen w-full items-start justify-center px-4 py-16 md:flex">
+        <LayoutiPhone>
+          <ProductsListMobilePage />
+        </LayoutiPhone>
+      </div>
     </div>
   );
 }
