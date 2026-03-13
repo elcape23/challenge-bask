@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import RelatedCardContent from "@/components/prototype/globals/RelatedCardContent";
 import Footer from "@/components/prototype/globals/Footer";
 import Menu from "@/components/prototype/globals/Menu";
@@ -24,6 +25,7 @@ type ProductCardProps = {
   badgeLabel: string;
   badgeType: BadgeType;
   heightClassName?: string;
+  onSecondaryClick?: () => void;
 };
 
 function ProductCard({
@@ -36,6 +38,7 @@ function ProductCard({
   badgeLabel,
   badgeType,
   heightClassName,
+  onSecondaryClick,
 }: ProductCardProps) {
   return (
     <div className="rounded-lg bg-background-surface-neutral-default p-3">
@@ -51,12 +54,14 @@ function ProductCard({
         badgeLabel={badgeLabel}
         badgeType={badgeType}
         isOffer={Boolean(originalPrice)}
+        onSecondaryClick={onSecondaryClick}
       />
     </div>
   );
 }
 
 export default function ProductsListMobilePage() {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -94,6 +99,7 @@ export default function ProductsListMobilePage() {
           imageAlt="Minoxidil 5% Topical bottle"
           badgeLabel="Bestseller"
           badgeType="neutral"
+          onSecondaryClick={() => router.push("/prototype/product-detailed")}
         />
 
         <ProductCard

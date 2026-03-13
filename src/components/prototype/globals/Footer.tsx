@@ -1,12 +1,17 @@
 "use client";
 
-import Link from "next/link";
 import SenaLogo from "./SenaLogo";
 
 export interface FooterProps {
   className?: string;
   variant?: "card" | "section";
 }
+
+const LEGAL_LINKS = [
+  "Terms & Conditions",
+  "Privacy Policy",
+  "Your privacy choices",
+] as const;
 
 /**
  * Global Footer — legal links, copyright, logo.
@@ -29,24 +34,15 @@ export default function Footer({
       }`}
     >
       <div className="flex flex-col items-start gap-2">
-        <Link
-          href="#"
-          className="text-body-02 font-medium text-text-neutral-invert underline"
-        >
-          Terms &amp; Conditions
-        </Link>
-        <Link
-          href="#"
-          className="text-body-02 font-medium text-text-neutral-invert underline"
-        >
-          Privacy Policy
-        </Link>
-        <Link
-          href="#"
-          className="text-body-02 font-medium text-text-neutral-invert underline"
-        >
-          Your privacy choices
-        </Link>
+        {LEGAL_LINKS.map((label) => (
+          <button
+            key={label}
+            type="button"
+            className="text-body-02 font-medium text-text-neutral-invert underline"
+          >
+            {label}
+          </button>
+        ))}
       </div>
       <p className="text-body-02 font-regular text-text-neutral-invert">
         2026 Sena Health Inc. All rights reserved.

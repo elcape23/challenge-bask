@@ -101,7 +101,7 @@ export default function TopBar({
     : "";
 
   const iconClassName = isInvert ? "!text-icon-neutral-invert" : "text-inherit";
-  const resolvedIconType = onBack ? "chevron-left" : onClose ? "x" : iconType ?? "chevron-left";
+  const resolvedIconType = onBack ? "chevron-left" : onClose ? "x" : iconType ?? "plus";
   const resolvedAriaLabel = onBack
     ? "Back"
     : onClose

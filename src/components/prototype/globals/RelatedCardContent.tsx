@@ -16,6 +16,8 @@ export interface RelatedCardContentProps {
   badgeLabel?: string;
   badgeType?: BadgeType;
   isOffer?: boolean;
+  onPrimaryClick?: () => void;
+  onSecondaryClick?: () => void;
 }
 
 function CategoryImage({
@@ -74,6 +76,8 @@ export default function RelatedCardContent({
   badgeLabel = "New",
   badgeType = "neutral",
   isOffer = true,
+  onPrimaryClick,
+  onSecondaryClick,
 }: RelatedCardContentProps) {
   return (
     <div className={`flex h-[168px] w-full items-end gap-4 ${className ?? ""}`}>
@@ -115,6 +119,7 @@ export default function RelatedCardContent({
             variant="primary"
             appearance="filled"
             className="flex-1"
+            onClick={onPrimaryClick}
           >
             Add To Cart
           </Button>
@@ -123,6 +128,7 @@ export default function RelatedCardContent({
             variant="neutral"
             appearance="link"
             className="shrink-0"
+            onClick={onSecondaryClick}
           >
             Learn More
           </Button>

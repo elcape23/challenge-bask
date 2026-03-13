@@ -136,7 +136,7 @@ export default function LayoutiPhone({
           <StatusBar />
 
           {/* Content slot */}
-          <div className="relative flex-1 min-h-0 min-w-0 w-full">
+          <div className="relative flex-1 min-h-0 min-w-0 w-full overflow-y-auto overflow-x-hidden">
             {children}
           </div>
 
