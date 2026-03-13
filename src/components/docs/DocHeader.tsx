@@ -12,8 +12,7 @@ export default function DocHeader({ title, description, variant = "default" }: D
       <h1
         className={`font-bold tracking-tight text-text-neutral-default ${
           description ? "mb-3" : ""
-        } ${isFoundations ? "" : "text-heading-01"}`}
-        style={isFoundations ? { fontSize: "120px", lineHeight: 1 } : undefined}
+        } ${isFoundations ? "text-[clamp(56px,18vw,120px)] leading-none" : "text-heading-01"}`}
       >
         {title}
       </h1>

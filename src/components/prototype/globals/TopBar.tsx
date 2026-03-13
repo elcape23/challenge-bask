@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Icon, { type IconType } from "@/components/ui/Icon";
 import Button from "@/components/ui/Button";
 import SenaLogo from "./SenaLogo";
@@ -16,6 +17,8 @@ export interface TopBarProps {
   /** Show only the logo — hides all right-side elements */
   logoOnly?: boolean;
   showButton?: boolean;
+  buttonLabel?: string;
+  onButtonClick?: () => void;
   showIconButton?: boolean;
   showSwitch?: boolean;
   iconType?: IconType;
@@ -69,6 +72,8 @@ export default function TopBar({
   state = "default",
   logoOnly = false,
   showButton = false,
+  buttonLabel = "Button",
+  onButtonClick,
   showIconButton = true,
   showSwitch = false,
   iconType,
@@ -77,6 +82,7 @@ export default function TopBar({
   onBack,
   onClose,
 }: TopBarProps) {
+  const router = useRouter();
   const isBackground = state === "background";
   const isInvert = color === "invert";
   const isLoading = state === "loading";
@@ -124,9 +130,14 @@ export default function TopBar({
   return (
     <header className={`${barClasses} ${className ?? ""}`}>
       <div className="flex min-w-0 flex-1 items-end">
-        <div className={logoWrapperClasses}>
+        <button
+          type="button"
+          aria-label="Go to products"
+          className={logoWrapperClasses}
+          onClick={() => router.push("/prototype")}
+        >
           <SenaLogo variant={logoVariant} size="sm" />
-        </div>
+        </button>
       </div>
 
       <div
@@ -142,8 +153,9 @@ export default function TopBar({
                 size="sm"
                 variant="primary"
                 appearance="filled"
+                onClick={onButtonClick}
               >
-                Button
+                {buttonLabel}
               </Button>
             )}
             {showIconButton ? (

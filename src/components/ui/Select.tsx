@@ -6,6 +6,7 @@ import {
   useId,
   useState,
 } from "react";
+import Badge, { type BadgeType } from "@/components/ui/Badge";
 import Icon from "@/components/ui/Icon";
 
 export type SelectSize = "md" | "sm";
@@ -15,6 +16,8 @@ export interface SelectOption {
   value: string;
   label: string;
   disabled?: boolean;
+  badgeLabel?: string;
+  badgeType?: BadgeType;
 }
 
 export interface SelectProps {
@@ -137,6 +140,7 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
     const triggerId = externalId ?? autoId;
     const helperId = `${triggerId}-helper`;
     const [open, setOpen] = useState(false);
+    const selectedOption = options.find((option) => option.value === value);
 
     const isError = state === "error";
     const bottomText = isError ? errorMessage : helperText;
@@ -168,7 +172,7 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
             aria-invalid={isError || undefined}
             aria-describedby={bottomText ? helperId : undefined}
             className={[
-              "flex w-full items-center justify-between border bg-background-default-default text-text-neutral-default transition-colors outline-none data-[placeholder]:text-text-neutral-placeholder",
+              "flex w-full items-center justify-between gap-3 border bg-background-default-default text-text-neutral-default transition-colors outline-none data-[placeholder]:text-text-neutral-placeholder",
               SIZE_TRIGGER_HEIGHT[size],
               SIZE_TRIGGER_PADDING[size],
               SIZE_TRIGGER_TEXT[size],
@@ -180,13 +184,29 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
                   : "border-border-neutral-default hover:border-border-neutral-hover data-[state=open]:border-[var(--color-neutral-800)] focus-visible:border-[var(--color-neutral-800)]",
             ].join(" ")}
           >
-            <SelectPrimitive.Value
-              placeholder={placeholder}
-              className={[
-                "truncate text-left",
-                SIZE_TRIGGER_TEXT[size],
-              ].join(" ")}
-            />
+            {selectedOption ? (
+              <span className="flex min-w-0 flex-1 items-center justify-between gap-3">
+                <span className={["truncate text-left", SIZE_TRIGGER_TEXT[size]].join(" ")}>
+                  {selectedOption.label}
+                </span>
+                {selectedOption.badgeLabel ? (
+                  <Badge
+                    type={selectedOption.badgeType ?? "success"}
+                    size="sm"
+                    label={selectedOption.badgeLabel}
+                    showIcon={false}
+                  />
+                ) : null}
+              </span>
+            ) : (
+              <SelectPrimitive.Value
+                placeholder={placeholder}
+                className={[
+                  "truncate text-left",
+                  SIZE_TRIGGER_TEXT[size],
+                ].join(" ")}
+              />
+            )}
             <SelectPrimitive.Icon asChild>
               <span>
                 <TriggerIcon open={open} size={SIZE_ICON[size]} disabled={disabled} />
@@ -218,7 +238,7 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
                       value={option.value}
                       disabled={option.disabled}
                       className={[
-                        "flex min-h-5 cursor-pointer items-center outline-none",
+                        "flex min-h-5 cursor-pointer items-center justify-between gap-3 outline-none",
                         POSITION_PADDING[size],
                         OPTION_TEXT[size],
                         "text-text-neutral-default",
@@ -228,6 +248,14 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
                       ].join(" ")}
                     >
                       <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
+                      {option.badgeLabel ? (
+                        <Badge
+                          type={option.badgeType ?? "success"}
+                          size="sm"
+                          label={option.badgeLabel}
+                          showIcon={false}
+                        />
+                      ) : null}
                     </SelectPrimitive.Item>
                   ))
                 )}

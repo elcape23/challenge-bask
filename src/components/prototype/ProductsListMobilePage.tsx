@@ -1,19 +1,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { prototypeProducts } from "@/data/prototypeProducts";
 import RelatedCardContent from "@/components/prototype/globals/RelatedCardContent";
 import Footer from "@/components/prototype/globals/Footer";
 import Menu from "@/components/prototype/globals/Menu";
 import TopBar from "@/components/prototype/globals/TopBar";
-import type { BadgeType } from "@/components/ui/Badge";
 
 const HERO_IMAGE =
   "/images/prototype/category-top-background.webp";
-
-const PRODUCT_IMAGES = {
-  minoxidil: "/images/prototype/minoxidil-5-transparent.webp",
-  biotin: "/images/prototype/biotin-gummies-transparent.webp",
-  shampoo: "/images/prototype/scalp-shampoo-transparent.webp",
-} as const;
 
 type ProductCardProps = {
   heading: string;
@@ -23,7 +17,7 @@ type ProductCardProps = {
   imageSrc: string;
   imageAlt: string;
   badgeLabel: string;
-  badgeType: BadgeType;
+  badgeType: "neutral" | "success";
   heightClassName?: string;
   onClick?: () => void;
   onSecondaryClick?: () => void;
@@ -65,6 +59,9 @@ function ProductCard({
 export default function ProductsListMobilePage() {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const handleOpenProduct = (slug: string) => {
+    router.push(`/prototype/product-detailed/${slug}`);
+  };
 
   return (
     <div className="relative flex min-h-full flex-col bg-background-default-default">
@@ -93,39 +90,24 @@ export default function ProductsListMobilePage() {
       </section>
 
       <div className="flex flex-col gap-4 px-5 pt-5 pb-12">
-        <ProductCard
-          heading="Minoxidil 5% Topical"
-          description="Higher-strength topical"
-          finalPrice="19.99"
-          imageSrc={PRODUCT_IMAGES.minoxidil}
-          imageAlt="Minoxidil 5% Topical bottle"
-          badgeLabel="Bestseller"
-          badgeType="neutral"
-          onClick={() => router.push("/prototype/product-detailed")}
-          onSecondaryClick={() => router.push("/prototype/product-detailed")}
-        />
-
-        <ProductCard
-          heading="Biotin Gummies"
-          description="Daily nutritional for hair wellness"
-          finalPrice="13.99"
-          originalPrice="19.99"
-          imageSrc={PRODUCT_IMAGES.biotin}
-          imageAlt="Biotin Gummies container"
-          badgeLabel="30% off"
-          badgeType="success"
-        />
-
-        <ProductCard
-          heading="Scalp Shampoo"
-          description="Helps keep the scalp clean and comfortable"
-          finalPrice="7.99"
-          imageSrc={PRODUCT_IMAGES.shampoo}
-          imageAlt="Scalp Shampoo bottle"
-          badgeLabel="New"
-          badgeType="neutral"
-          heightClassName="h-[184px]"
-        />
+        {prototypeProducts.map((product) => (
+          <ProductCard
+            key={product.slug}
+            heading={product.heading}
+            description={product.shortDescription}
+            finalPrice={product.finalPrice}
+            originalPrice={product.originalPrice}
+            imageSrc={product.cardImageSrc ?? product.imageSrc}
+            imageAlt={product.imageAlt}
+            badgeLabel={product.badgeLabel ?? "New"}
+            badgeType={product.badgeType ?? "neutral"}
+            heightClassName={
+              product.slug === "scalp-shampoo" ? "h-[184px]" : undefined
+            }
+            onClick={() => handleOpenProduct(product.slug)}
+            onSecondaryClick={() => handleOpenProduct(product.slug)}
+          />
+        ))}
       </div>
 
       <section className="mt-auto bg-background-default-invert px-5 py-12">

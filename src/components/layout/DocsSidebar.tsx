@@ -47,22 +47,22 @@ export default function DocsSidebar() {
 
   return (
     <>
-      <div className="w-sidebar shrink-0" aria-hidden />
-      <aside className="fixed left-[120px] top-0 h-screen w-sidebar overflow-y-auto px-4 pt-10 pb-6 flex flex-col bg-background-default-default z-10">
-      <Link href="/" className="h-10 flex items-center shrink-0 mb-20">
-        <Image
-          src="/logo.webp"
-          alt="Sena Design System"
-          width={120}
-          height={40}
-          className="h-10 w-auto object-contain"
-          priority
-        />
-      </Link>
-      <nav className="flex-1 min-h-0">
-        <NavSection items={activeGroup.items} />
-      </nav>
-    </aside>
+      <div className="hidden w-sidebar shrink-0 lg:block" aria-hidden />
+      <aside className="fixed left-[120px] top-0 z-10 hidden h-screen w-sidebar flex-col overflow-y-auto bg-background-default-default px-4 pt-10 pb-6 lg:flex">
+        <Link href="/" className="mb-20 flex h-10 items-center shrink-0">
+          <Image
+            src="/logo.webp"
+            alt="Sena Design System"
+            width={120}
+            height={40}
+            className="h-10 w-auto object-contain"
+            priority
+          />
+        </Link>
+        <nav className="flex-1 min-h-0">
+          <NavSection items={activeGroup.items} />
+        </nav>
+      </aside>
     </>
   );
 }

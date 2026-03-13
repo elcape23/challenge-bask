@@ -13,6 +13,7 @@ export interface CartCardContentProps {
   imageAlt?: string;
   quantity?: number;
   savingsText?: string;
+  onQuantityChange?: (value: number) => void;
 }
 
 function CartImage({
@@ -46,6 +47,7 @@ export default function CartCardContent({
   imageAlt = "",
   quantity = 1,
   savingsText = "Save 17% on 3 month delivery",
+  onQuantityChange,
 }: CartCardContentProps) {
   return (
     <div
@@ -69,7 +71,13 @@ export default function CartCardContent({
               {description}
             </p>
           </div>
-          <Counter size="md" defaultValue={quantity} className="self-start" />
+          <Counter
+            size="md"
+            value={quantity}
+            min={1}
+            onChange={onQuantityChange}
+            className="self-start"
+          />
         </div>
       </div>
 

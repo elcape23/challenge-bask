@@ -46,20 +46,17 @@ const foundations = [
 
 export default function FoundationsPage() {
   return (
-    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-20">
-      <div className="col-span-2 flex flex-col gap-4">
-        <h1
-          className="font-bold tracking-tight text-text-neutral-default leading-none"
-          style={{ fontSize: "120px", lineHeight: 1 }}
-        >
+    <div className="col-span-1 grid grid-cols-1 gap-x-10 gap-y-10 lg:col-span-2 lg:grid-cols-2 lg:gap-y-20">
+      <div className="col-span-1 flex flex-col gap-3 lg:col-span-2 lg:gap-4">
+        <h1 className="text-[clamp(56px,18vw,120px)] font-bold tracking-tight text-text-neutral-default leading-none">
           Foundations
         </h1>
-        <p className="text-heading-06 font-regular text-text-neutral-secondary max-w-md">
+        <p className="max-w-md text-heading-06 font-regular text-text-neutral-secondary">
           The visual and interaction building blocks of the Bask design system.
         </p>
       </div>
 
-      <div className="col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="col-span-1 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-3">
         {foundations.map((item) => (
           <Link
             key={item.name}
@@ -68,7 +65,7 @@ export default function FoundationsPage() {
           >
             <Card
               showHeading={false}
-              className="gap-4 h-full flex-1 min-h-[200px]"
+              className="gap-4 h-full min-h-[160px] flex-1 sm:min-h-[200px]"
             >
               <p className="text-heading-05 font-medium text-text-neutral-default m-0">
                 {item.name}

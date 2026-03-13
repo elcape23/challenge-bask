@@ -1,7 +1,7 @@
 "use client";
 
 import { forwardRef, useId, type InputHTMLAttributes } from "react";
-import Input from "./Input";
+import Button from "./Button";
 
 export type InputGroupState =
   | "default"
@@ -26,6 +26,10 @@ export interface InputGroupProps
   label?: string;
   /** Additional class for the root */
   className?: string;
+  /** Right-side action label */
+  buttonLabel?: string;
+  /** Right-side action click */
+  onButtonClick?: () => void;
 }
 
 function CheckIcon({ className }: { className?: string }) {
@@ -70,37 +74,6 @@ function BanIcon({ className }: { className?: string }) {
 const CONTAINER_BASE =
   "flex items-center rounded-md border w-full transition-colors";
 
-const STATE_STYLES: Record<
-  Exclude<InputGroupState, "default" | "focus">,
-  { container: string; text: string }
-> = {
-  hover: {
-    container:
-      "bg-background-surface-neutral-hover border-border-neutral-hover",
-    text: "text-text-neutral-hover",
-  },
-  pressed: {
-    container:
-      "bg-[var(--color-background-default-default)] border-[var(--color-neutral-800)]",
-    text: "text-text-neutral-pressed",
-  },
-  disabled: {
-    container:
-      "border-border-neutral-disabled bg-background-surface-neutral-default cursor-not-allowed opacity-90",
-    text: "text-text-neutral-disabled",
-  },
-  success: {
-    container:
-      "bg-background-surface-success-default border-border-success-default",
-    text: "text-text-success-default",
-  },
-  danger: {
-    container:
-      "bg-background-surface-danger-default border-border-danger-default",
-    text: "text-text-danger-default",
-  },
-};
-
 const SIZE_HEIGHT = { lg: "h-12", md: "h-10", sm: "h-8" } as const;
 const SIZE_PADDING = {
   lg: "px-4 py-3",
@@ -123,6 +96,8 @@ const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
       label,
       disabled,
       className,
+      buttonLabel = "Apply",
+      onButtonClick,
       id: externalId,
       ...inputProps
     },
@@ -135,19 +110,90 @@ const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
     const isDanger = state === "danger";
     const showAttachedIcon = isSuccess || isDanger;
 
-    if (state === "default" || state === "focus") {
+    if (
+      state === "default" ||
+      state === "focus" ||
+      state === "hover" ||
+      state === "pressed" ||
+      state === "disabled"
+    ) {
+      const s = size;
+      const isFocus = state === "focus";
+      const containerClasses =
+        state === "hover"
+          ? "bg-background-surface-neutral-hover border-border-neutral-hover"
+          : state === "pressed"
+            ? "bg-background-default-default border-[var(--color-neutral-800)]"
+            : state === "disabled"
+              ? "border-border-neutral-disabled bg-background-surface-neutral-default cursor-not-allowed opacity-90"
+              : "bg-background-default-default border-border-neutral-default";
+      const textClasses =
+        state === "hover"
+          ? "text-text-neutral-hover placeholder:text-text-neutral-hover"
+          : state === "pressed"
+            ? "text-text-neutral-pressed placeholder:text-text-neutral-pressed"
+            : state === "disabled"
+              ? "text-text-neutral-disabled placeholder:text-text-neutral-disabled"
+              : "text-text-neutral-default placeholder:text-text-neutral-placeholder";
+
       return (
-        <Input
-          ref={ref}
-          id={inputId}
-          size={size}
-          label={label}
-          placeholder={placeholder}
-          disabled={disabled}
-          className={className}
-          autoFocus={state === "focus"}
-          {...inputProps}
-        />
+        <div className={`flex flex-col ${className ?? ""}`}>
+          {label && (
+            <label
+              htmlFor={inputId}
+              className={`${
+                s === "lg"
+                  ? "text-body-01 font-medium"
+                  : "text-body-02 font-medium"
+              } mb-1 text-text-neutral-default`}
+            >
+              {label}
+            </label>
+          )}
+
+          <div
+            className={[
+              CONTAINER_BASE,
+              SIZE_HEIGHT[s],
+              containerClasses,
+              isFocus ? "shadow-focus border-border-primary-default" : "",
+            ].join(" ")}
+          >
+            <div className={["flex min-w-0 flex-1 items-center", SIZE_PADDING[s]].join(" ")}>
+              <input
+                ref={ref}
+                id={inputId}
+                disabled={isDisabled}
+                className={[
+                  "flex-1 min-w-0 bg-transparent outline-none",
+                  SIZE_TEXT[s],
+                  textClasses,
+                ].join(" ")}
+                placeholder={placeholder}
+                autoFocus={isFocus}
+                {...inputProps}
+              />
+            </div>
+            <div className="shrink-0 px-4">
+              <Button
+                size="sm"
+                variant="neutral"
+                appearance="link"
+                disabled={isDisabled}
+                onClick={onButtonClick}
+              >
+                {buttonLabel}
+              </Button>
+            </div>
+          </div>
+          <p
+            id={`${inputId}-feedback`}
+            className="mt-1 min-h-3 px-3 text-body-03 text-transparent"
+            aria-hidden="true"
+          >
+            {" "}
+          </p>
+        </div>
       );
     }
 
@@ -198,11 +244,11 @@ const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
             </div>
             <div
               className={[
-                "flex items-center justify-center shrink-0 w-12 rounded-r-md rounded-l-none border",
+                "flex items-center justify-center shrink-0 w-12 rounded-r-md rounded-l-none border-y border-r border-l-0",
                 SIZE_HEIGHT[s],
                 isSuccess
                   ? "bg-background-surface-success-default border-border-success-default text-icon-success-default"
-                  : "bg-background-surface-danger-default border-border-danger-default text-icon-danger-default",
+                  : "border bg-background-surface-danger-default border-border-danger-default text-icon-danger-default",
               ].join(" ")}
               aria-hidden
             >
@@ -216,7 +262,7 @@ const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
           <p
             id={`${inputId}-feedback`}
             className={[
-              "mt-1 text-body-03",
+              "mt-1 min-h-3 px-3 text-body-03",
               isSuccess
                 ? "text-text-success-default"
                 : "text-text-danger-default",
@@ -229,47 +275,6 @@ const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
       );
     }
 
-    const styles = STATE_STYLES[state];
-    const s = size;
-
-    return (
-      <div className={`flex flex-col ${className ?? ""}`}>
-        {label && (
-          <label
-            htmlFor={inputId}
-            className={`${
-              s === "lg" ? "text-body-01 font-medium" : "text-body-02 font-medium"
-            } mb-1 ${
-              isDisabled
-                ? "text-text-neutral-disabled"
-                : "text-text-neutral-default"
-            }`}
-          >
-            {label}
-          </label>
-        )}
-
-        <div
-          className={[
-            CONTAINER_BASE,
-            SIZE_HEIGHT[s],
-            SIZE_PADDING[s],
-            styles.container,
-            "flex-1 min-w-0",
-          ].join(" ")}
-        >
-          <span
-            className={[
-              "flex-1 min-w-0 truncate",
-              SIZE_TEXT[s],
-              styles.text,
-            ].join(" ")}
-          >
-            {placeholder}
-          </span>
-        </div>
-      </div>
-    );
   }
 );
 

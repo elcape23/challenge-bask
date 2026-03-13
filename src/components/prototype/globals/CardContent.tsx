@@ -13,6 +13,8 @@ export interface CardContentProps {
   finalPrice?: string;
   originalPrice?: string;
   quantity?: number;
+  savingsText?: string;
+  onQuantityChange?: (value: number) => void;
   type?: "product-detailed" | "menu" | "order-confirmation" | "cart";
   variant?: "default" | "invert";
 }
@@ -77,6 +79,8 @@ export default function CardContent({
   finalPrice = "00.00",
   originalPrice = "00.00",
   quantity = 0,
+  savingsText,
+  onQuantityChange,
   type,
   variant = "default",
 }: CardContentProps) {
@@ -140,6 +144,8 @@ export default function CardContent({
         imageAlt={imageAlt}
         finalPrice={finalPrice}
         quantity={quantity}
+        savingsText={savingsText}
+        onQuantityChange={onQuantityChange}
       />
     );
   }

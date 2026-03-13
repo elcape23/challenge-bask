@@ -13,8 +13,8 @@ export default function DocsTopbar() {
   const pathname = usePathname();
 
   return (
-    <header className="flex items-center justify-end pt-10 px-20 pb-10">
-      <nav className="flex items-center gap-14 h-10">
+    <header className="flex items-center justify-start pt-6 pb-6 lg:justify-end lg:px-20 lg:pt-10 lg:pb-10">
+      <nav className="flex h-10 items-center gap-6 overflow-x-auto whitespace-nowrap lg:gap-14">
         {topNavLinks.map(({ label, href }) => {
           const isActive = pathname.startsWith(href);
           return (

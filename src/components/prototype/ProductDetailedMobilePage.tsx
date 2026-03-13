@@ -1,6 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { useRouter } from "next/navigation";
+import { getPrototypeCartCount, setPrototypeCartItem } from "@/data/prototypeCart";
+import type { PrototypeProduct } from "@/data/prototypeProducts";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { AccordionItem } from "@/components/ui/Accordion";
@@ -14,96 +17,184 @@ import Menu from "@/components/prototype/globals/Menu";
 import TopBar from "@/components/prototype/globals/TopBar";
 
 const PRODUCT_ASSETS = {
-  packshot: "/images/prototype/minoxidil-5-transparent.webp",
   background: "/images/prototype/carousel-background.png",
-  biotin: "/images/prototype/biotin-gummies.webp",
-  shampoo: "/images/prototype/scalp-shampoo.webp",
   finasteride: "/images/prototype/finasteride-minoxidil.webp",
 } as const;
 
 const DOSAGE_OPTIONS = [
   { value: "one-month", label: "30 pills every month" },
   { value: "two-months", label: "60 pills every two months" },
-  { value: "three-months", label: "90 pills every three months" },
+  {
+    value: "three-months",
+    label: "90 pills every three months",
+    badgeLabel: "Save 17%",
+    badgeType: "success",
+  },
 ] as const;
 
+const SHAMPOO_DOSAGE_OPTIONS = [
+  { value: "one-month", label: "1 bottle every month" },
+  { value: "two-months", label: "2 bottle every 2 month" },
+  {
+    value: "three-months",
+    label: "3 bottle every 3 month",
+    badgeLabel: "Save 17%",
+    badgeType: "success",
+  },
+] as const;
+
+const DOSAGE_MULTIPLIERS = {
+  "one-month": 1,
+  "two-months": 2,
+  "three-months": 3,
+} as const;
+
+const DOSAGE_DISCOUNTS = {
+  "one-month": 0,
+  "two-months": 0,
+  "three-months": 0.17,
+} as const;
+
 type RelatedProductCardProps = {
-  heading: string;
-  description: string;
-  finalPrice: string;
-  originalPrice?: string;
-  imageSrc: string;
-  imageAlt: string;
-  badgeLabel?: string;
+  slug: PrototypeProduct["slug"];
+  heading: PrototypeProduct["heading"];
+  description: PrototypeProduct["shortDescription"];
+  finalPrice: PrototypeProduct["finalPrice"];
+  originalPrice?: PrototypeProduct["originalPrice"];
+  imageSrc: PrototypeProduct["imageSrc"];
+  imageAlt: PrototypeProduct["imageAlt"];
+  badgeLabel?: PrototypeProduct["badgeLabel"];
+  badgeType?: PrototypeProduct["badgeType"];
+  onAddToCart?: () => void;
+  onLearnMore?: (slug: string) => void;
 };
 
-function ProductHero() {
+type ProductDetailedMobilePageProps = {
+  product: PrototypeProduct;
+  relatedProducts?: PrototypeProduct[];
+};
+
+type ProductConfiguratorProps = {
+  selectedProductSlug: string;
+  selectedDosage: keyof typeof DOSAGE_MULTIPLIERS;
+  dosageOptions: readonly {
+    value: string;
+    label: string;
+    badgeLabel?: string;
+    badgeType?: "success";
+  }[];
+  selectableProducts: PrototypeProduct[];
+  showStrength: boolean;
+  onBuyNow: () => void;
+  onSelectProduct: (slug: string) => void;
+  onSelectDosage: (dosage: keyof typeof DOSAGE_MULTIPLIERS) => void;
+};
+
+const MINOXIDIL_TWO_PERCENT_PRODUCT: PrototypeProduct = {
+  slug: "minoxidil-2-topical",
+  heading: "Minoxidil 2% Topical",
+  shortDescription: "Gentler starting strength",
+  detailDescription:
+    "A gentler topical option for patients easing into a daily regrowth routine. Designed for consistent scalp application, it supports steady long-term care with a lighter-strength formula.",
+  finalPrice: "12.99",
+  imageSrc: "/images/prototype/minoxidil-2.webp",
+  imageAlt: "Minoxidil 2% Topical bottle",
+  badgeLabel: "Gentle",
+  badgeType: "neutral",
+};
+
+function formatPrice(
+  price: string,
+  multiplier: number,
+  discountRate = 0,
+) {
+  const totalPrice = Number(price) * multiplier;
+  const discountedPrice = totalPrice * (1 - discountRate);
+
+  return discountedPrice.toFixed(2);
+}
+
+function calculateSubtotal(price: string, multiplier: number) {
+  return (Number(price) * multiplier).toFixed(2);
+}
+
+function ProductHero({
+  product,
+  displayPrice,
+}: {
+  product: PrototypeProduct;
+  displayPrice: string;
+}) {
   return (
     <>
       {/* Product image — full-width, square */}
-      <div className="-mx-5 aspect-square overflow-hidden rounded-xl bg-background-surface-neutral-default">
+      <div className="aspect-square overflow-hidden rounded-xl bg-background-surface-neutral-default">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={PRODUCT_ASSETS.packshot}
-          alt="Minoxidil 5% Topical bottle"
+          src={product.imageSrc}
+          alt={product.imageAlt}
           className="h-full w-full object-contain object-center"
         />
       </div>
 
       {/* Product info */}
       <div className="flex flex-col gap-4">
-        <Badge
-          type="neutral"
-          size="sm"
-          label="Bestseller"
-          showIcon={false}
-          className="self-start"
-        />
+        {product.badgeLabel ? (
+          <Badge
+            type={product.badgeType ?? "neutral"}
+            size="sm"
+            label={product.badgeLabel}
+            showIcon={false}
+            className="self-start"
+          />
+        ) : null}
         <div className="flex flex-col gap-1">
           <h1 className="text-heading-06 font-medium text-text-neutral-default">
-            Minoxidil 5% Topical
+            {product.heading}
           </h1>
           <p className="text-body-01 font-medium text-text-neutral-default">
-            $14.99
+            ${displayPrice}
           </p>
         </div>
         <p className="text-body-01 text-text-neutral-secondary">
-          A stronger topical formula for patients seeking a more intensive
-          regrowth plan. Built for daily scalp application, it fits naturally
-          into a consistent treatment routine focused on long-term results.
+          {product.detailDescription}
         </p>
       </div>
     </>
   );
 }
 
-function ProductConfigurator() {
-  const [strength, setStrength] = useState<"5" | "2">("5");
-
+function ProductConfigurator({
+  selectedProductSlug,
+  selectedDosage,
+  dosageOptions,
+  selectableProducts,
+  showStrength,
+  onBuyNow,
+  onSelectProduct,
+  onSelectDosage,
+}: ProductConfiguratorProps) {
   return (
     <>
-      {/* Strength */}
-      <div className="flex flex-col gap-2">
-        <h2 className="text-heading-06 font-medium text-text-neutral-default">
-          Strength
-        </h2>
-        <div className="flex gap-2">
-          <RadioButton
-            name="strength"
-            heading="Minoxidil 5% Topical"
-            description="Higher-strength topical"
-            checked={strength === "5"}
-            onChange={() => setStrength("5")}
-          />
-          <RadioButton
-            name="strength"
-            heading="Minoxidil 2% Topical"
-            description="Gentler starting strength"
-            checked={strength === "2"}
-            onChange={() => setStrength("2")}
-          />
+      {showStrength ? (
+        <div className="flex flex-col gap-2">
+          <h2 className="text-heading-06 font-medium text-text-neutral-default">
+            Strength
+          </h2>
+          <div className="flex gap-2">
+            {selectableProducts.map((option) => (
+              <RadioButton
+                key={option.slug}
+                name="strength"
+                heading={option.heading}
+                description={option.shortDescription}
+                checked={selectedProductSlug === option.slug}
+                onChange={() => onSelectProduct(option.slug)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      ) : null}
 
       {/* Dosage */}
       <div className="flex flex-col gap-2">
@@ -112,9 +203,12 @@ function ProductConfigurator() {
         </h2>
         <Select
           size="sm"
-          placeholder="30 pills every month"
-          options={[...DOSAGE_OPTIONS]}
-          defaultValue="one-month"
+          placeholder={dosageOptions[0]?.label}
+          options={[...dosageOptions]}
+          value={selectedDosage}
+          onChange={(value) =>
+            onSelectDosage(value as keyof typeof DOSAGE_MULTIPLIERS)
+          }
         />
       </div>
 
@@ -125,6 +219,7 @@ function ProductConfigurator() {
           variant="primary"
           appearance="filled"
           className="w-full"
+          onClick={onBuyNow}
         >
           Buy Now
         </Button>
@@ -163,7 +258,7 @@ function ProductInfoAccordions() {
   );
 }
 
-function AddOnCard() {
+function AddOnCard({ onAdd }: { onAdd: () => void }) {
   return (
     <div className="flex gap-4 rounded-2xl bg-background-surface-neutral-default p-5">
       <div className="size-[116px] shrink-0 overflow-hidden rounded-xl">
@@ -197,6 +292,7 @@ function AddOnCard() {
             variant="primary"
             appearance="filled"
             className="ml-auto shrink-0"
+            onClick={onAdd}
           >
             Add
           </Button>
@@ -291,6 +387,7 @@ function ProductFaq() {
 }
 
 function RelatedProductCard({
+  slug,
   heading,
   description,
   finalPrice,
@@ -298,13 +395,27 @@ function RelatedProductCard({
   imageSrc,
   imageAlt,
   badgeLabel,
+  badgeType,
+  onAddToCart,
+  onLearnMore,
 }: RelatedProductCardProps) {
+  const handleLearnMoreClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onLearnMore?.(slug);
+  };
+
+  const handleAddToCartClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onAddToCart?.();
+  };
+
   return (
     <Card
       size="md"
       background="transparent"
       showHeading={false}
-      className="w-[304px] shrink-0 !rounded-[20px] !gap-5"
+      className="w-[304px] shrink-0 cursor-pointer !rounded-[20px] !gap-5"
+      onClick={() => onLearnMore?.(slug)}
     >
       <div className="flex flex-col gap-5">
         <div className="relative aspect-[280/200] overflow-hidden rounded-lg">
@@ -316,7 +427,7 @@ function RelatedProductCard({
           />
           {badgeLabel ? (
             <Badge
-              type="success"
+              type={badgeType ?? "neutral"}
               size="md"
               label={badgeLabel}
               showIcon={false}
@@ -352,6 +463,7 @@ function RelatedProductCard({
               variant="neutral"
               appearance="outlined"
               className="flex-1"
+              onClick={handleLearnMoreClick}
             >
               Learn More
             </Button>
@@ -360,6 +472,7 @@ function RelatedProductCard({
               variant="primary"
               appearance="filled"
               className="flex-1"
+              onClick={handleAddToCartClick}
             >
               Add To Cart
             </Button>
@@ -370,38 +483,114 @@ function RelatedProductCard({
   );
 }
 
-function MoreProductsSection() {
+function MoreProductsSection({
+  relatedProducts,
+  onAddToCart,
+  onLearnMore,
+}: {
+  relatedProducts: PrototypeProduct[];
+  onAddToCart: () => void;
+  onLearnMore: (slug: string) => void;
+}) {
   return (
     <section className="flex flex-col gap-8 rounded-[32px] px-5 py-12">
       <h2 className="text-heading-06 font-medium text-text-neutral-default">
         More products for your hair
       </h2>
       <div className="-mx-5 flex gap-3 overflow-x-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <RelatedProductCard
-          heading="Biotin Gummies"
-          description="Daily nutritional support for hair wellness."
-          finalPrice="13.99"
-          originalPrice="19.99"
-          imageSrc={PRODUCT_ASSETS.biotin}
-          imageAlt="Biotin Gummies"
-          badgeLabel="30% off"
-        />
-        <RelatedProductCard
-          heading="Scalp Shampoo"
-          description="Helps keep the scalp clean and comfortable as part of the routine."
-          finalPrice="7.99"
-          imageSrc={PRODUCT_ASSETS.shampoo}
-          imageAlt="Scalp Shampoo"
-        />
+        {relatedProducts.map((product) => (
+          <RelatedProductCard
+            key={product.slug}
+            slug={product.slug}
+            heading={product.heading}
+            description={product.shortDescription}
+            finalPrice={product.finalPrice}
+            originalPrice={product.originalPrice}
+            imageSrc={product.imageSrc}
+            imageAlt={product.imageAlt}
+            badgeLabel={product.badgeLabel}
+            badgeType={product.badgeType}
+            onAddToCart={onAddToCart}
+            onLearnMore={onLearnMore}
+          />
+        ))}
       </div>
     </section>
   );
 }
 
-export default function ProductDetailedMobilePage() {
+export default function ProductDetailedMobilePage({
+  product,
+  relatedProducts = [],
+}: ProductDetailedMobilePageProps) {
+  const router = useRouter();
+  const [cartCount, setCartCount] = useState(getPrototypeCartCount());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [topBarHidden, setTopBarHidden] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const selectableProducts =
+    product.slug === "minoxidil-5-topical"
+      ? [product, MINOXIDIL_TWO_PERCENT_PRODUCT]
+      : [product, ...relatedProducts].slice(0, 2);
+  const [selectedProductSlug, setSelectedProductSlug] = useState(
+    selectableProducts[0]?.slug ?? product.slug,
+  );
+  const [selectedDosage, setSelectedDosage] =
+    useState<keyof typeof DOSAGE_MULTIPLIERS>("one-month");
+  const selectedProduct =
+    selectableProducts.find((item) => item.slug === selectedProductSlug) ??
+    product;
+  const displayPrice = formatPrice(
+    selectedProduct.finalPrice,
+    DOSAGE_MULTIPLIERS[selectedDosage],
+    DOSAGE_DISCOUNTS[selectedDosage],
+  );
+  const subtotalPrice = calculateSubtotal(
+    selectedProduct.finalPrice,
+    DOSAGE_MULTIPLIERS[selectedDosage],
+  );
+  const discountAmount = (
+    Number(subtotalPrice) - Number(displayPrice)
+  ).toFixed(2);
+  const showStrength = product.slug === "minoxidil-5-topical";
+  const dosageOptions =
+    product.slug === "scalp-shampoo" ? SHAMPOO_DOSAGE_OPTIONS : DOSAGE_OPTIONS;
+  const selectedDosageLabel =
+    dosageOptions.find((option) => option.value === selectedDosage)?.label ??
+    dosageOptions[0]?.label ??
+    selectedProduct.shortDescription;
+  const cartSavingsText =
+    selectedDosage === "three-months"
+      ? "Save 17% on 3 month delivery"
+      : undefined;
+  const syncCartWithSelection = () => {
+    setPrototypeCartItem({
+      productSlug: selectedProduct.slug,
+      heading: selectedProduct.heading,
+      description: selectedDosageLabel,
+      dosageLabel: selectedDosageLabel,
+      subtotalPrice,
+      discountAmount,
+      finalPrice: displayPrice,
+      imageSrc: selectedProduct.imageSrc,
+      imageAlt: selectedProduct.imageAlt,
+      quantity: 1,
+      savingsText: cartSavingsText,
+    });
+  };
+  const handleOpenProduct = (slug: string) => {
+    router.push(`/prototype/product-detailed/${slug}`);
+  };
+  const handleCheckout = () => {
+    syncCartWithSelection();
+    setCartCount(getPrototypeCartCount());
+    router.push("/prototype/checkout");
+  };
+  const handleAddToCart = () => {
+    syncCartWithSelection();
+    setCartCount(getPrototypeCartCount());
+    setTopBarHidden(false);
+  };
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -426,6 +615,12 @@ export default function ProductDetailedMobilePage() {
     let lastScrollY = getScrollY();
 
     const handleScroll = () => {
+      if (cartCount > 0) {
+        setTopBarHidden(false);
+        lastScrollY = getScrollY();
+        return;
+      }
+
       const currentScrollY = getScrollY();
       setTopBarHidden(currentScrollY > lastScrollY && currentScrollY > 0);
       lastScrollY = currentScrollY;
@@ -433,7 +628,7 @@ export default function ProductDetailedMobilePage() {
 
     scrollEl.addEventListener("scroll", handleScroll, { passive: true });
     return () => scrollEl.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [cartCount]);
 
   return (
     <div
@@ -447,6 +642,9 @@ export default function ProductDetailedMobilePage() {
       >
         <TopBar
           color="primary"
+          showButton={cartCount > 0}
+          buttonLabel={`Cart(${cartCount})`}
+          onButtonClick={handleCheckout}
           showIconButton
           iconButtonAriaLabel="Menu"
           onIconButtonClick={() => setIsMenuOpen(true)}
@@ -455,10 +653,19 @@ export default function ProductDetailedMobilePage() {
 
       {/* Section 0 — Product details */}
       <section className="flex flex-col gap-10 overflow-hidden rounded-[32px] bg-background-default-default px-5 pb-12">
-        <ProductHero />
-        <ProductConfigurator />
+        <ProductHero product={selectedProduct} displayPrice={displayPrice} />
+        <ProductConfigurator
+          selectedProductSlug={selectedProduct.slug}
+          selectedDosage={selectedDosage}
+          dosageOptions={dosageOptions}
+          selectableProducts={selectableProducts}
+          showStrength={showStrength}
+          onBuyNow={handleCheckout}
+          onSelectProduct={setSelectedProductSlug}
+          onSelectDosage={setSelectedDosage}
+        />
         <ProductInfoAccordions />
-        <AddOnCard />
+        <AddOnCard onAdd={handleAddToCart} />
       </section>
 
       {/* Section 1 — Highlight / Benefits */}
@@ -468,7 +675,11 @@ export default function ProductDetailedMobilePage() {
       <ProductFaq />
 
       {/* Section 3 — More Products */}
-      <MoreProductsSection />
+      <MoreProductsSection
+        relatedProducts={relatedProducts}
+        onAddToCart={handleAddToCart}
+        onLearnMore={handleOpenProduct}
+      />
 
       {/* Section 4 — Footer */}
       <section className="bg-background-default-invert px-5 py-12">
