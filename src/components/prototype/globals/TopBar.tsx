@@ -13,6 +13,8 @@ export interface TopBarProps {
   paddingClassName?: string;
   color?: TopBarColor;
   state?: TopBarState;
+  /** Show only the logo — hides all right-side elements */
+  logoOnly?: boolean;
   showButton?: boolean;
   showIconButton?: boolean;
   showSwitch?: boolean;
@@ -65,6 +67,7 @@ export default function TopBar({
   paddingClassName,
   color = "primary",
   state = "default",
+  logoOnly = false,
   showButton = false,
   showIconButton = true,
   showSwitch = false,
@@ -77,12 +80,12 @@ export default function TopBar({
   const isBackground = state === "background";
   const isInvert = color === "invert";
   const isLoading = state === "loading";
-  const showsRightElements = showSwitch || showIconButton;
+  const showsRightElements = !logoOnly && (showSwitch || showIconButton);
 
   const logoVariant = isInvert ? "invert" : "default";
   const resolvedPaddingClassName =
     paddingClassName ??
-    (isInvert ? "h-[68px] p-5" : "px-5");
+    (logoOnly ? "h-[68px] px-5" : isInvert ? "h-[68px] p-5" : "px-5");
   const barClasses = [
     "flex w-full items-center justify-between py-4",
     resolvedPaddingClassName,
@@ -129,10 +132,10 @@ export default function TopBar({
       <div
         className={`flex shrink-0 items-center ${showsRightElements ? "gap-3" : ""}`}
       >
-        {showSwitch && (
+        {!logoOnly && showSwitch && (
           <ThemeToggle muted={isBackground && isInvert} />
         )}
-        {showIconButton && (
+        {!logoOnly && showIconButton && (
           <div className="flex items-center gap-2">
             {showButton && (
               <Button
