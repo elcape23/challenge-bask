@@ -61,35 +61,37 @@ export default function Menu({
 }: MenuProps) {
   return (
     <div
-      className={`relative flex w-full max-w-[362px] flex-col items-start pb-3 pt-20 ${className ?? ""}`}
+      className={`relative flex w-full flex-col items-start pb-3 pt-20 ${className ?? ""}`}
     >
       <TopBar
         className="absolute left-0 right-0 top-0"
-        paddingClassName="h-[68px] px-5"
+        paddingClassName="h-[68px] pl-3 pr-5"
         color="invert"
         state="background"
         showSwitch
         onClose={onClose}
       />
 
-      <div className="flex w-full flex-col gap-6 rounded-xl bg-background-fill-neutral-muted p-5 backdrop-blur-[10px]">
-        {sections.map((section) => (
-          <section key={section.title} className="flex w-full flex-col">
-            <p className="w-full text-body-01 font-medium text-text-primary-invert">
-              {section.title}
-            </p>
-            {section.items.map((item) => (
-              <CardContent
-                key={`${section.title}-${item.heading}`}
-                heading={item.heading}
-                description={item.description}
-                imageSrc={item.imageSrc}
-                imageAlt={item.heading}
-                type="menu"
-              />
-            ))}
-          </section>
-        ))}
+      <div className="w-full px-5">
+        <div className="flex w-full flex-col gap-6 rounded-xl bg-background-fill-neutral-muted px-5 py-5 backdrop-blur-[10px]">
+          {sections.map((section) => (
+            <section key={section.title} className="flex w-full flex-col">
+              <p className="w-full text-body-01 font-medium text-text-primary-invert">
+                {section.title}
+              </p>
+              {section.items.map((item) => (
+                <CardContent
+                  key={`${section.title}-${item.heading}`}
+                  heading={item.heading}
+                  description={item.description}
+                  imageSrc={item.imageSrc}
+                  imageAlt={item.heading}
+                  type="menu"
+                />
+              ))}
+            </section>
+          ))}
+        </div>
       </div>
     </div>
   );

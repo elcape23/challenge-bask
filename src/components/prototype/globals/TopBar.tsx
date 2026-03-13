@@ -82,7 +82,7 @@ export default function TopBar({
   const logoVariant = isInvert ? "invert" : "default";
   const resolvedPaddingClassName =
     paddingClassName ??
-    (isBackground && isInvert ? "h-[68px] pl-3 pr-5" : "px-5");
+    (isInvert ? "h-[68px] p-5" : "px-5");
   const barClasses = [
     "flex w-full items-center justify-between py-4",
     resolvedPaddingClassName,
@@ -96,7 +96,9 @@ export default function TopBar({
 
   const iconButtonVariant = "neutral";
   const iconButtonAppearance = "outlined";
-  const iconButtonClasses = "";
+  const iconButtonClasses = isBackground
+    ? "!border-0 !bg-background-fill-neutral-muted hover:!bg-background-fill-neutral-muted active:!bg-background-fill-neutral-muted backdrop-blur-[10px]"
+    : "";
 
   const iconClassName = isInvert ? "!text-icon-neutral-invert" : "text-inherit";
   const resolvedIconType = onBack ? "chevron-left" : onClose ? "x" : iconType ?? "chevron-left";

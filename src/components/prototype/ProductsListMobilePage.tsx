@@ -124,7 +124,7 @@ export default function ProductsListMobilePage() {
       </section>
 
       {isMenuOpen && (
-        <div className="absolute inset-0 z-20 flex items-start justify-center p-5">
+        <div className="absolute inset-0 z-20 flex items-start justify-center pb-5">
           <Menu
             className="max-w-none"
             onClose={() => setIsMenuOpen(false)}
