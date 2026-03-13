@@ -25,6 +25,7 @@ type ProductCardProps = {
   badgeLabel: string;
   badgeType: BadgeType;
   heightClassName?: string;
+  onClick?: () => void;
   onSecondaryClick?: () => void;
 };
 
@@ -38,10 +39,11 @@ function ProductCard({
   badgeLabel,
   badgeType,
   heightClassName,
+  onClick,
   onSecondaryClick,
 }: ProductCardProps) {
   return (
-    <div className="rounded-lg bg-background-surface-neutral-default p-3">
+    <div className="rounded-lg bg-background-surface-neutral-default p-3 cursor-pointer" onClick={onClick}>
       <RelatedCardContent
         className={heightClassName}
         heading={heading}
@@ -99,6 +101,7 @@ export default function ProductsListMobilePage() {
           imageAlt="Minoxidil 5% Topical bottle"
           badgeLabel="Bestseller"
           badgeType="neutral"
+          onClick={() => router.push("/prototype/product-detailed")}
           onSecondaryClick={() => router.push("/prototype/product-detailed")}
         />
 

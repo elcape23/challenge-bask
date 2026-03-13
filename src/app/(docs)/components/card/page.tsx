@@ -4,7 +4,6 @@ import { useState, type ReactNode } from "react";
 import DocHeader from "@/components/docs/DocHeader";
 import DocSection from "@/components/docs/DocSection";
 import DocTable from "@/components/docs/DocTable";
-import DocCallout from "@/components/docs/DocCallout";
 import DoDontGrid from "@/components/docs/DoDontGrid";
 import DocPreview from "@/components/docs/DocPreview";
 import DocAnatomy from "@/components/docs/DocAnatomy";
@@ -38,7 +37,7 @@ function TabBar({ active, onChange }: { active: TabName; onChange: (t: TabName) 
 function ColorSwatch({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="size-8 rounded-md border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
+      <div className="size-12 rounded-sm border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
       <div>
         <p className="text-body-02 font-medium">{label}</p>
         <p className="text-body-03 text-text-neutral-placeholder">{color}</p>
@@ -111,7 +110,8 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
 function OverviewTab() {
   return (
     <>
-      <DocSection title="Overview">
+      <div className="col-start-1">
+        <DocSection title="Overview">
         <p className="mb-4">
           Cards are flexible container components that group related content — a heading and
           an open slot — into a single, visually distinct surface. They work in grid, list,
@@ -123,8 +123,10 @@ function OverviewTab() {
           content, making the Card highly composable.
         </p>
       </DocSection>
+      </div>
 
-      <DocSection title="Anatomy">
+      <div className="col-span-2">
+        <DocSection title="Anatomy">
         <DocAnatomy
           items={[
             {
@@ -139,7 +141,7 @@ function OverviewTab() {
             },
           ]}
         />
-        <DocPreview title="Anatomy example">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare>
           <div className="flex items-end gap-6">
             <Card size="lg" heading="Heading" style={{ width: 200, height: 240 }}>
               <div className="w-full h-full rounded-sm bg-neutral-200 flex items-center justify-center text-body-03 text-text-neutral-placeholder">
@@ -149,9 +151,12 @@ function OverviewTab() {
           </div>
         </DocPreview>
       </DocSection>
+      </div>
 
-      <DocSection title="Sizes">
+      <div className="col-span-2">
+        <DocSection title="Sizes" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Size", "Padding", "Gap", "Radius", "Border", "Heading Typography"]}
           rows={[
             ["Large (lg)", "20px (space-5)", "12px (space-3)", "20px (xl)", "1px solid", "Heading/06/Medium — 19px/24px/500"],
@@ -159,7 +164,8 @@ function OverviewTab() {
             ["Small (sm)", "8px (space-2)", "4px (space-1)", "16px (lg)", "1px solid", "Body/02/Medium — 13px/16px/500"],
           ]}
         />
-        <DocPreview title="Size comparison">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex items-end gap-6">
             <div className="text-center">
               <Card size="lg" heading="Heading" style={{ width: 200, height: 240 }}>
@@ -180,11 +186,15 @@ function OverviewTab() {
               <p className="mt-2 text-body-03 text-text-neutral-placeholder">sm</p>
             </div>
           </div>
-        </DocPreview>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Backgrounds">
+      <div className="col-span-2">
+        <DocSection title="Backgrounds" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Background", "Treatment", "When to use"]}
           rows={[
             ["Solid", "Surface neutral fill (#f1f2ec) with optional border", "Default — standard cards on page backgrounds."],
@@ -192,7 +202,8 @@ function OverviewTab() {
             ["Transparent", "No fill, no border, reduced padding", "Lightweight grouping where visual weight should be minimal."],
           ]}
         />
-        <DocPreview title="Background variants (lg)">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex items-end gap-6">
             <div className="text-center">
               <Card size="lg" background="solid" heading="Solid" style={{ width: 200, height: 240 }}>
@@ -214,15 +225,19 @@ function OverviewTab() {
               <p className="mt-2 text-body-03 text-text-neutral-placeholder">transparent</p>
             </div>
           </div>
-        </DocPreview>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Show Heading">
+      <div className="col-span-2">
+        <DocSection title="Show Heading">
         <p className="mb-4">
           The <code>showHeading</code> prop toggles the heading sub-component. When hidden,
           the slot fills the entire card.
         </p>
-        <DocPreview title="With heading vs Without heading">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex items-end gap-6">
             <Card size="lg" showHeading heading="Heading" style={{ width: 200, height: 240 }}>
               <div className="w-full h-full rounded-sm bg-neutral-200 flex items-center justify-center text-body-03 text-text-neutral-placeholder">
@@ -235,10 +250,13 @@ function OverviewTab() {
               </div>
             </Card>
           </div>
-        </DocPreview>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Accessibility">
+      <div className="col-span-2">
+        <DocSection title="Accessibility">
         <ul className="pl-5 mb-4">
           <li className="mb-2">
             Cards are non-interactive containers by default — they don&apos;t receive focus.
@@ -254,9 +272,15 @@ function OverviewTab() {
           </li>
         </ul>
       </DocSection>
+      </div>
 
-      <DocSection title="Usage guidelines">
-        <DoDontGrid
+      <div className="col-span-2">
+        <DocSection title="Usage guidelines">
+          <div
+            className="overflow-hidden flex flex-row gap-10 w-full items-start justify-between"
+            style={{ backgroundColor: "#FFFFFF", padding: "200px" }}
+          >
+            <DoDontGrid
           doItems={[
             { description: "Use cards to group a heading and related slot content." },
             { description: "Choose the size that matches your layout density." },
@@ -270,7 +294,9 @@ function OverviewTab() {
             { description: "Don't remove the heading if the slot content lacks context." },
           ]}
         />
-      </DocSection>
+          </div>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -278,24 +304,28 @@ function OverviewTab() {
 function DesignTokensTab() {
   return (
     <>
-      <DocSection title="Color Tokens">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens">
         <TokenGroup title="Solid background">
-          <ColorSwatch color="#f1f2ec" label="bg / surface / neutral / default" />
-          <ColorSwatch color="#b7bbaf" label="border / neutral / default" />
-          <ColorSwatch color="#1c1f1b" label="text / neutral / default" />
+          <ColorSwatch color="#F1F2EC" label="bg / surface / neutral / default" />
+          <ColorSwatch color="#B7BBAF" label="border / neutral / default" />
+          <ColorSwatch color="#1C1F1B" label="text / neutral / default" />
         </TokenGroup>
         <TokenGroup title="Blur background">
           <ColorSwatch color="rgba(28,31,27,0.4)" label="bg / fill / neutral / muted" />
-          <ColorSwatch color="#f1f2ec" label="text / neutral / invert" />
+          <ColorSwatch color="#F1F2EC" label="text / neutral / invert" />
         </TokenGroup>
         <TokenGroup title="Transparent background">
           <ColorSwatch color="transparent" label="No fill" />
-          <ColorSwatch color="#1c1f1b" label="text / neutral / default" />
+          <ColorSwatch color="#1C1F1B" label="text / neutral / default" />
         </TokenGroup>
       </DocSection>
+      </div>
 
-      <DocSection title="Typography Tokens">
+      <div className="col-span-2">
+        <DocSection title="Typography Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Size", "Token", "Font Size", "Line Height", "Weight"]}
           rows={[
             ["lg", "Heading/06/Medium", "19px", "24px", "500 (medium)"],
@@ -303,13 +333,13 @@ function DesignTokensTab() {
             ["sm", "Body/02/Medium", "13px", "16px", "500 (medium)"],
           ]}
         />
-        <DocCallout variant="info" title="Font family">
-          All heading text uses <code>Suisse Intl Trial</code> (Medium weight) via the <code>font/family/default</code> token.
-        </DocCallout>
       </DocSection>
+      </div>
 
-      <DocSection title="Spacing Tokens">
+      <div className="col-span-2">
+        <DocSection title="Spacing Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Token (lg)", "Value (lg)", "Token (md)", "Value (md)", "Token (sm)", "Value (sm)"]}
           rows={[
             ["Padding", "spacing/space-5", "20px", "spacing/space-3", "12px", "spacing/space-2", "8px"],
@@ -318,9 +348,12 @@ function DesignTokensTab() {
           ]}
         />
       </DocSection>
+      </div>
 
-      <DocSection title="Border & Radius Tokens">
+      <div className="col-span-2">
+        <DocSection title="Border & Radius Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Token (lg)", "Value (lg)", "Token (md/sm)", "Value (md/sm)"]}
           rows={[
             ["Border radius", "border-radius/xl", "20px", "border-radius/lg", "16px"],
@@ -328,15 +361,19 @@ function DesignTokensTab() {
           ]}
         />
       </DocSection>
+      </div>
 
-      <DocSection title="Blur Token">
+      <div className="col-span-2">
+        <DocSection title="Blur Token" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Token", "Value"]}
           rows={[
             ["Backdrop blur", "Blur/blur-20", "20px"],
           ]}
         />
       </DocSection>
+      </div>
     </>
   );
 }
@@ -344,8 +381,10 @@ function DesignTokensTab() {
 function StylesTab() {
   return (
     <>
-      <DocSection title="All Sizes — Solid">
-        <DocPreview title="lg / md / sm (solid background)">
+      <div className="col-span-2">
+        <DocSection title="All Sizes — Solid">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex items-end gap-6">
             <Card size="lg" background="solid" heading="Large" style={{ width: 200, height: 240 }}>
               <div className="w-full h-full rounded-sm bg-neutral-200" />
@@ -357,16 +396,20 @@ function StylesTab() {
               <div className="w-full h-full rounded-sm bg-neutral-200" />
             </Card>
           </div>
-        </DocPreview>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Background Variants (lg)">
-        <DocPreview title="Solid">
+      <div className="col-span-2">
+        <DocSection title="Background Variants (lg)">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <Card size="lg" background="solid" heading="Solid Card" style={{ width: 200, height: 240 }}>
             <div className="w-full h-full rounded-sm bg-neutral-200" />
           </Card>
-        </DocPreview>
-        <DocPreview title="Blur (on gradient)">
+          </DocPreview>
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="relative" style={{ width: 200, height: 240 }}>
             <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary-400 to-primary-800" />
             <Card size="lg" background="blur" heading="Blur Card" style={{ width: 200, height: 240, position: "relative" }}>
@@ -374,15 +417,19 @@ function StylesTab() {
             </Card>
           </div>
         </DocPreview>
-        <DocPreview title="Transparent">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <Card size="lg" background="transparent" heading="Transparent Card" style={{ width: 200, height: 240 }}>
             <div className="w-full h-full rounded-sm bg-neutral-200" />
           </Card>
-        </DocPreview>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="With & Without Heading">
-        <DocPreview title="Heading visible (default)">
+      <div className="col-span-2">
+        <DocSection title="With & Without Heading">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex items-end gap-6">
             <Card size="lg" showHeading heading="Heading" style={{ width: 200, height: 240 }}>
               <div className="w-full h-full rounded-sm bg-neutral-200" />
@@ -394,8 +441,8 @@ function StylesTab() {
               <div className="w-full h-full rounded-sm bg-neutral-200" />
             </Card>
           </div>
-        </DocPreview>
-        <DocPreview title="Heading hidden">
+          </DocPreview>
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex items-end gap-6">
             <Card size="lg" showHeading={false} style={{ width: 200, height: 240 }}>
               <div className="w-full h-full rounded-sm bg-neutral-200" />
@@ -407,11 +454,15 @@ function StylesTab() {
               <div className="w-full h-full rounded-sm bg-neutral-200" />
             </Card>
           </div>
-        </DocPreview>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="In Context">
-        <DocPreview title="Dashboard cards grid">
+      <div className="col-span-2">
+        <DocSection title="In Context">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="grid grid-cols-3 gap-4" style={{ maxWidth: 640 }}>
             <Card size="md" heading="Revenue" style={{ height: 160 }}>
               <p className="text-heading-05 font-bold text-text-neutral-default">$24.5k</p>
@@ -423,8 +474,10 @@ function StylesTab() {
               <p className="text-heading-05 font-bold text-text-neutral-default">87</p>
             </Card>
           </div>
-        </DocPreview>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
     </>
   );
 }
@@ -451,7 +504,7 @@ function PropertiesTab() {
 </Card>`;
 
   return (
-    <>
+    <div className="col-span-2">
       <DocSection title="Interactive Playground">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Preview */}
@@ -525,8 +578,9 @@ function PropertiesTab() {
         </div>
       </DocSection>
 
-      <DocSection title="Props Reference">
+      <DocSection title="Props Reference" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             ["size", '"lg" | "md" | "sm"', '"lg"', "Size variant — affects padding, gap, radius, border, and heading typography."],
@@ -539,40 +593,9 @@ function PropertiesTab() {
         />
       </DocSection>
 
-      <DocSection title="Code Examples">
-        <DocPreview title="Basic card">
-          <Card size="lg" heading="Patient Overview" style={{ width: 280 }}>
-            <div className="space-y-1">
-              <p className="text-body-02 text-text-neutral-default">Dr. Jane Smith</p>
-              <p className="text-body-03 text-text-neutral-placeholder">Cardiologist · Room 204</p>
-            </div>
-          </Card>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Card size="lg" heading="Patient Overview">
-  <div className="space-y-1">
-    <p>Dr. Jane Smith</p>
-    <p>Cardiologist · Room 204</p>
-  </div>
-</Card>`}</code>
-        </pre>
-
-        <DocPreview title="Small card without heading">
-          <Card size="sm" showHeading={false} style={{ width: 100, height: 100 }}>
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="text-heading-06 font-bold text-text-neutral-default">42</span>
-            </div>
-          </Card>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Card size="sm" showHeading={false}>
-  <span className="text-heading-06 font-bold">42</span>
-</Card>`}</code>
-        </pre>
-      </DocSection>
-
-      <DocSection title="Validation & Constraints">
+      <DocSection title="Validation & Constraints" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Rule", "Details"]}
           rows={[
             ["Slot required", "Cards should contain meaningful children — an empty card has no purpose."],
@@ -582,7 +605,7 @@ function PropertiesTab() {
           ]}
         />
       </DocSection>
-    </>
+    </div>
   );
 }
 
@@ -594,13 +617,16 @@ export default function CardPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <div className="col-span-2 flex flex-col">
-      <DocHeader
-        title="Card"
-        description="Cards are flexible container components that group a heading and slot content into a visually distinct surface with size, background, and heading controls."
-      />
+    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-10">
+      <div className="col-start-1 flex flex-col">
+        <DocHeader
+          title="Card"
+          description="Cards are flexible container components that group a heading and slot content into a visually distinct surface with size, background, and heading controls."
+          variant="foundations"
+        />
 
-      <TabBar active={activeTab} onChange={setActiveTab} />
+        <TabBar active={activeTab} onChange={setActiveTab} />
+      </div>
 
       {activeTab === "Overview" && <OverviewTab />}
       {activeTab === "Design Tokens" && <DesignTokensTab />}

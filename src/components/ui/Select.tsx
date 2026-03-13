@@ -1,15 +1,12 @@
 "use client";
 
+import * as SelectPrimitive from "@radix-ui/react-select";
 import {
   forwardRef,
-  useCallback,
-  useEffect,
   useId,
-  useRef,
   useState,
-  type KeyboardEvent,
-  type ReactNode,
 } from "react";
+import Icon from "@/components/ui/Icon";
 
 export type SelectSize = "md" | "sm";
 export type SelectState = "default" | "error";
@@ -31,7 +28,7 @@ export interface SelectProps {
   placeholder?: string;
   /** Helper text displayed below the trigger */
   helperText?: string;
-  /** Error message — replaces helper text when state is "error" */
+  /** Error message replaces helper text when state is "error" */
   errorMessage?: string;
   /** List of options to display */
   options?: SelectOption[];
@@ -49,17 +46,17 @@ export interface SelectProps {
   id?: string;
 }
 
-const SIZE_HEIGHT: Record<SelectSize, string> = {
+const SIZE_TRIGGER_HEIGHT: Record<SelectSize, string> = {
   md: "h-10",
   sm: "h-8",
 };
 
-const SIZE_PADDING: Record<SelectSize, string> = {
-  md: "px-3",
-  sm: "px-3",
+const SIZE_TRIGGER_PADDING: Record<SelectSize, string> = {
+  md: "px-4",
+  sm: "px-4",
 };
 
-const SIZE_TEXT: Record<SelectSize, string> = {
+const SIZE_TRIGGER_TEXT: Record<SelectSize, string> = {
   md: "text-body-01",
   sm: "text-body-02",
 };
@@ -69,9 +66,9 @@ const SIZE_RADIUS: Record<SelectSize, string> = {
   sm: "rounded-sm",
 };
 
-const SIZE_ICON: Record<SelectSize, string> = {
-  md: "size-5",
-  sm: "size-4",
+const SIZE_ICON: Record<SelectSize, "md" | "sm"> = {
+  md: "md",
+  sm: "sm",
 };
 
 const LABEL_TEXT: Record<SelectSize, string> = {
@@ -89,40 +86,31 @@ const OPTION_TEXT: Record<SelectSize, string> = {
   sm: "text-body-02",
 };
 
-const OPTION_PADDING: Record<SelectSize, string> = {
-  md: "px-3 py-2",
-  sm: "px-3 py-1.5",
+const POSITION_PADDING: Record<SelectSize, string> = {
+  md: "py-2",
+  sm: "py-2",
 };
 
-function ChevronDownIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 20 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 7.5L10 12.5L15 7.5" />
-    </svg>
-  );
-}
+const EMPTY_TEXT_PADDING: Record<SelectSize, string> = {
+  md: "px-4 py-2",
+  sm: "px-4 py-2",
+};
 
-function CheckIcon() {
+function TriggerIcon({
+  open,
+  size,
+  disabled,
+}: {
+  open: boolean;
+  size: "md" | "sm";
+  disabled?: boolean;
+}) {
   return (
-    <svg
-      className="size-4 shrink-0"
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M3 8.5L6.5 12L13 4" />
-    </svg>
+    <Icon
+      type={open ? "chevron-up" : "chevron-down"}
+      size={size}
+      className={`ml-2 shrink-0 ${disabled ? "text-icon-neutral-disabled" : "text-icon-neutral-secondary"}`}
+    />
   );
 }
 
@@ -147,175 +135,14 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
   ) => {
     const autoId = useId();
     const triggerId = externalId ?? autoId;
-    const listboxId = `${triggerId}-listbox`;
     const helperId = `${triggerId}-helper`;
+    const [open, setOpen] = useState(false);
 
-    const isControlled = value !== undefined;
-    const [internalValue, setInternalValue] = useState(defaultValue ?? "");
-    const resolvedValue = isControlled ? value : internalValue;
-
-    const [isOpen, setIsOpen] = useState(false);
-    const [activeIndex, setActiveIndex] = useState(-1);
-
-    const rootRef = useRef<HTMLDivElement>(null);
-    const triggerRef = useRef<HTMLButtonElement>(null);
-    const listboxRef = useRef<HTMLUListElement>(null);
-
-    useEffect(() => {
-      if (forwardedRef) {
-        if (typeof forwardedRef === "function") {
-          forwardedRef(triggerRef.current);
-        } else {
-          (forwardedRef as React.MutableRefObject<HTMLButtonElement | null>).current =
-            triggerRef.current;
-        }
-      }
-    }, [forwardedRef]);
-
-    const selectedOption = options.find((o) => o.value === resolvedValue);
     const isError = state === "error";
     const bottomText = isError ? errorMessage : helperText;
 
-    const enabledOptions = options.filter((o) => !o.disabled);
-
-    const selectValue = useCallback(
-      (val: string) => {
-        if (!isControlled) setInternalValue(val);
-        onChange?.(val);
-        setIsOpen(false);
-        triggerRef.current?.focus();
-      },
-      [isControlled, onChange]
-    );
-
-    const openDropdown = useCallback(() => {
-      if (disabled) return;
-      setIsOpen(true);
-      const idx = enabledOptions.findIndex((o) => o.value === resolvedValue);
-      if (idx >= 0) {
-        setActiveIndex(options.indexOf(enabledOptions[idx]));
-      } else {
-        const firstEnabledIdx = options.findIndex((o) => !o.disabled);
-        setActiveIndex(firstEnabledIdx >= 0 ? firstEnabledIdx : 0);
-      }
-    }, [disabled, enabledOptions, options, resolvedValue]);
-
-    const closeDropdown = useCallback(() => {
-      setIsOpen(false);
-      setActiveIndex(-1);
-    }, []);
-
-    useEffect(() => {
-      if (!isOpen) return;
-      function handleOutsideClick(e: MouseEvent) {
-        if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
-          closeDropdown();
-        }
-      }
-      document.addEventListener("mousedown", handleOutsideClick);
-      return () => document.removeEventListener("mousedown", handleOutsideClick);
-    }, [isOpen, closeDropdown]);
-
-    useEffect(() => {
-      if (!isOpen || activeIndex < 0 || !listboxRef.current) return;
-      const activeEl = listboxRef.current.children[activeIndex] as HTMLElement | undefined;
-      activeEl?.scrollIntoView({ block: "nearest" });
-    }, [isOpen, activeIndex]);
-
-    const handleTriggerKeyDown = useCallback(
-      (e: KeyboardEvent<HTMLButtonElement>) => {
-        if (disabled) return;
-
-        switch (e.key) {
-          case "ArrowDown":
-          case "ArrowUp":
-          case "Enter":
-          case " ":
-            e.preventDefault();
-            if (!isOpen) {
-              openDropdown();
-            }
-            break;
-          case "Escape":
-            if (isOpen) {
-              e.preventDefault();
-              closeDropdown();
-            }
-            break;
-        }
-      },
-      [disabled, isOpen, openDropdown, closeDropdown]
-    );
-
-    const handleListKeyDown = useCallback(
-      (e: React.KeyboardEvent<HTMLUListElement>) => {
-        switch (e.key) {
-          case "ArrowDown": {
-            e.preventDefault();
-            let next = activeIndex + 1;
-            while (next < options.length && options[next].disabled) next++;
-            if (next < options.length) setActiveIndex(next);
-            break;
-          }
-          case "ArrowUp": {
-            e.preventDefault();
-            let prev = activeIndex - 1;
-            while (prev >= 0 && options[prev].disabled) prev--;
-            if (prev >= 0) setActiveIndex(prev);
-            break;
-          }
-          case "Home":
-            e.preventDefault();
-            for (let i = 0; i < options.length; i++) {
-              if (!options[i].disabled) {
-                setActiveIndex(i);
-                break;
-              }
-            }
-            break;
-          case "End":
-            e.preventDefault();
-            for (let i = options.length - 1; i >= 0; i--) {
-              if (!options[i].disabled) {
-                setActiveIndex(i);
-                break;
-              }
-            }
-            break;
-          case "Enter":
-          case " ":
-            e.preventDefault();
-            if (activeIndex >= 0 && !options[activeIndex].disabled) {
-              selectValue(options[activeIndex].value);
-            }
-            break;
-          case "Escape":
-            e.preventDefault();
-            closeDropdown();
-            triggerRef.current?.focus();
-            break;
-          case "Tab":
-            closeDropdown();
-            break;
-        }
-      },
-      [activeIndex, options, selectValue, closeDropdown]
-    );
-
-    useEffect(() => {
-      if (isOpen && listboxRef.current) {
-        listboxRef.current.focus();
-      }
-    }, [isOpen]);
-
-    const borderColor = isError
-      ? "border-border-danger-default"
-      : isOpen
-        ? "border-border-primary-default shadow-focus"
-        : "border-border-neutral-default hover:border-border-neutral-hover";
-
     return (
-      <div ref={rootRef} className={`relative flex flex-col ${className ?? ""}`}>
+      <div className={`relative flex w-full flex-col ${className ?? ""}`}>
         {label && (
           <label
             htmlFor={triggerId}
@@ -327,116 +154,87 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
           </label>
         )}
 
-        <div className="relative">
-        <button
-          ref={triggerRef}
-          id={triggerId}
-          type="button"
-          role="combobox"
-          aria-expanded={isOpen}
-          aria-haspopup="listbox"
-          aria-controls={isOpen ? listboxId : undefined}
-          aria-invalid={isError || undefined}
-          aria-describedby={bottomText ? helperId : undefined}
-          aria-activedescendant={
-            isOpen && activeIndex >= 0
-              ? `${listboxId}-option-${activeIndex}`
-              : undefined
-          }
+        <SelectPrimitive.Root
+          value={value}
+          defaultValue={defaultValue}
+          onValueChange={onChange}
+          open={open}
+          onOpenChange={setOpen}
           disabled={disabled}
-          onClick={() => (isOpen ? closeDropdown() : openDropdown())}
-          onKeyDown={handleTriggerKeyDown}
-          className={[
-            "flex items-center justify-between border bg-white transition-colors cursor-pointer",
-            SIZE_HEIGHT[size],
-            SIZE_PADDING[size],
-            SIZE_RADIUS[size],
-            disabled
-              ? "border-border-neutral-disabled !cursor-not-allowed bg-background-surface-neutral-default"
-              : borderColor,
-            "focus-visible:shadow-focus focus-visible:border-border-primary-default focus-visible:outline-none",
-          ].join(" ")}
         >
-          <span
+          <SelectPrimitive.Trigger
+            ref={forwardedRef}
+            id={triggerId}
+            aria-invalid={isError || undefined}
+            aria-describedby={bottomText ? helperId : undefined}
             className={[
-              SIZE_TEXT[size],
-              "truncate",
-              disabled
-                ? "text-text-neutral-disabled"
-                : selectedOption
-                  ? "text-text-neutral-default"
-                  : "text-text-neutral-placeholder",
-            ].join(" ")}
-          >
-            {selectedOption ? selectedOption.label : placeholder}
-          </span>
-          <ChevronDownIcon
-            className={[
-              "shrink-0 transition-transform ml-2",
-              SIZE_ICON[size],
-              disabled ? "text-icon-neutral-disabled" : "text-icon-neutral-secondary",
-              isOpen ? "rotate-180" : "",
-            ].join(" ")}
-          />
-        </button>
-
-        {isOpen && (
-          <ul
-            ref={listboxRef}
-            id={listboxId}
-            role="listbox"
-            tabIndex={-1}
-            aria-labelledby={triggerId}
-            onKeyDown={handleListKeyDown}
-            className={[
-              "absolute z-50 left-0 right-0 top-full mt-1 border border-border-neutral-default bg-white overflow-auto outline-none",
+              "flex w-full items-center justify-between border bg-background-default-default text-text-neutral-default transition-colors outline-none data-[placeholder]:text-text-neutral-placeholder",
+              SIZE_TRIGGER_HEIGHT[size],
+              SIZE_TRIGGER_PADDING[size],
+              SIZE_TRIGGER_TEXT[size],
               SIZE_RADIUS[size],
-              "shadow-md max-h-60",
+              disabled
+                ? "cursor-not-allowed border-border-neutral-disabled bg-background-surface-neutral-default opacity-50"
+                : isError
+                  ? "border-border-danger-default"
+                  : "border-border-neutral-default hover:border-border-neutral-hover data-[state=open]:border-[var(--color-neutral-800)] focus-visible:border-[var(--color-neutral-800)]",
             ].join(" ")}
           >
-            {options.map((option, idx) => {
-              const isSelected = option.value === resolvedValue;
-              const isActive = idx === activeIndex;
+            <SelectPrimitive.Value
+              placeholder={placeholder}
+              className={[
+                "truncate text-left",
+                SIZE_TRIGGER_TEXT[size],
+              ].join(" ")}
+            />
+            <SelectPrimitive.Icon asChild>
+              <span>
+                <TriggerIcon open={open} size={SIZE_ICON[size]} disabled={disabled} />
+              </span>
+            </SelectPrimitive.Icon>
+          </SelectPrimitive.Trigger>
 
-              return (
-                <li
-                  key={option.value}
-                  id={`${listboxId}-option-${idx}`}
-                  role="option"
-                  aria-selected={isSelected}
-                  aria-disabled={option.disabled || undefined}
-                  onMouseEnter={() => !option.disabled && setActiveIndex(idx)}
-                  onClick={() => {
-                    if (!option.disabled) selectValue(option.value);
-                  }}
-                  className={[
-                    "flex items-center justify-between cursor-pointer transition-colors",
-                    OPTION_PADDING[size],
-                    OPTION_TEXT[size],
-                    option.disabled
-                      ? "text-text-neutral-disabled cursor-not-allowed"
-                      : isActive
-                        ? "bg-background-surface-neutral-default text-text-neutral-default"
-                        : "text-text-neutral-default hover:bg-background-surface-neutral-default",
-                  ].join(" ")}
-                >
-                  <span className="truncate">{option.label}</span>
-                  {isSelected && (
-                    <span className={`ml-2 ${option.disabled ? "text-icon-neutral-disabled" : "text-icon-primary-default"}`}>
-                      <CheckIcon />
-                    </span>
-                  )}
-                </li>
-              );
-            })}
-            {options.length === 0 && (
-              <li className={`${OPTION_PADDING[size]} ${OPTION_TEXT[size]} text-text-neutral-placeholder`}>
-                No options available
-              </li>
-            )}
-          </ul>
-        )}
-        </div>
+          <SelectPrimitive.Portal>
+            <SelectPrimitive.Content
+              position="popper"
+              sideOffset={4}
+              className={[
+                "z-50 max-h-60 w-[var(--radix-select-trigger-width)] overflow-auto rounded-sm bg-background-default-default px-4 py-2 shadow-md outline-none",
+                "data-[state=open]:animate-in data-[state=closed]:animate-out",
+                "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0",
+                "data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95",
+                "data-[side=bottom]:slide-in-from-top-1 data-[side=top]:slide-in-from-bottom-1",
+              ].join(" ")}
+            >
+              <SelectPrimitive.Viewport>
+                {options.length === 0 ? (
+                  <div className={`${EMPTY_TEXT_PADDING[size]} ${OPTION_TEXT[size]} text-text-neutral-placeholder`}>
+                    No options available
+                  </div>
+                ) : (
+                  options.map((option) => (
+                    <SelectPrimitive.Item
+                      key={option.value}
+                      value={option.value}
+                      disabled={option.disabled}
+                      className={[
+                        "flex min-h-5 cursor-pointer items-center outline-none",
+                        POSITION_PADDING[size],
+                        OPTION_TEXT[size],
+                        "text-text-neutral-default",
+                        "data-[highlighted]:bg-background-surface-neutral-default data-[highlighted]:text-text-neutral-default",
+                        "data-[state=checked]:bg-background-surface-neutral-default data-[state=checked]:text-text-neutral-default",
+                        "data-[disabled]:cursor-not-allowed data-[disabled]:text-text-neutral-disabled",
+                      ].join(" ")}
+                    >
+                      <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
+                    </SelectPrimitive.Item>
+                  ))
+                )}
+              </SelectPrimitive.Viewport>
+            </SelectPrimitive.Content>
+          </SelectPrimitive.Portal>
+        </SelectPrimitive.Root>
 
         {bottomText && (
           <p
@@ -461,4 +259,5 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
 );
 
 Select.displayName = "Select";
+
 export default Select;

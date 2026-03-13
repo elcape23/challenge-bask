@@ -38,7 +38,7 @@ function TabBar({ active, onChange }: { active: TabName; onChange: (t: TabName) 
 function ColorSwatch({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="size-8 rounded-md border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
+      <div className="size-12 rounded-sm border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
       <div>
         <p className="text-body-02 font-medium">{label}</p>
         <p className="text-body-03 text-text-neutral-placeholder">{color}</p>
@@ -111,7 +111,8 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
 function OverviewTab() {
   return (
     <>
-      <DocSection title="Overview">
+      <div className="col-start-1">
+        <DocSection title="Overview">
         <p className="mb-4">
           The Counter component lets users adjust a numeric value incrementally,
           providing a controlled way to set quantities or amounts. It combines a
@@ -124,9 +125,11 @@ function OverviewTab() {
           setting where stepping by 1 (or a fixed amount) is the primary
           interaction.
         </p>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Anatomy">
+      <div className="col-span-2">
+        <DocSection title="Anatomy">
         <DocAnatomy
           items={[
             {
@@ -151,22 +154,26 @@ function OverviewTab() {
             },
           ]}
         />
-        <DocPreview title="Anatomy example">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare>
           <div className="flex items-center gap-6">
             <Counter size="md" defaultValue={3} />
           </div>
         </DocPreview>
       </DocSection>
+      </div>
 
-      <DocSection title="Sizes">
+      <div className="col-span-2">
+        <DocSection title="Sizes" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Size", "Button", "Value min-width", "Value typography", "Button icon"]}
           rows={[
             ["Medium (md)", "40×40px", "48px", "Body/02/Medium — 13px/16px/500", "16×16px"],
             ["Small (sm)", "32×32px", "40px", "Body/03/Medium — 11px/12px/500", "16×16px"],
           ]}
         />
-        <DocPreview title="Size comparison">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex items-center gap-6">
             <div className="flex flex-col items-start gap-1">
               <span className="text-body-03 text-text-neutral-placeholder">md</span>
@@ -178,10 +185,14 @@ function OverviewTab() {
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="States">
+      <div className="col-span-2">
+        <DocSection title="States" hideTitle>
         <DocTable
+          variant="surface"
           headers={["State", "Visual", "Description"]}
           rows={[
             ["Default", "All controls interactive", "Value is within the min/max range. Both buttons are enabled."],
@@ -191,7 +202,8 @@ function OverviewTab() {
             ["Disabled", "Entire counter at 50% opacity", "Non-interactive. Value and buttons are all muted."],
           ]}
         />
-        <DocPreview title="State examples">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-wrap items-center gap-6">
             <div className="flex flex-col items-start gap-1">
               <span className="text-body-03 text-text-neutral-placeholder">Default</span>
@@ -211,9 +223,12 @@ function OverviewTab() {
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Behavior">
+      <div className="col-span-2">
+        <DocSection title="Behavior">
         <p className="mb-4">
           Counters enforce min and max bounds. When the value reaches the
           minimum, the decrement button is disabled; when it reaches the
@@ -226,8 +241,10 @@ function OverviewTab() {
           announce changes.
         </DocCallout>
       </DocSection>
+      </div>
 
-      <DocSection title="Accessibility">
+      <div className="col-span-2">
+        <DocSection title="Accessibility">
         <ul className="pl-5 mb-4">
           <li className="mb-2">
             The container uses <code>role=&quot;group&quot;</code> with an <code>aria-label</code> of &quot;Counter&quot;.
@@ -246,8 +263,14 @@ function OverviewTab() {
           </li>
         </ul>
       </DocSection>
+      </div>
 
-      <DocSection title="Usage guidelines">
+      <div className="col-span-2">
+        <DocSection title="Usage guidelines">
+          <div
+            className="overflow-hidden flex flex-row gap-10 w-full items-start justify-between"
+            style={{ backgroundColor: "#FFFFFF", padding: "200px" }}
+          >
         <DoDontGrid
           doItems={[
             { description: "Disable the decrement button at min and increment at max." },
@@ -262,7 +285,9 @@ function OverviewTab() {
             { description: "Don't hide the current value — it must always be visible." },
           ]}
         />
-      </DocSection>
+          </div>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -270,40 +295,50 @@ function OverviewTab() {
 function DesignTokensTab() {
   return (
     <>
-      <DocSection title="Color Tokens — Container">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Container">
         <TokenGroup title="Border & background">
-          <ColorSwatch color="#b7bbaf" label="border / neutral / default" />
+          <ColorSwatch color="#B7BBAF" label="border / neutral / default" />
           <ColorSwatch color="transparent" label="background (transparent)" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Buttons">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Buttons">
         <TokenGroup title="Icon color">
-          <ColorSwatch color="#4e534d" label="icon / neutral / secondary" />
+          <ColorSwatch color="#4E534D" label="icon / neutral / secondary" />
         </TokenGroup>
         <TokenGroup title="Hover / Active">
-          <ColorSwatch color="#d3d6cc" label="bg / surface / neutral / hover" />
-          <ColorSwatch color="#e4e6de" label="bg / fill / neutral / default" />
+          <ColorSwatch color="#D3D6CC" label="bg / surface / neutral / hover" />
+          <ColorSwatch color="#E4E6DE" label="bg / fill / neutral / default" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Value">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Value">
         <TokenGroup title="Text">
-          <ColorSwatch color="#1c1f1b" label="text / neutral / default" />
+          <ColorSwatch color="#1C1F1B" label="text / neutral / default" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Disabled">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Disabled">
         <TokenGroup title="Whole component">
           <ColorSwatch color="rgba(0,0,0,0.5)" label="opacity-50 on container" />
         </TokenGroup>
         <TokenGroup title="Individual button disabled (at bounds)">
           <ColorSwatch color="rgba(0,0,0,0.5)" label="opacity-50 on button" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Typography Tokens">
+      <div className="col-span-2">
+        <DocSection title="Typography Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Size", "Element", "Token", "Font Size", "Line Height", "Weight"]}
           rows={[
             ["md", "Value", "Body/02/Medium", "13px", "16px", "500 (medium)"],
@@ -312,10 +347,13 @@ function DesignTokensTab() {
             ["sm", "Button icon", "Body/02/Medium", "13px", "16px", "500"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Spacing Tokens">
+      <div className="col-span-2">
+        <DocSection title="Spacing Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Token (md)", "Value (md)", "Token (sm)", "Value (sm)"]}
           rows={[
             ["Button width × height", "—", "40×40px", "—", "32×32px"],
@@ -324,18 +362,22 @@ function DesignTokensTab() {
             ["Value min-width", "—", "48px", "—", "40px"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Border & Radius Tokens">
+      <div className="col-span-2">
+        <DocSection title="Border & Radius Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Token", "Value"]}
           rows={[
-            ["Container border", "border/neutral/default", "1px solid #b7bbaf"],
+            ["Container border", "border/neutral/default", "1px solid #B7BBAF"],
             ["Container radius", "border-radius/md", "12px"],
-            ["Button separator", "border/neutral/default", "1px solid #b7bbaf"],
+            ["Button separator", "border/neutral/default", "1px solid #B7BBAF"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -343,8 +385,10 @@ function DesignTokensTab() {
 function StylesTab() {
   return (
     <>
-      <DocSection title="Medium (md) — All States">
-        <DocPreview title="Default / At min / At max / Disabled">
+      <div className="col-span-2">
+        <DocSection title="Medium (md) — All States">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-wrap items-center gap-6">
             <Counter size="md" defaultValue={3} min={0} max={10} />
             <Counter size="md" defaultValue={0} min={0} max={10} />
@@ -352,10 +396,14 @@ function StylesTab() {
             <Counter size="md" defaultValue={5} disabled />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Small (sm) — All States">
-        <DocPreview title="Default / At min / At max / Disabled">
+      <div className="col-span-2">
+        <DocSection title="Small (sm) — All States">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-wrap items-center gap-6">
             <Counter size="sm" defaultValue={3} min={0} max={10} />
             <Counter size="sm" defaultValue={0} min={0} max={10} />
@@ -363,10 +411,14 @@ function StylesTab() {
             <Counter size="sm" defaultValue={5} disabled />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Size Comparison">
-        <DocPreview title="md vs sm side by side">
+      <div className="col-span-2">
+        <DocSection title="Size Comparison">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <span className="text-body-03 text-text-neutral-placeholder w-8">md</span>
@@ -378,25 +430,35 @@ function StylesTab() {
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Custom Range">
-        <DocPreview title="Min 1 / Max 5 / Step 1">
+      <div className="col-span-2">
+        <DocSection title="Custom Range">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <Counter size="md" defaultValue={1} min={1} max={5} />
         </DocPreview>
-        <DocPreview title="Step of 5 (0–50)">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <Counter size="md" defaultValue={10} min={0} max={50} step={5} />
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="In Context — Quantity Selector">
-        <DocPreview title="Product quantity">
+      <div className="col-span-2">
+        <DocSection title="In Context — Quantity Selector">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex items-center gap-4" style={{ maxWidth: 320 }}>
             <span className="text-body-01 font-medium text-text-neutral-default">Quantity</span>
             <Counter size="md" defaultValue={1} min={1} max={20} />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
     </>
   );
 }
@@ -419,7 +481,7 @@ function PropertiesTab() {
 />`;
 
   return (
-    <>
+    <div className="col-span-2">
       <DocSection title="Interactive Playground">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Preview */}
@@ -500,8 +562,9 @@ function PropertiesTab() {
         </div>
       </DocSection>
 
-      <DocSection title="Props Reference">
+      <DocSection title="Props Reference" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             ["size", '"md" | "sm"', '"md"', "Size variant — affects button dimensions and value typography."],
@@ -517,32 +580,9 @@ function PropertiesTab() {
         />
       </DocSection>
 
-      <DocSection title="Code Examples">
-        <DocPreview title="Basic counter">
-          <Counter defaultValue={1} min={0} max={10} />
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Counter defaultValue={1} min={0} max={10} />`}</code>
-        </pre>
-
-        <DocPreview title="Controlled counter">
-          <Counter value={counterValue} min={0} max={20} onChange={setCounterValue} />
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`const [value, setValue] = useState(3);
-<Counter value={value} min={0} max={20} onChange={setValue} />`}</code>
-        </pre>
-
-        <DocPreview title="Small counter with step of 5">
-          <Counter size="sm" defaultValue={0} min={0} max={100} step={5} />
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Counter size="sm" defaultValue={0} min={0} max={100} step={5} />`}</code>
-        </pre>
-      </DocSection>
-
-      <DocSection title="Validation & Constraints">
+      <DocSection title="Validation & Constraints" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Rule", "Details"]}
           rows={[
             ["Min ≤ Max", "Ensure min is always less than or equal to max. Invalid ranges produce undefined behavior."],
@@ -552,7 +592,7 @@ function PropertiesTab() {
           ]}
         />
       </DocSection>
-    </>
+    </div>
   );
 }
 
@@ -564,13 +604,16 @@ export default function CounterPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <div className="col-span-2 flex flex-col">
-      <DocHeader
-        title="Counter"
-        description="Counter lets users adjust a numeric value incrementally with decrement and increment buttons, providing a controlled way to set quantities or amounts."
-      />
+    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-10">
+      <div className="col-start-1 flex flex-col">
+        <DocHeader
+          title="Counter"
+          description="Counter lets users adjust a numeric value incrementally with decrement and increment buttons, providing a controlled way to set quantities or amounts."
+          variant="foundations"
+        />
 
-      <TabBar active={activeTab} onChange={setActiveTab} />
+        <TabBar active={activeTab} onChange={setActiveTab} />
+      </div>
 
       {activeTab === "Overview" && <OverviewTab />}
       {activeTab === "Design Tokens" && <DesignTokensTab />}

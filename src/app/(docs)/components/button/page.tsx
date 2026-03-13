@@ -4,7 +4,6 @@ import { useState, type ReactNode } from "react";
 import DocHeader from "@/components/docs/DocHeader";
 import DocSection from "@/components/docs/DocSection";
 import DocTable from "@/components/docs/DocTable";
-import DocCallout from "@/components/docs/DocCallout";
 import DoDontGrid from "@/components/docs/DoDontGrid";
 import DocPreview from "@/components/docs/DocPreview";
 import DocAnatomy from "@/components/docs/DocAnatomy";
@@ -83,7 +82,7 @@ function TabBar({ active, onChange }: { active: TabName; onChange: (t: TabName) 
 function ColorSwatch({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="size-8 rounded-md border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
+      <div className="size-12 rounded-sm border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
       <div>
         <p className="text-body-02 font-medium">{label}</p>
         <p className="text-body-03 text-text-neutral-placeholder">{color}</p>
@@ -172,8 +171,9 @@ function Toggle({
 function OverviewTab() {
   return (
     <>
-      <DocSection title="Overview">
-        <p className="mb-4">
+      <div className="col-start-1">
+        <DocSection title="Overview">
+          <p className="mb-4">
           Buttons are the primary way users take action in an interface. A
           well-designed button clearly communicates what will happen when it is
           pressed and stands out from surrounding content in proportion to its
@@ -185,8 +185,10 @@ function OverviewTab() {
           of primary buttons per view to maintain a clear focus.
         </p>
       </DocSection>
+      </div>
 
-      <DocSection title="Anatomy">
+      <div className="col-span-2">
+        <DocSection title="Anatomy">
         <DocAnatomy
           items={[
             {
@@ -207,7 +209,7 @@ function OverviewTab() {
             },
           ]}
         />
-        <DocPreview title="Anatomy example">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare>
           <div className="flex gap-4 items-center">
             <Button variant="neutral" leadingIcon={<ChevronLeft />} trailingIcon={<ChevronRight />}>
               Button
@@ -218,29 +220,37 @@ function OverviewTab() {
           </div>
         </DocPreview>
       </DocSection>
+      </div>
 
-      <DocSection title="Variants">
-        <p className="mb-4">Choose the variant that matches the importance and context of the action.</p>
-        <DocTable
-          headers={["Variant", "Purpose", "When to use"]}
+      <div className="col-span-2">
+        <DocSection title="Variants" hideTitle>
+          <p className="mb-4">Choose the variant that matches the importance and context of the action.</p>
+          <DocTable
+            variant="surface"
+            headers={["Variant", "Purpose", "When to use"]}
           rows={[
             ["Neutral", "Default/secondary actions", "Cancel, go back, or perform non-critical tasks that still need visual presence."],
             ["Primary", "The main call-to-action on the page", "Submit a form, confirm a dialog, or start a critical flow. Limit to one per view."],
             ["Danger", "Irreversible or high-risk actions", "Delete, remove, or revoke. Always pair with a confirmation step."],
           ]}
         />
-        <DocPreview title="Variant comparison">
-          <div className="flex flex-wrap gap-3 items-center">
-            <Button variant="neutral">Neutral</Button>
-            <Button variant="primary">Primary</Button>
-            <Button variant="danger">Danger</Button>
+          <div className="grid grid-cols-2 gap-10 items-stretch">
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+              <div className="flex flex-wrap gap-3 items-center">
+                <Button variant="neutral">Neutral</Button>
+                <Button variant="primary">Primary</Button>
+                <Button variant="danger">Danger</Button>
+              </div>
+            </DocPreview>
           </div>
-        </DocPreview>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Appearances">
-        <DocTable
-          headers={["Appearance", "Description"]}
+      <div className="col-span-2">
+        <DocSection title="Appearances" hideTitle>
+          <DocTable
+            variant="surface"
+            headers={["Appearance", "Description"]}
           rows={[
             ["Filled", "Solid background. Strongest visual emphasis."],
             ["Outlined", "Transparent background with border. Medium emphasis."],
@@ -248,40 +258,50 @@ function OverviewTab() {
             ["Ghost", "No background or border. Used for icon-only buttons in toolbars."],
           ]}
         />
-        <DocPreview title="Appearance comparison (Neutral)">
-          <div className="flex flex-wrap gap-3 items-center">
-            <Button variant="neutral" appearance="filled">Filled</Button>
+          <div className="grid grid-cols-2 gap-10 items-stretch">
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+              <div className="flex flex-wrap gap-3 items-center">
+                <Button variant="neutral" appearance="filled">Filled</Button>
             <Button variant="neutral" appearance="outlined">Outlined</Button>
             <Button variant="neutral" appearance="link">Link</Button>
             <Button variant="neutral" size="icon" appearance="ghost" aria-label="Menu">
               <MenuIcon />
             </Button>
           </div>
-        </DocPreview>
-      </DocSection>
+            </DocPreview>
+          </div>
+        </DocSection>
+      </div>
 
-      <DocSection title="Sizes">
-        <DocTable
-          headers={["Size", "Height", "Use case"]}
+      <div className="col-span-2">
+        <DocSection title="Sizes" hideTitle>
+          <DocTable
+            variant="surface"
+            headers={["Size", "Height", "Use case"]}
           rows={[
             ["Large (lg)", "44px", "Default size for most contexts. Hero sections, forms, prominent CTAs."],
             ["Small (sm)", "36px", "Dense layouts, tables, inline actions."],
             ["Icon", "36×36px", "Icon-only buttons for toolbars or compact UI."],
           ]}
         />
-        <DocPreview title="Size comparison">
-          <div className="flex flex-wrap gap-3 items-end">
-            <Button variant="primary" size="lg">Large</Button>
+          <div className="grid grid-cols-2 gap-10 items-stretch">
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+              <div className="flex flex-wrap gap-3 items-end">
+                <Button variant="primary" size="lg">Large</Button>
             <Button variant="primary" size="sm">Small</Button>
             <Button variant="primary" size="icon" aria-label="Add">
               <PlusIcon />
             </Button>
           </div>
-        </DocPreview>
-      </DocSection>
+            </DocPreview>
+          </div>
+        </DocSection>
+      </div>
 
-      <DocSection title="States">
-        <DocTable
+      <div className="col-span-2">
+        <DocSection title="States" hideTitle>
+          <DocTable
+            variant="surface"
           headers={["State", "Description"]}
           rows={[
             ["Default", "The resting state when the button is available for interaction."],
@@ -291,9 +311,11 @@ function OverviewTab() {
             ["Disabled", "Non-interactive. Muted colors and pointer-events: none."],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Accessibility">
+      <div className="col-span-2">
+        <DocSection title="Accessibility">
         <ul className="pl-5 mb-4">
           <li className="mb-2">
             Uses a native <code>&lt;button&gt;</code> element with <code>forwardRef</code>.
@@ -312,9 +334,15 @@ function OverviewTab() {
           </li>
         </ul>
       </DocSection>
+      </div>
 
-      <DocSection title="Usage guidelines">
-        <DoDontGrid
+      <div className="col-span-2">
+        <DocSection title="Usage guidelines">
+          <div
+            className="overflow-hidden flex flex-row gap-10 w-full items-start justify-between"
+            style={{ backgroundColor: "#FFFFFF", padding: "200px" }}
+          >
+            <DoDontGrid
           doItems={[
             { description: "Use a single primary button per view to focus user attention." },
             { description: "Start button labels with a strong verb: Save, Create, Delete." },
@@ -328,7 +356,9 @@ function OverviewTab() {
             { description: "Don't mix appearances in the same button group." },
           ]}
         />
-      </DocSection>
+          </div>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -336,91 +366,105 @@ function OverviewTab() {
 function DesignTokensTab() {
   return (
     <>
-      <DocSection title="Color Tokens">
-        <TokenGroup title="Neutral Filled">
-          <ColorSwatch color="#e4e6de" label="bg / default (neutral-200)" />
-          <ColorSwatch color="#d3d6cc" label="bg / hover (neutral-300)" />
-          <ColorSwatch color="#b7bbaf" label="bg / pressed (neutral-400)" />
-          <ColorSwatch color="#6e736a" label="bg / disabled (neutral-600)" />
-          <ColorSwatch color="#1c1f1b" label="text / default (neutral-900)" />
-          <ColorSwatch color="#31352f" label="text / hover (neutral-800)" />
-          <ColorSwatch color="#4e534d" label="text / pressed (neutral-700)" />
-          <ColorSwatch color="#b7bbaf" label="text / disabled (neutral-400)" />
+      <div className="col-span-2">
+        <DocSection title="Color Tokens">
+          <TokenGroup title="Neutral Filled">
+            <ColorSwatch color="#E4E6DE" label="bg / default (neutral-200)" />
+            <ColorSwatch color="#D3D6CC" label="bg / hover (neutral-300)" />
+            <ColorSwatch color="#B7BBAF" label="bg / pressed (neutral-400)" />
+            <ColorSwatch color="#6E736A" label="bg / disabled (neutral-600)" />
+            <ColorSwatch color="#1C1F1B" label="text / default (neutral-900)" />
+            <ColorSwatch color="#31352F" label="text / hover (neutral-800)" />
+            <ColorSwatch color="#4E534D" label="text / pressed (neutral-700)" />
+            <ColorSwatch color="#B7BBAF" label="text / disabled (neutral-400)" />
         </TokenGroup>
 
-        <TokenGroup title="Primary Filled">
-          <ColorSwatch color="#153014" label="bg / default (primary-900)" />
-          <ColorSwatch color="#223f1e" label="bg / hover (primary-800)" />
-          <ColorSwatch color="#33522d" label="bg / pressed (primary-700)" />
-          <ColorSwatch color="#c9d7c6" label="bg / disabled (primary-200)" />
-          <ColorSwatch color="#e4ece2" label="text / invert (primary-100)" />
+          <TokenGroup title="Primary Filled">
+            <ColorSwatch color="#153014" label="bg / default (primary-900)" />
+            <ColorSwatch color="#223F1E" label="bg / hover (primary-800)" />
+            <ColorSwatch color="#33522D" label="bg / pressed (primary-700)" />
+            <ColorSwatch color="#C9D7C6" label="bg / disabled (primary-200)" />
+            <ColorSwatch color="#E4ECE2" label="text / invert (primary-100)" />
         </TokenGroup>
 
-        <TokenGroup title="Danger Filled">
-          <ColorSwatch color="#b84335" label="bg / default (danger-500)" />
-          <ColorSwatch color="#eb978c" label="bg / hover (danger-300)" />
-          <ColorSwatch color="#d86759" label="bg / pressed (danger-400)" />
-          <ColorSwatch color="#f6c4bd" label="bg / disabled (danger-200)" />
-          <ColorSwatch color="#f1f2ec" label="text / invert (neutral-100)" />
+          <TokenGroup title="Danger Filled">
+            <ColorSwatch color="#B84335" label="bg / default (danger-500)" />
+            <ColorSwatch color="#EB978C" label="bg / hover (danger-300)" />
+            <ColorSwatch color="#D86759" label="bg / pressed (danger-400)" />
+            <ColorSwatch color="#F6C4BD" label="bg / disabled (danger-200)" />
+            <ColorSwatch color="#F1F2EC" label="text / invert (neutral-100)" />
         </TokenGroup>
 
-        <TokenGroup title="Outlined Border">
-          <ColorSwatch color="#b7bbaf" label="border / neutral (neutral-400)" />
-          <ColorSwatch color="#7e9b76" label="border / primary (primary-400)" />
-          <ColorSwatch color="#d86759" label="border / danger (danger-400)" />
-        </TokenGroup>
-      </DocSection>
+          <TokenGroup title="Outlined Border">
+            <ColorSwatch color="#B7BBAF" label="border / neutral (neutral-400)" />
+            <ColorSwatch color="#7E9B76" label="border / primary (primary-400)" />
+            <ColorSwatch color="#D86759" label="border / danger (danger-400)" />
+          </TokenGroup>
+        </DocSection>
+      </div>
 
-      <DocSection title="Typography Tokens">
-        <DocTable
-          headers={["Token", "Size", "Line Height", "Weight"]}
+      <div className="col-span-2">
+        <DocSection title="Typography Tokens" hideTitle>
+          <DocTable
+            variant="surface"
+            headers={["Token", "Size", "Line Height", "Weight"]}
           rows={[
             ["Body/01/Medium (lg)", "16px", "24px", "500 (medium)"],
             ["Body/02/Medium (sm)", "13px", "16px", "500 (medium)"],
           ]}
         />
-        <DocCallout variant="info" title="Font family">
-          All buttons use <code>Suisse Intl Trial</code> (Medium weight) as the default font family.
-        </DocCallout>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Spacing Tokens">
-        <DocTable
-          headers={["Property", "Token", "Value"]}
+      <div className="col-span-2">
+        <DocSection title="Spacing Tokens" hideTitle>
+          <DocTable
+            variant="surface"
+            headers={["Property", "Token", "Value"]}
           rows={[
             ["Horizontal padding", "space-4", "16px"],
             ["Vertical padding", "space-2", "8px"],
             ["Icon gap", "space-2", "8px"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Border Radius">
-        <DocTable
-          headers={["Property", "Token", "Value"]}
+      <div className="col-span-2">
+        <DocSection title="Border Radius" hideTitle>
+          <DocTable
+            variant="surface"
+            headers={["Property", "Token", "Value"]}
           rows={[
             ["Container", "border-radius/max", "9999px (pill)"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Shadow & Elevation Tokens">
-        <DocTable
-          headers={["Token", "Value", "Usage"]}
+      <div className="col-span-2">
+        <DocSection title="Shadow & Elevation Tokens" hideTitle>
+          <DocTable
+            variant="surface"
+            headers={["Token", "Value", "Usage"]}
           rows={[
             ["shadow-focus", "0 0 0 3px rgba(0, 0, 0, 0.20)", "Focus ring for keyboard navigation"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Animation / Transition Tokens">
-        <DocTable
-          headers={["Property", "Duration", "Easing"]}
+      <div className="col-span-2">
+        <DocSection title="Animation / Transition Tokens" hideTitle>
+          <DocTable
+            variant="surface"
+            headers={["Property", "Duration", "Easing"]}
           rows={[
             ["background-color, color, border-color, box-shadow", "150ms", "ease (default Tailwind)"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -428,17 +472,16 @@ function DesignTokensTab() {
 function StylesTab() {
   const variants: ButtonVariant[] = ["neutral", "primary", "danger"];
   const appearances: ButtonAppearance[] = ["filled", "outlined", "link", "ghost"];
-  const sizes: ButtonSize[] = ["lg", "sm", "icon"];
-
   return (
     <>
-      <DocSection title="All Variants × Appearances">
-        {variants.map((variant) => (
-          <div key={variant} className="mb-8">
-            <h4 className="text-body-01 font-medium capitalize mb-4">{variant}</h4>
-            <div className="grid gap-4">
-              {appearances.map((appearance) => (
-                <DocPreview key={appearance} title={`${variant} / ${appearance}`}>
+      <div className="col-span-2">
+        <DocSection title="All Variants × Appearances">
+          {variants.map((variant) => (
+            <div key={variant} className="mb-8">
+              <h4 className="text-body-01 font-medium capitalize mb-4">{variant}</h4>
+              <div className="grid grid-cols-2 gap-10 items-stretch">
+                {appearances.map((appearance) => (
+                  <DocPreview key={appearance} rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
                   <div className="flex flex-wrap gap-3 items-center">
                     <Button variant={variant} appearance={appearance}>
                       Default
@@ -458,59 +501,70 @@ function StylesTab() {
           </div>
         ))}
       </DocSection>
+      </div>
 
-      <DocSection title="Size Variations">
-        <DocPreview title="Large (44px)">
-          <div className="flex flex-wrap gap-3 items-center">
+      <div className="col-span-2">
+        <DocSection title="Size Variations">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="flex flex-wrap gap-3 items-center">
             <Button variant="neutral" size="lg">Neutral</Button>
             <Button variant="primary" size="lg">Primary</Button>
             <Button variant="danger" size="lg">Danger</Button>
           </div>
-        </DocPreview>
-        <DocPreview title="Small (36px)">
+            </DocPreview>
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-wrap gap-3 items-center">
             <Button variant="neutral" size="sm">Neutral</Button>
             <Button variant="primary" size="sm">Primary</Button>
             <Button variant="danger" size="sm">Danger</Button>
           </div>
-        </DocPreview>
-        <DocPreview title="Icon (36×36px)">
+            </DocPreview>
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-wrap gap-3 items-center">
             <Button variant="neutral" size="icon" aria-label="Add"><PlusIcon /></Button>
             <Button variant="primary" size="icon" aria-label="Add"><PlusIcon /></Button>
             <Button variant="neutral" size="icon" appearance="outlined" aria-label="Close"><XIcon /></Button>
             <Button variant="neutral" size="icon" appearance="ghost" aria-label="Menu"><MenuIcon /></Button>
           </div>
-        </DocPreview>
-      </DocSection>
+            </DocPreview>
+          </div>
+        </DocSection>
+      </div>
 
-      <DocSection title="With Icons">
-        <DocPreview title="Leading icon">
+      <div className="col-span-2">
+        <DocSection title="With Icons">
+          <div className="grid grid-cols-2 gap-10 items-stretch">
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-wrap gap-3 items-center">
             <Button variant="neutral" leadingIcon={<ChevronLeft />}>Back</Button>
             <Button variant="primary" leadingIcon={<PlusIcon />}>Create</Button>
             <Button variant="danger" leadingIcon={<XIcon />}>Delete</Button>
           </div>
-        </DocPreview>
-        <DocPreview title="Trailing icon">
+            </DocPreview>
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-wrap gap-3 items-center">
             <Button variant="neutral" trailingIcon={<ChevronRight />}>Next</Button>
             <Button variant="primary" trailingIcon={<ChevronRight />}>Continue</Button>
           </div>
-        </DocPreview>
-        <DocPreview title="Both icons">
+            </DocPreview>
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-wrap gap-3 items-center">
             <Button variant="neutral" leadingIcon={<ChevronLeft />} trailingIcon={<ChevronRight />}>Navigate</Button>
             <Button variant="primary" leadingIcon={<ChevronLeft />} trailingIcon={<ChevronRight />}>Navigate</Button>
           </div>
-        </DocPreview>
-      </DocSection>
+            </DocPreview>
+          </div>
+        </DocSection>
+      </div>
 
-      <DocSection title="State Demonstrations">
-        <p className="mb-4 text-body-02 text-text-neutral-secondary">
-          Hover, focus, and active states are interactive — try hovering and clicking the buttons above, or use Tab to focus.
-        </p>
-        <DocPreview title="Disabled states">
+      <div className="col-span-2">
+        <DocSection title="State Demonstrations">
+          <p className="mb-4 text-body-02 text-text-neutral-secondary">
+            Hover, focus, and active states are interactive — try hovering and clicking the buttons above, or use Tab to focus.
+          </p>
+          <div className="grid grid-cols-2 gap-10 items-stretch">
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-wrap gap-3 items-center">
             <Button variant="neutral" disabled>Neutral</Button>
             <Button variant="primary" disabled>Primary</Button>
@@ -518,10 +572,13 @@ function StylesTab() {
             <Button variant="neutral" appearance="outlined" disabled>Outlined</Button>
             <Button variant="neutral" appearance="link" disabled>Link</Button>
           </div>
-        </DocPreview>
-      </DocSection>
+            </DocPreview>
+          </div>
+        </DocSection>
+      </div>
 
-      <DocSection title="Dark Background Preview">
+      <div className="col-span-2">
+        <DocSection title="Dark Background Preview">
         <div className="mb-6 rounded-md border border-border-neutral-default overflow-hidden">
           <div className="px-4 py-2 bg-background-surface-neutral-default border-b border-border-neutral-default text-body-03 font-medium text-text-neutral-placeholder">
             Buttons on dark surface
@@ -533,7 +590,8 @@ function StylesTab() {
             <Button variant="neutral" appearance="outlined">Outlined</Button>
           </div>
         </div>
-      </DocSection>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -567,7 +625,7 @@ function PropertiesTab() {
 </Button>`;
 
   return (
-    <>
+    <div className="col-span-2">
       <DocSection title="Interactive Playground">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Preview */}
@@ -673,8 +731,9 @@ function PropertiesTab() {
         </div>
       </DocSection>
 
-      <DocSection title="Props Reference">
+      <DocSection title="Props Reference" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             ["variant", '"neutral" | "primary" | "danger"', '"neutral"', "Color variant determining the button's visual theme."],
@@ -689,64 +748,9 @@ function PropertiesTab() {
         />
       </DocSection>
 
-      <DocSection title="Code Examples">
-        <DocPreview title="Primary CTA">
-          <Button variant="primary" size="lg">
-            Save changes
-          </Button>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Button variant="primary" size="lg">Save changes</Button>`}</code>
-        </pre>
-
-        <DocPreview title="Cancel / secondary action">
-          <Button variant="neutral" appearance="outlined">
-            Cancel
-          </Button>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Button variant="neutral" appearance="outlined">Cancel</Button>`}</code>
-        </pre>
-
-        <DocPreview title="Destructive with confirmation icon">
-          <Button variant="danger" leadingIcon={<XIcon />}>
-            Delete account
-          </Button>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Button variant="danger" leadingIcon={<XIcon />}>Delete account</Button>`}</code>
-        </pre>
-
-        <DocPreview title="Icon-only toolbar button">
-          <div className="flex gap-2">
-            <Button variant="neutral" size="icon" appearance="ghost" aria-label="Menu">
-              <MenuIcon />
-            </Button>
-            <Button variant="neutral" size="icon" appearance="outlined" aria-label="Add">
-              <PlusIcon />
-            </Button>
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Button variant="neutral" size="icon" appearance="ghost" aria-label="Menu">
-  <MenuIcon />
-</Button>`}</code>
-        </pre>
-
-        <DocPreview title="Small inline actions">
-          <div className="flex gap-2">
-            <Button variant="primary" size="sm">Approve</Button>
-            <Button variant="neutral" size="sm" appearance="outlined">Reject</Button>
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Button variant="primary" size="sm">Approve</Button>
-<Button variant="neutral" size="sm" appearance="outlined">Reject</Button>`}</code>
-        </pre>
-      </DocSection>
-
-      <DocSection title="Validation & Constraints">
+      <DocSection title="Validation & Constraints" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Rule", "Details"]}
           rows={[
             ["Icon-only requires aria-label", 'When size="icon", always provide aria-label for accessibility.'],
@@ -757,7 +761,7 @@ function PropertiesTab() {
           ]}
         />
       </DocSection>
-    </>
+    </div>
   );
 }
 
@@ -769,13 +773,16 @@ export default function ButtonPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <div className="col-span-2 flex flex-col">
-      <DocHeader
-        title="Button"
-        description="Buttons trigger actions and events. Use them to let users submit forms, confirm decisions, or navigate to new tasks."
-      />
+    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-10">
+      <div className="col-start-1 flex flex-col">
+        <DocHeader
+          title="Button"
+          description="Buttons trigger actions and events. Use them to let users submit forms, confirm decisions, or navigate to new tasks."
+          variant="foundations"
+        />
 
-      <TabBar active={activeTab} onChange={setActiveTab} />
+        <TabBar active={activeTab} onChange={setActiveTab} />
+      </div>
 
       {activeTab === "Overview" && <OverviewTab />}
       {activeTab === "Design Tokens" && <DesignTokensTab />}

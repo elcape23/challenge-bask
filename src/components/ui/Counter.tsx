@@ -75,8 +75,8 @@ const SIZE_BUTTON: Record<CounterSize, string> = {
 
 /** Figma: Body 01 Medium for number display */
 const SIZE_VALUE: Record<CounterSize, string> = {
-  md: "text-body-01 font-medium min-w-6",
-  sm: "text-body-02 font-medium min-w-5",
+  md: "w-[10px] text-body-01 font-medium",
+  sm: "min-w-5 text-body-02 font-medium",
 };
 
 const Counter = forwardRef<HTMLDivElement, CounterProps>(
@@ -136,7 +136,7 @@ const Counter = forwardRef<HTMLDivElement, CounterProps>(
 
     const btnDisabled = disabled
       ? "text-text-neutral-disabled"
-      : "text-icon-neutral-secondary hover:text-icon-neutral-hover active:text-icon-neutral-pressed";
+      : "text-icon-neutral-default hover:text-icon-neutral-hover active:text-icon-neutral-pressed";
 
     return (
       <div
@@ -144,7 +144,7 @@ const Counter = forwardRef<HTMLDivElement, CounterProps>(
         role="group"
         aria-label="Counter"
         className={[
-          "inline-flex items-center gap-2 rounded-full overflow-hidden",
+          "inline-flex items-center gap-2 rounded-full",
           disabled
             ? "border border-border-neutral-disabled cursor-not-allowed opacity-50"
             : "border border-border-neutral-default",
@@ -170,7 +170,7 @@ const Counter = forwardRef<HTMLDivElement, CounterProps>(
           aria-valuemin={min}
           aria-valuemax={max}
           className={[
-            "flex items-center justify-center select-none shrink-0",
+            "flex h-9 items-center justify-center self-stretch select-none shrink-0 text-center",
             disabled ? "text-text-neutral-disabled" : "text-text-neutral-default",
             SIZE_VALUE[size],
           ].join(" ")}

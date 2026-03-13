@@ -8,6 +8,7 @@ import DocCallout from "@/components/docs/DocCallout";
 import DoDontGrid from "@/components/docs/DoDontGrid";
 import DocPreview from "@/components/docs/DocPreview";
 import DocAnatomy from "@/components/docs/DocAnatomy";
+import Icon from "@/components/ui/Icon";
 import Input, { type InputSize, type InputState } from "@/components/ui/Input";
 
 /* ─── Tabs ─── */
@@ -106,21 +107,11 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
 
 /* ─── Figma Input: trailing check icon (20×20) ─── */
 function CheckIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  );
+  return <Icon type="check" size="sm" className="text-current" />;
 }
 
 function AlertCircleIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M8 5V8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <circle cx="8" cy="11" r="0.75" fill="currentColor" />
-    </svg>
-  );
+  return <Icon type="ban" size="sm" className="text-current" />;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -169,9 +160,10 @@ function OverviewTab() {
           ]}
         />
         <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare>
-          <div className="w-72">
+          <div className="w-[200px]">
             <Input
               size="md"
+              width={200}
               placeholder="Placeholder"
               helperText="Input feedback"
               trailingIcon={<CheckIcon />}
@@ -193,9 +185,9 @@ function OverviewTab() {
         />
         <div className="grid grid-cols-2 gap-10 items-stretch">
         <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
-          <div className="flex flex-col gap-4 w-72">
-            <Input size="md" placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
-            <Input size="sm" placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
+          <div className="flex flex-col gap-4 w-[200px]">
+            <Input size="md" width={200} placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
+            <Input size="sm" width={200} placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
           </div>
         </DocPreview>
         </div>
@@ -209,6 +201,8 @@ function OverviewTab() {
           headers={["State", "Visual treatment", "Behavior"]}
           rows={[
             ["Default", "Neutral border (#b7bbaf), background #f7f7f3", "Ready for input. Placeholder and feedback shown."],
+            ["Hover", "Hover border (#93988d), stronger trailing icon color", "Indicates the field is being pointed to before activation."],
+            ["Active", "Pressed border (#31352f), pressed icon/text color", "Shows an active selection state without error styling."],
             ["Focus", "Primary border (#a6bba0), focus ring (shadow-focus)", "The field is active and receiving keystrokes."],
             ["Error", "Danger border (#eb978c), error text replaces helper", "Validation has failed. Error message is shown below."],
             ["Disabled", "50% opacity, neutral surface background", "Non-interactive. The value is visible but cannot be changed."],
@@ -216,11 +210,12 @@ function OverviewTab() {
         />
         <div className="grid grid-cols-2 gap-10 items-stretch">
         <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl">
-            <Input placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
-            <Input placeholder="Placeholder" helperText="Input feedback" defaultValue="Hello world" trailingIcon={<CheckIcon />} />
-            <Input placeholder="Placeholder" state="error" errorMessage="Input feedback" trailingIcon={<AlertCircleIcon />} />
-            <Input placeholder="Placeholder" helperText="Input feedback" defaultValue="Cannot edit" disabled />
+          <div className="grid grid-cols-1 gap-4">
+            <Input width={200} placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
+            <Input width={200} state="hover" placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
+            <Input width={200} state="active" helperText="Input feedback" defaultValue="Hello world" trailingIcon={<CheckIcon />} />
+            <Input width={200} placeholder="Placeholder" state="error" errorMessage="Input feedback" trailingIcon={<AlertCircleIcon />} />
+            <Input width={200} placeholder="Placeholder" helperText="Input feedback" defaultValue="Cannot edit" disabled />
           </div>
         </DocPreview>
         </div>
@@ -242,8 +237,8 @@ function OverviewTab() {
         />
         <div className="grid grid-cols-2 gap-10 items-stretch">
         <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
-          <div className="w-72">
-            <Input placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
+          <div className="w-[200px]">
+            <Input width={200} placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
           </div>
         </DocPreview>
         </div>
@@ -407,9 +402,9 @@ function StylesTab() {
         <DocSection title="Sizes">
         <div className="grid grid-cols-2 gap-10 items-stretch">
         <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
-          <div className="flex flex-col gap-4 w-72">
-            <Input size="md" placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
-            <Input size="sm" placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
+          <div className="flex flex-col gap-4 w-[200px]">
+            <Input size="md" width={200} placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
+            <Input size="sm" width={200} placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
           </div>
         </DocPreview>
         </div>
@@ -420,11 +415,12 @@ function StylesTab() {
         <DocSection title="States">
         <div className="grid grid-cols-2 gap-10 items-stretch">
         <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
-          <div className="flex flex-col gap-4 w-72">
-            <Input placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
-            <Input placeholder="Placeholder" helperText="Input feedback" defaultValue="Hello world" trailingIcon={<CheckIcon />} />
-            <Input placeholder="Placeholder" state="error" errorMessage="Input feedback" trailingIcon={<AlertCircleIcon />} />
-            <Input placeholder="Placeholder" helperText="Input feedback" disabled />
+          <div className="flex flex-col gap-4 w-[200px]">
+            <Input width={200} placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
+            <Input width={200} state="hover" placeholder="Placeholder" helperText="Input feedback" trailingIcon={<CheckIcon />} />
+            <Input width={200} state="active" helperText="Input feedback" defaultValue="Hello world" trailingIcon={<CheckIcon />} />
+            <Input width={200} placeholder="Placeholder" state="error" errorMessage="Input feedback" trailingIcon={<AlertCircleIcon />} />
+            <Input width={200} placeholder="Cannot edit" helperText="Input feedback" disabled />
           </div>
         </DocPreview>
         </div>
@@ -458,8 +454,9 @@ function PropertiesTab() {
               Preview
             </div>
             <div className="flex items-center justify-center p-8 bg-white min-h-[200px]">
-              <div className="w-72">
+              <div className="w-[200px]">
                 <Input
+                  width={200}
                   size={size}
                   state={inputState}
                   placeholder={placeholderText}
@@ -490,6 +487,8 @@ function PropertiesTab() {
               label="State"
               options={[
                 { value: "default", label: "Default" },
+                { value: "hover", label: "Hover" },
+                { value: "active", label: "Active" },
                 { value: "error", label: "Error" },
               ]}
               value={inputState}

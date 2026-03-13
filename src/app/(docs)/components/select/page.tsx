@@ -36,7 +36,7 @@ function TabBar({ active, onChange }: { active: TabName; onChange: (t: TabName) 
 function ColorSwatch({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="size-8 rounded-md border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
+      <div className="size-12 rounded-sm border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
       <div>
         <p className="text-body-02 font-medium">{label}</p>
         <p className="text-body-03 text-text-neutral-placeholder">{color}</p>
@@ -140,7 +140,8 @@ const DEMO_WITH_DISABLED = [
 function OverviewTab() {
   return (
     <>
-      <DocSection title="Overview">
+      <div className="col-start-1">
+        <DocSection title="Overview">
         <p className="mb-4">
           Use a select when you have more than five options and limited screen
           space. For shorter lists, consider a radio group instead — it makes all
@@ -151,9 +152,11 @@ function OverviewTab() {
           consistency and accessibility across browsers. It supports keyboard
           navigation and collision-aware positioning.
         </p>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Anatomy">
+      <div className="col-span-2">
+        <DocSection title="Anatomy">
         <DocAnatomy
           items={[
             {
@@ -188,37 +191,43 @@ function OverviewTab() {
             },
           ]}
         />
-        <DocPreview title="Anatomy example">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare>
           <div className="w-72">
             <Select
               size="md"
-              label="Country"
               placeholder="Select a country"
               options={DEMO_COUNTRIES}
-              helperText="Choose your country of residence."
             />
           </div>
         </DocPreview>
       </DocSection>
+      </div>
 
-      <DocSection title="Sizes">
+      <div className="col-span-2">
+        <DocSection title="Sizes" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Size", "Height", "Border radius", "Trigger text", "Icon", "Use case"]}
           rows={[
             ["Small (sm)", "32px", "radius-sm (8px)", "Body/02 — 13px", "16px", "Dense layouts, filters, table controls."],
             ["Medium (md)", "40px", "radius-md (12px)", "Body/01 — 16px", "20px", "Standard form fields."],
           ]}
         />
-        <DocPreview title="Size comparison">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4 w-72">
             <Select size="sm" label="Small" placeholder="Select an option" options={DEMO_SHORT} />
             <Select size="md" label="Medium" placeholder="Select an option" options={DEMO_SHORT} />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="States">
+      <div className="col-span-2">
+        <DocSection title="States" hideTitle>
         <DocTable
+          variant="surface"
           headers={["State", "Visual treatment", "Behavior"]}
           rows={[
             ["Default", "Neutral border (#b7bbaf), white background", "Ready for interaction. Shows placeholder or selected value."],
@@ -228,7 +237,8 @@ function OverviewTab() {
             ["Disabled", "50% opacity, neutral surface background", "Non-interactive. The trigger cannot be clicked."],
           ]}
         />
-        <DocPreview title="All states">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl">
             <Select label="Default" placeholder="Choose..." options={DEMO_SHORT} />
             <Select label="With value" options={DEMO_SHORT} defaultValue="am" />
@@ -236,13 +246,16 @@ function OverviewTab() {
             <Select label="Disabled" options={DEMO_SHORT} disabled placeholder="Cannot select" />
           </div>
         </DocPreview>
+        </div>
         <DocCallout variant="info" title="Focus state">
           Click any select above or use Tab to see the focus ring. The border
           transitions to the primary color and a 3px focus shadow appears.
         </DocCallout>
       </DocSection>
+      </div>
 
-      <DocSection title="Behavior">
+      <div className="col-span-2">
+        <DocSection title="Behavior">
         <p className="mb-4">
           Clicking the trigger opens the dropdown below it. The dropdown closes
           when the user selects an option, clicks outside, or presses Escape.
@@ -255,8 +268,10 @@ function OverviewTab() {
           component.
         </DocCallout>
       </DocSection>
+      </div>
 
-      <DocSection title="Accessibility">
+      <div className="col-span-2">
+        <DocSection title="Accessibility">
         <ul className="pl-5 mb-4">
           <li className="mb-2">
             The trigger uses <code>role=&quot;combobox&quot;</code> with <code>aria-expanded</code> and <code>aria-haspopup=&quot;listbox&quot;</code>.
@@ -275,8 +290,14 @@ function OverviewTab() {
           </li>
         </ul>
       </DocSection>
+      </div>
 
-      <DocSection title="Usage guidelines">
+      <div className="col-span-2">
+        <DocSection title="Usage guidelines">
+          <div
+            className="overflow-hidden flex flex-row gap-10 w-full items-start justify-between"
+            style={{ backgroundColor: "#FFFFFF", padding: "200px" }}
+          >
         <DoDontGrid
           doItems={[
             { description: "Use a select for lists with more than 5 options." },
@@ -291,7 +312,9 @@ function OverviewTab() {
             { description: "Don't use a disabled option as a placeholder." },
           ]}
         />
-      </DocSection>
+          </div>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -299,63 +322,77 @@ function OverviewTab() {
 function DesignTokensTab() {
   return (
     <>
-      <DocSection title="Color Tokens — Default State">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Default State">
         <TokenGroup title="Trigger container">
-          <ColorSwatch color="#ffffff" label="background (white)" />
-          <ColorSwatch color="#b7bbaf" label="border / neutral / default" />
+          <ColorSwatch color="#FFFFFF" label="background (white)" />
+          <ColorSwatch color="#B7BBAF" label="border / neutral / default" />
         </TokenGroup>
         <TokenGroup title="Text">
-          <ColorSwatch color="#1c1f1b" label="text / neutral / default (value)" />
-          <ColorSwatch color="#93988d" label="text / neutral / placeholder" />
-          <ColorSwatch color="#1c1f1b" label="text / neutral / default (label)" />
-          <ColorSwatch color="#93988d" label="text / neutral / placeholder (helper)" />
+          <ColorSwatch color="#1C1F1B" label="text / neutral / default (value)" />
+          <ColorSwatch color="#93988D" label="text / neutral / placeholder" />
+          <ColorSwatch color="#1C1F1B" label="text / neutral / default (label)" />
+          <ColorSwatch color="#93988D" label="text / neutral / placeholder (helper)" />
         </TokenGroup>
         <TokenGroup title="Icons">
-          <ColorSwatch color="#4e534d" label="icon / neutral / secondary (chevron)" />
+          <ColorSwatch color="#4E534D" label="icon / neutral / secondary (chevron)" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Hover State">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Hover State">
         <TokenGroup title="Border">
-          <ColorSwatch color="#93988d" label="border / neutral / hover" />
+          <ColorSwatch color="#93988D" label="border / neutral / hover" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Open / Focus State">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Open / Focus State">
         <TokenGroup title="Border & shadow">
-          <ColorSwatch color="#a6bba0" label="border / primary / default" />
+          <ColorSwatch color="#A6BBA0" label="border / primary / default" />
           <ColorSwatch color="rgba(0,0,0,0.2)" label="shadow-focus (3px ring)" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Error State">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Error State">
         <TokenGroup title="Border & text">
-          <ColorSwatch color="#eb978c" label="border / danger / default" />
+          <ColorSwatch color="#EB978C" label="border / danger / default" />
           <ColorSwatch color="#903328" label="text / danger / default" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Disabled State">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Disabled State">
         <TokenGroup title="Container">
-          <ColorSwatch color="#f1f2ec" label="bg / surface / neutral / default" />
+          <ColorSwatch color="#F1F2EC" label="bg / surface / neutral / default" />
           <ColorSwatch color="rgba(0,0,0,0.5)" label="opacity-50 on container" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Dropdown">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Dropdown">
         <TokenGroup title="Container">
-          <ColorSwatch color="#ffffff" label="background (white)" />
-          <ColorSwatch color="#b7bbaf" label="border / neutral / default" />
+          <ColorSwatch color="#FFFFFF" label="background (white)" />
+          <ColorSwatch color="#B7BBAF" label="border / neutral / default" />
         </TokenGroup>
         <TokenGroup title="Option">
-          <ColorSwatch color="#f1f2ec" label="bg / surface / neutral / default (hover)" />
-          <ColorSwatch color="#1c1f1b" label="text / neutral / default (label)" />
+          <ColorSwatch color="#F1F2EC" label="bg / surface / neutral / default (hover)" />
+          <ColorSwatch color="#1C1F1B" label="text / neutral / default (label)" />
           <ColorSwatch color="#153014" label="icon / primary / default (checkmark)" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Typography Tokens">
+      <div className="col-span-2">
+        <DocSection title="Typography Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Element", "Size (md)", "Size (sm)", "Weight"]}
           rows={[
             ["Label", "Body/02 — 13px/16px", "Body/02 — 13px/16px", "500 (medium)"],
@@ -364,10 +401,13 @@ function DesignTokensTab() {
             ["Helper/Error", "Body/03 — 11px/12px", "Body/03 — 11px/12px", "400 (regular)"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Spacing Tokens">
+      <div className="col-span-2">
+        <DocSection title="Spacing Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Token (md)", "Value (md)", "Token (sm)", "Value (sm)"]}
           rows={[
             ["Trigger height", "—", "40px", "—", "32px"],
@@ -378,10 +418,13 @@ function DesignTokensTab() {
             ["Dropdown gap (from trigger)", "spacing/space-1", "4px", "spacing/space-1", "4px"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Border & Radius">
+      <div className="col-span-2">
+        <DocSection title="Border & Radius" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Token (md)", "Value (md)", "Token (sm)", "Value (sm)"]}
           rows={[
             ["Trigger radius", "border-radius/md", "12px", "border-radius/sm", "8px"],
@@ -391,7 +434,8 @@ function DesignTokensTab() {
             ["Focus shadow", "shadow-focus", "0 0 0 3px rgba(0,0,0,0.2)", "shadow-focus", "0 0 0 3px rgba(0,0,0,0.2)"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -399,26 +443,36 @@ function DesignTokensTab() {
 function StylesTab() {
   return (
     <>
-      <DocSection title="Sizes — Side by Side">
-        <DocPreview title="sm / md">
+      <div className="col-span-2">
+        <DocSection title="Sizes — Side by Side">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4 w-72">
             <Select size="sm" label="Small" placeholder="Select a time" options={DEMO_SHORT} />
             <Select size="md" label="Medium" placeholder="Select a time" options={DEMO_SHORT} />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="States — Default">
-        <DocPreview title="Empty / With value">
+      <div className="col-span-2">
+        <DocSection title="States — Default">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4 w-72">
             <Select label="Empty" placeholder="Choose a country..." options={DEMO_COUNTRIES} />
             <Select label="With value" options={DEMO_COUNTRIES} defaultValue="us" />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="States — Error">
-        <DocPreview title="Error with message">
+      <div className="col-span-2">
+        <DocSection title="States — Error">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4 w-72">
             <Select
               label="Specialty"
@@ -435,19 +489,27 @@ function StylesTab() {
             />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="States — Disabled">
-        <DocPreview title="Disabled empty / Disabled with value">
+      <div className="col-span-2">
+        <DocSection title="States — Disabled">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4 w-72">
             <Select label="Disabled" placeholder="Cannot select" options={DEMO_SHORT} disabled />
             <Select label="Disabled with value" options={DEMO_SHORT} defaultValue="am" disabled />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="With Helper Text">
-        <DocPreview title="Helper text examples">
+      <div className="col-span-2">
+        <DocSection title="With Helper Text">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4 w-72">
             <Select
               label="Country"
@@ -463,10 +525,14 @@ function StylesTab() {
             />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="With Disabled Options">
-        <DocPreview title="Some options unavailable">
+      <div className="col-span-2">
+        <DocSection title="With Disabled Options">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="w-72">
             <Select
               label="Choose an option"
@@ -475,10 +541,14 @@ function StylesTab() {
             />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="In Context — Form">
-        <DocPreview title="Appointment scheduling form">
+      <div className="col-span-2">
+        <DocSection title="In Context — Form">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4" style={{ maxWidth: 360 }}>
             <Select
               label="Specialty"
@@ -498,7 +568,9 @@ function StylesTab() {
             />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
     </>
   );
 }
@@ -523,7 +595,7 @@ function PropertiesTab() {
 />`;
 
   return (
-    <>
+    <div className="col-span-2">
       <DocSection title="Interactive Playground">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           <div className="rounded-md border border-border-neutral-default overflow-hidden">
@@ -609,8 +681,9 @@ function PropertiesTab() {
         </div>
       </DocSection>
 
-      <DocSection title="Props Reference">
+      <DocSection title="Props Reference" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             ["size", '"md" | "sm"', '"md"', "Size variant — affects height, border radius, and typography."],
@@ -630,8 +703,9 @@ function PropertiesTab() {
         />
       </DocSection>
 
-      <DocSection title="SelectOption Interface">
+      <DocSection title="SelectOption Interface" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Type", "Required", "Description"]}
           rows={[
             ["value", "string", "Yes", "Unique value identifier for the option."],
@@ -641,62 +715,9 @@ function PropertiesTab() {
         />
       </DocSection>
 
-      <DocSection title="Code Examples">
-        <DocPreview title="Basic select">
-          <div className="w-72">
-            <Select label="Country" placeholder="Select a country" options={DEMO_COUNTRIES} />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Select
-  label="Country"
-  placeholder="Select a country"
-  options={[
-    { value: "us", label: "United States" },
-    { value: "uk", label: "United Kingdom" },
-    { value: "ca", label: "Canada" },
-  ]}
-/>`}</code>
-        </pre>
-
-        <DocPreview title="Controlled select">
-          <div className="w-72">
-            <Select label="Time slot" options={DEMO_SHORT} value="am" onChange={() => {}} />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`const [value, setValue] = useState("am");
-
-<Select
-  label="Time slot"
-  options={timeSlots}
-  value={value}
-  onChange={setValue}
-/>`}</code>
-        </pre>
-
-        <DocPreview title="Error state">
-          <div className="w-72">
-            <Select
-              label="Specialty"
-              state="error"
-              options={DEMO_CATEGORIES}
-              errorMessage="Please select a specialty."
-            />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Select
-  label="Specialty"
-  state="error"
-  options={categories}
-  errorMessage="Please select a specialty."
-/>`}</code>
-        </pre>
-      </DocSection>
-
-      <DocSection title="Keyboard Navigation">
+      <DocSection title="Keyboard Navigation" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Key", "Action"]}
           rows={[
             ["Enter / Space", "Open dropdown (when trigger focused), select option (when dropdown open)."],
@@ -709,7 +730,7 @@ function PropertiesTab() {
           ]}
         />
       </DocSection>
-    </>
+    </div>
   );
 }
 
@@ -721,13 +742,16 @@ export default function SelectPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <div className="col-span-2 flex flex-col">
-      <DocHeader
-        title="Select"
-        description="Selects let users choose a single value from a predefined list of options, saving space compared to radio groups."
-      />
+    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-10">
+      <div className="col-start-1 flex flex-col">
+        <DocHeader
+          title="Select"
+          description="Selects let users choose a single value from a predefined list of options, saving space compared to radio groups."
+          variant="foundations"
+        />
 
-      <TabBar active={activeTab} onChange={setActiveTab} />
+        <TabBar active={activeTab} onChange={setActiveTab} />
+      </div>
 
       {activeTab === "Overview" && <OverviewTab />}
       {activeTab === "Design Tokens" && <DesignTokensTab />}

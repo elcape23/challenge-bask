@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
+import Icon, { type IconType } from "@/components/ui/Icon";
 
 export type AlertType = "neutral" | "success" | "info" | "warning" | "danger";
 export type AlertSize = "sm" | "md";
@@ -8,7 +9,7 @@ export type AlertSize = "sm" | "md";
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
   /** Color type / semantic variant */
   type?: AlertType;
-  /** Size variant — md (default) or sm (compact) */
+  /** Size variant - md (default) or sm (compact) */
   size?: AlertSize;
   /** Heading text */
   heading?: string;
@@ -30,62 +31,12 @@ export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"
   icon?: ReactNode;
 }
 
-/* ─── Icons per type ─── */
-function NeutralIcon({ size }: { size: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 16v-4" />
-      <path d="M12 8h.01" />
-    </svg>
-  );
-}
-
-function SuccessIcon({ size }: { size: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  );
-}
-
-function InfoIcon({ size }: { size: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 16v-4" />
-      <path d="M12 8h.01" />
-    </svg>
-  );
-}
-
-function WarningIcon({ size }: { size: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-      <path d="M12 9v4" />
-      <path d="M12 17h.01" />
-    </svg>
-  );
-}
-
-function DangerIcon({ size }: { size: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" />
-      <path d="m15 9-6 6" />
-      <path d="m9 9 6 6" />
-    </svg>
-  );
-}
-
-const ICON_MAP: Record<AlertType, React.FC<{ size: number }>> = {
-  neutral: NeutralIcon,
-  success: SuccessIcon,
-  info: InfoIcon,
-  warning: WarningIcon,
-  danger: DangerIcon,
+const ICON_MAP: Record<AlertType, IconType> = {
+  neutral: "circle-alert",
+  success: "check",
+  info: "circle-alert",
+  warning: "triangle-alert",
+  danger: "circle-x",
 };
 
 const TYPE_STYLES: Record<AlertType, { bg: string; border: string; text: string; icon: string }> = {
@@ -141,9 +92,9 @@ const DESCRIPTION_STYLE: Record<AlertSize, string> = {
   sm: "text-body-03 font-regular",
 };
 
-const ICON_PX: Record<AlertSize, number> = {
-  md: 24,
-  sm: 20,
+const ICON_SIZE: Record<AlertSize, "md" | "sm"> = {
+  md: "md",
+  sm: "sm",
 };
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(
@@ -166,51 +117,49 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
     ref
   ) => {
     const styles = TYPE_STYLES[type];
-    const IconComponent = ICON_MAP[type];
-    const iconSize = ICON_PX[size];
+    const iconType = ICON_MAP[type];
+    const iconSize = ICON_SIZE[size];
 
     return (
       <div
         ref={ref}
         role="alert"
         className={`
-          flex items-center border rounded-sm
+          flex min-w-0 items-center rounded-sm border
           ${styles.bg} ${styles.border}
           ${SIZE_CONTAINER[size]}
           ${className ?? ""}
         `}
         {...props}
       >
-        {/* Left: icon + text */}
-        <div className={`flex flex-1 items-center min-w-0 ${SIZE_INNER_GAP[size]}`}>
+        <div className={`flex min-w-0 basis-0 flex-1 items-center ${SIZE_INNER_GAP[size]}`}>
           {showIcon && (
-            <span className={`shrink-0 flex items-center ${styles.icon}`}>
-              {icon ?? <IconComponent size={iconSize} />}
+            <span className="flex shrink-0 items-center">
+              {icon ?? <Icon type={iconType} size={iconSize} className={styles.icon} />}
             </span>
           )}
 
-          <div className="flex flex-col flex-1 min-w-0">
+          <div className="flex min-w-0 flex-1 flex-col">
             {showHeading && (
-              <p className={`${HEADING_STYLE[size]} ${styles.text} m-0`}>
+              <p className={`${HEADING_STYLE[size]} ${styles.text} m-0 min-w-0 break-words`}>
                 {heading}
               </p>
             )}
             {showDescription && (
-              <p className={`${DESCRIPTION_STYLE[size]} ${styles.text} m-0`}>
+              <p className={`${DESCRIPTION_STYLE[size]} ${styles.text} m-0 min-w-0 break-words`}>
                 {description}
               </p>
             )}
           </div>
         </div>
 
-        {/* Right: action button */}
         {showButton && (
           <button
             type="button"
             onClick={onButtonClick}
             className={`
-              shrink-0 text-body-02 font-medium underline
-              bg-transparent border-0 p-0 cursor-pointer
+              shrink-0 bg-transparent p-0 text-body-02 font-medium underline
+              cursor-pointer border-0
               ${styles.text}
             `}
           >

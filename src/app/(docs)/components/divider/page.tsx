@@ -8,13 +8,17 @@ import DocAnatomy from "@/components/docs/DocAnatomy";
 
 export default function DividerPage() {
   return (
-    <>
-      <DocHeader
-        title="Divider"
-        description="Dividers create visual separation between sections or items, helping organize content into scannable groups."
-      />
+    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-10">
+      <div className="col-start-1 flex flex-col">
+        <DocHeader
+          title="Divider"
+          description="Dividers create visual separation between sections or items, helping organize content into scannable groups."
+          variant="foundations"
+        />
+      </div>
 
-      <DocSection title="Overview">
+      <div className="col-start-1">
+        <DocSection title="Overview">
         <p className="mb-4">
           Dividers create visual separation between sections or items, helping
           organize content into scannable groups. A horizontal line between
@@ -28,8 +32,10 @@ export default function DividerPage() {
           boundaries between distinct content blocks.
         </p>
       </DocSection>
+      </div>
 
-      <DocSection title="Anatomy">
+      <div className="col-span-2">
+        <DocSection title="Anatomy">
         <DocAnatomy
           items={[
             {
@@ -44,7 +50,7 @@ export default function DividerPage() {
             },
           ]}
         />
-        <DocPreview title="Anatomy example">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare>
           <div className="flex flex-col gap-6 w-full max-w-sm">
             <div className="h-px w-full bg-border" />
             <div className="flex items-center gap-3">
@@ -56,8 +62,9 @@ export default function DividerPage() {
         </DocPreview>
       </DocSection>
 
-      <DocSection title="Variants">
+      <DocSection title="Variants" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Variant", "Description", "When to use"]}
           rows={[
             [
@@ -77,7 +84,8 @@ export default function DividerPage() {
             ],
           ]}
         />
-        <DocPreview title="Horizontal divider">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="w-full max-w-sm space-y-4">
             <p className="text-body-02 text-text-neutral-secondary m-0">
               Content above the divider.
@@ -87,8 +95,8 @@ export default function DividerPage() {
               Content below the divider.
             </p>
           </div>
-        </DocPreview>
-        <DocPreview title="With label">
+          </DocPreview>
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="w-full max-w-sm">
             <div className="flex items-center gap-3">
               <div className="h-px flex-1 bg-border" />
@@ -98,8 +106,8 @@ export default function DividerPage() {
               <div className="h-px flex-1 bg-border" />
             </div>
           </div>
-        </DocPreview>
-        <DocPreview title="Vertical divider">
+          </DocPreview>
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -115,10 +123,13 @@ export default function DividerPage() {
               Delete
             </button>
           </div>
-        </DocPreview>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Behavior">
+      <div className="col-span-2">
+        <DocSection title="Behavior">
         <p className="mb-4">
           Dividers are purely decorative — they do not respond to interaction.
           They inherit the width or height of their container. For vertical
@@ -164,7 +175,11 @@ export default function DividerPage() {
       </DocSection>
 
       <DocSection title="Do / Don't">
-        <DoDontGrid
+        <div
+          className="overflow-hidden flex flex-row gap-10 w-full items-start justify-between"
+          style={{ backgroundColor: "#FFFFFF", padding: "200px" }}
+        >
+          <DoDontGrid
           doItems={[
             {
               description:
@@ -202,11 +217,15 @@ export default function DividerPage() {
             },
           ]}
         />
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Specs">
-        <DocTable
-          headers={["Property", "Value"]}
+      <div className="col-span-2">
+        <DocSection title="Specs" hideTitle>
+          <DocTable
+            variant="surface"
+            headers={["Property", "Value"]}
           rows={[
             ["Thickness", "1px"],
             ["Color", "var(--color-border) / border-border-neutral-default"],
@@ -217,7 +236,8 @@ export default function DividerPage() {
       </DocSection>
 
       <DocSection title="Examples">
-        <DocPreview title="Horizontal dividers">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="w-full max-w-sm space-y-4">
             <p className="text-body-02 text-text-neutral-default m-0">Section one</p>
             <hr className="border-0 h-px bg-border m-0" />
@@ -225,8 +245,8 @@ export default function DividerPage() {
             <hr className="border-0 h-px bg-border m-0" />
             <p className="text-body-02 text-text-neutral-default m-0">Section three</p>
           </div>
-        </DocPreview>
-        <DocPreview title="With label (sign-in divider)">
+          </DocPreview>
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="w-full max-w-sm">
             <div className="flex items-center gap-3">
               <div className="h-px flex-1 bg-border" />
@@ -236,8 +256,8 @@ export default function DividerPage() {
               <div className="h-px flex-1 bg-border" />
             </div>
           </div>
-        </DocPreview>
-        <DocPreview title="Vertical divider in button group">
+          </DocPreview>
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -253,8 +273,10 @@ export default function DividerPage() {
               Cancel
             </button>
           </div>
-        </DocPreview>
+          </DocPreview>
+        </div>
       </DocSection>
-    </>
+      </div>
+    </div>
   );
 }

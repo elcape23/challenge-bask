@@ -1,0 +1,44 @@
+---
+description: Layout structure for component documentation pages
+globs: "**/app/(docs)/components/**/page.tsx"
+alwaysApply: false
+---
+
+# Component Page Structure
+
+All component documentation pages must follow this layout (see Accordion page as reference):
+
+## Main Layout
+
+- **Two-column grid**: `grid grid-cols-2 gap-x-10 gap-y-10`
+- **Row 1 left column**: DocHeader (title, description) + TabBar
+- **Row 1 right column**: Empty (content starts in row 2)
+- **Content**: Starts in row 2, below the tab group
+
+## Section Structure
+
+### Overview / heading sections
+- Place in left column: `col-start-1`
+- Used for Overview text, Accessibility, Behavior, etc.
+
+### Tables
+- Always span full width: `col-span-2`
+- Use `variant="surface"` and `hideTitle` on DocTable (no table headings)
+
+### Examples
+- **Layout**: `grid grid-cols-2 gap-10 items-stretch`
+- **One example left, one right** (paired comparisons)
+- **DocPreview props**: `rounded={false}` `border={false}` `verticalPaddingOnly` `aspectSquare`
+- **No heading** on DocPreview (no title prop)
+- **Width/height**: Add `className="h-full min-h-0"` to DocPreview so examples are square and fill column
+- Inner content: `w-full max-w-*` so example spans column width
+
+### Gap
+- Use `gap-10` between columns in example grids
+
+## Tab Content
+
+- Overview, Design Tokens, Styles, Properties each render as direct children of the main grid
+- Wrap each section in `col-span-2` when it should span full width
+- Design Tokens: Color Tokens in first row below tabs; all tables span horizontally
+- Properties: Wrap entire tab content in `col-span-2`; content starts below tabs

@@ -153,7 +153,6 @@ const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
 
     if (showAttachedIcon) {
       const s = size;
-      const inputState = isSuccess ? "success" : "error";
       return (
         <div className={`flex flex-col ${className ?? ""}`}>
           {label && (

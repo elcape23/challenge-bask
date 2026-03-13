@@ -130,6 +130,7 @@
 
   /* ─── color/background/default ─── */
   --color-background-default-default: #f7f7f3;
+  --color-background-default-invert: #1c1f1b;
 
   /* ─── color/background/fill ─── */
   --color-background-fill-neutral-default: #e4e6de;
@@ -160,6 +161,7 @@
   /* ─── color/border ─── */
   --color-border-neutral-default: #b7bbaf;
   --color-border-neutral-hover: #93988d;
+  --color-border-neutral-pressed: #31352f;
   --color-border-neutral-disabled: #e4e6de;
   --color-border-primary-default: #a6bba0;
   --color-border-primary-disabled: #c9d7c6;

@@ -38,7 +38,7 @@ function TabBar({ active, onChange }: { active: TabName; onChange: (t: TabName) 
 function ColorSwatch({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="size-8 rounded-md border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
+      <div className="size-12 rounded-sm border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
       <div>
         <p className="text-body-02 font-medium">{label}</p>
         <p className="text-body-03 text-text-neutral-placeholder">{color}</p>
@@ -111,7 +111,8 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
 function OverviewTab() {
   return (
     <>
-      <DocSection title="Overview">
+      <div className="col-start-1">
+        <DocSection title="Overview">
         <p className="mb-4">
           The Checkbox Group component pairs a square checkbox indicator with a
           text label. It supports checked, unchecked, and indeterminate states,
@@ -122,9 +123,11 @@ function OverviewTab() {
           of options, or to toggle a single binary choice. Unlike radio buttons,
           any number of checkboxes in a group can be checked simultaneously.
         </p>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Anatomy">
+      <div className="col-span-2">
+        <DocSection title="Anatomy">
         <DocAnatomy
           items={[
             {
@@ -144,7 +147,7 @@ function OverviewTab() {
             },
           ]}
         />
-        <DocPreview title="Anatomy example">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare>
           <div className="flex items-center gap-6">
             <Checkbox size="md" label="Unchecked" />
             <Checkbox size="md" label="Checked" defaultChecked />
@@ -152,16 +155,20 @@ function OverviewTab() {
           </div>
         </DocPreview>
       </DocSection>
+      </div>
 
-      <DocSection title="Sizes">
+      <div className="col-span-2">
+        <DocSection title="Sizes" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Size", "Height", "Checkbox", "Gap", "Vertical Padding", "Label Typography"]}
           rows={[
             ["Medium (md)", "48px", "24×24px", "12px (space-3)", "12px (space-3)", "Body/01/Regular — 16px/24px/400"],
             ["Small (sm)", "36px", "20×20px", "8px (space-2)", "8px (space-2)", "Body/02/Regular — 13px/16px/400"],
           ]}
         />
-        <DocPreview title="Size comparison">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="space-y-2">
             <div className="flex items-center gap-6">
               <Checkbox size="md" label="Medium unchecked" />
@@ -173,26 +180,35 @@ function OverviewTab() {
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Side (Label Position)">
+      <div className="col-span-2">
+        <DocSection title="Side (Label Position)" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Side", "Layout", "When to use"]}
           rows={[
             ["Left (default)", "Checkbox on the left, label on the right", "Standard forms and settings panels."],
             ["Right", "Label on the left, checkbox on the right", "List items, settings rows where the action is on the trailing edge."],
           ]}
         />
-        <DocPreview title="Side comparison">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="space-y-2" style={{ maxWidth: 240 }}>
             <Checkbox size="md" side="left" label="Left side" defaultChecked />
             <Checkbox size="md" side="right" label="Right side" defaultChecked />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="States">
+      <div className="col-span-2">
+        <DocSection title="States" hideTitle>
         <DocTable
+          variant="surface"
           headers={["State", "Visual", "Description"]}
           rows={[
             ["Unchecked (empty)", "Neutral fill + neutral border", "The option is not selected."],
@@ -201,7 +217,8 @@ function OverviewTab() {
             ["Disabled", "Reduced opacity (50%)", "Non-interactive. State is preserved but cannot be changed."],
           ]}
         />
-        <DocPreview title="All states">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="space-y-2">
             <Checkbox size="md" label="Unchecked" />
             <Checkbox size="md" label="Checked" defaultChecked />
@@ -210,13 +227,16 @@ function OverviewTab() {
             <Checkbox size="md" label="Disabled checked" defaultChecked disabled />
           </div>
         </DocPreview>
+        </div>
         <DocCallout variant="info" title="Indeterminate state">
           The indeterminate state cannot be set via HTML alone — it must be
           applied programmatically via the <code>indeterminate</code> prop, which sets the DOM property.
         </DocCallout>
       </DocSection>
+      </div>
 
-      <DocSection title="Behavior">
+      <div className="col-span-2">
+        <DocSection title="Behavior">
         <p className="mb-4">
           Clicking the checkbox or its label toggles between checked and unchecked.
           In a group with a parent &quot;select all&quot; checkbox, toggling the parent
@@ -228,8 +248,10 @@ function OverviewTab() {
           an immediate effect, use a switch instead.
         </p>
       </DocSection>
+      </div>
 
-      <DocSection title="Accessibility">
+      <div className="col-span-2">
+        <DocSection title="Accessibility">
         <ul className="pl-5 mb-4">
           <li className="mb-2">
             Uses a native <code>&lt;input type=&quot;checkbox&quot;&gt;</code> wrapped with a <code>&lt;label&gt;</code> for click-anywhere behavior.
@@ -248,8 +270,14 @@ function OverviewTab() {
           </li>
         </ul>
       </DocSection>
+      </div>
 
-      <DocSection title="Usage guidelines">
+      <div className="col-span-2">
+        <DocSection title="Usage guidelines">
+          <div
+            className="overflow-hidden flex flex-row gap-10 w-full items-start justify-between"
+            style={{ backgroundColor: "#FFFFFF", padding: "200px" }}
+          >
         <DoDontGrid
           doItems={[
             { description: "Use checkboxes when users can select multiple options from a list." },
@@ -264,7 +292,9 @@ function OverviewTab() {
             { description: "Don't place checkboxes in a horizontal row when you have more than 3 options." },
           ]}
         />
-      </DocSection>
+          </div>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -272,39 +302,45 @@ function OverviewTab() {
 function DesignTokensTab() {
   return (
     <>
-      <DocSection title="Color Tokens — Unchecked">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Unchecked">
         <TokenGroup title="Checkbox indicator (empty)">
-          <ColorSwatch color="#e4e6de" label="bg / fill / neutral / default" />
-          <ColorSwatch color="#b7bbaf" label="border / neutral / default" />
+          <ColorSwatch color="#E4E6DE" label="bg / fill / neutral / default" />
+          <ColorSwatch color="#B7BBAF" label="border / neutral / default" />
         </TokenGroup>
         <TokenGroup title="Label text">
-          <ColorSwatch color="#1c1f1b" label="text / neutral / default" />
+          <ColorSwatch color="#1C1F1B" label="text / neutral / default" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Checked / Indeterminate">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Checked / Indeterminate">
         <TokenGroup title="Checkbox indicator (active)">
           <ColorSwatch color="#153014" label="bg / fill / primary / default" />
-          <ColorSwatch color="#a6bba0" label="border / primary / default" />
-          <ColorSwatch color="#e4ece2" label="icon / primary / invert" />
+          <ColorSwatch color="#A6BBA0" label="border / primary / default" />
+          <ColorSwatch color="#E4ECE2" label="icon / primary / invert" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Typography Tokens">
+      <div className="col-span-2">
+        <DocSection title="Typography Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Size", "Token", "Font Size", "Line Height", "Weight"]}
           rows={[
             ["md", "Body/01/Regular", "16px", "24px", "400 (regular)"],
             ["sm", "Body/02/Regular", "13px", "16px", "400 (regular)"],
           ]}
         />
-        <DocCallout variant="info" title="Font family">
-          All label text uses <code>Suisse Intl Trial</code> (Regular weight) via the <code>font/family/default</code> token.
-        </DocCallout>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Spacing Tokens">
+      <div className="col-span-2">
+        <DocSection title="Spacing Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Token (md)", "Value (md)", "Token (sm)", "Value (sm)"]}
           rows={[
             ["Gap (checkbox ↔ label)", "spacing/space-3", "12px", "spacing/space-2", "8px"],
@@ -312,10 +348,13 @@ function DesignTokensTab() {
             ["Checkbox inner padding", "spacing/space-0", "2px", "spacing/space-0", "2px"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Dimensions">
+      <div className="col-span-2">
+        <DocSection title="Dimensions" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "md", "sm"]}
           rows={[
             ["Container height", "48px", "36px"],
@@ -324,7 +363,8 @@ function DesignTokensTab() {
             ["Border width", "1px", "1px"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -332,8 +372,10 @@ function DesignTokensTab() {
 function StylesTab() {
   return (
     <>
-      <DocSection title="Side: Left — All States (md)">
-        <DocPreview title="Left side, unchecked / checked / indeterminate / disabled">
+      <div className="col-span-2">
+        <DocSection title="Side: Left — All States (md)">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="space-y-2" style={{ maxWidth: 280 }}>
             <Checkbox size="md" side="left" label="Unchecked" />
             <Checkbox size="md" side="left" label="Checked" defaultChecked />
@@ -342,10 +384,14 @@ function StylesTab() {
             <Checkbox size="md" side="left" label="Disabled checked" defaultChecked disabled />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Side: Right — All States (md)">
-        <DocPreview title="Right side, unchecked / checked / indeterminate / disabled">
+      <div className="col-span-2">
+        <DocSection title="Side: Right — All States (md)">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="space-y-2" style={{ maxWidth: 280 }}>
             <Checkbox size="md" side="right" label="Unchecked" />
             <Checkbox size="md" side="right" label="Checked" defaultChecked />
@@ -353,26 +399,34 @@ function StylesTab() {
             <Checkbox size="md" side="right" label="Disabled" disabled />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Size: Small (sm)">
-        <DocPreview title="Small checkboxes — left side">
+      <div className="col-span-2">
+        <DocSection title="Size: Small (sm)">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="space-y-1" style={{ maxWidth: 280 }}>
             <Checkbox size="sm" side="left" label="Small unchecked" />
             <Checkbox size="sm" side="left" label="Small checked" defaultChecked />
             <Checkbox size="sm" side="left" label="Small indeterminate" indeterminate />
           </div>
         </DocPreview>
-        <DocPreview title="Small checkboxes — right side">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="space-y-1" style={{ maxWidth: 280 }}>
             <Checkbox size="sm" side="right" label="Small unchecked" />
             <Checkbox size="sm" side="right" label="Small checked" defaultChecked />
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Size Comparison">
-        <DocPreview title="md vs sm side by side">
+      <div className="col-span-2">
+        <DocSection title="Size Comparison">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="space-y-2" style={{ maxWidth: 280 }}>
             <div className="flex items-center gap-2">
               <span className="text-body-03 text-text-neutral-placeholder w-8">md</span>
@@ -384,10 +438,14 @@ function StylesTab() {
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="In Context — Checkbox Group">
-        <DocPreview title="Notification preferences">
+      <div className="col-span-2">
+        <DocSection title="In Context — Checkbox Group">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <fieldset style={{ border: "none", padding: 0, margin: 0, maxWidth: 320 }}>
             <legend className="text-body-01 font-medium text-text-neutral-default mb-2">
               Notification channels
@@ -400,7 +458,9 @@ function StylesTab() {
             </div>
           </fieldset>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
     </>
   );
 }
@@ -420,7 +480,7 @@ function PropertiesTab() {
 />`;
 
   return (
-    <>
+    <div className="col-span-2">
       <DocSection title="Interactive Playground">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Preview */}
@@ -495,8 +555,9 @@ function PropertiesTab() {
         </div>
       </DocSection>
 
-      <DocSection title="Props Reference">
+      <DocSection title="Props Reference" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             ["size", '"md" | "sm"', '"md"', "Size variant — affects checkbox dimensions, gap, height, and label typography."],
@@ -512,34 +573,9 @@ function PropertiesTab() {
         />
       </DocSection>
 
-      <DocSection title="Code Examples">
-        <DocPreview title="Basic checkbox group">
-          <div className="space-y-0" style={{ maxWidth: 280 }}>
-            <Checkbox label="Option A" defaultChecked />
-            <Checkbox label="Option B" />
-            <Checkbox label="Option C" defaultChecked />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Checkbox label="Option A" defaultChecked />
-<Checkbox label="Option B" />
-<Checkbox label="Option C" defaultChecked />`}</code>
-        </pre>
-
-        <DocPreview title="Small right-sided checkboxes">
-          <div className="space-y-0" style={{ maxWidth: 240 }}>
-            <Checkbox size="sm" side="right" label="Compact A" defaultChecked />
-            <Checkbox size="sm" side="right" label="Compact B" />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Checkbox size="sm" side="right" label="Compact A" defaultChecked />
-<Checkbox size="sm" side="right" label="Compact B" />`}</code>
-        </pre>
-      </DocSection>
-
-      <DocSection title="Validation & Constraints">
+      <DocSection title="Validation & Constraints" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Rule", "Details"]}
           rows={[
             ["Label required", "Every checkbox must have a label. Unlabeled checkboxes are inaccessible."],
@@ -549,7 +585,7 @@ function PropertiesTab() {
           ]}
         />
       </DocSection>
-    </>
+    </div>
   );
 }
 
@@ -561,13 +597,16 @@ export default function CheckboxPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <div className="col-span-2 flex flex-col">
-      <DocHeader
-        title="Checkbox"
-        description="Checkbox Group pairs a square indicator with a text label, supporting checked, unchecked, and indeterminate states with two sizes and two label positions."
-      />
+    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-10">
+      <div className="col-start-1 flex flex-col">
+        <DocHeader
+          title="Checkbox"
+          description="Checkbox Group pairs a square indicator with a text label, supporting checked, unchecked, and indeterminate states with two sizes and two label positions."
+          variant="foundations"
+        />
 
-      <TabBar active={activeTab} onChange={setActiveTab} />
+        <TabBar active={activeTab} onChange={setActiveTab} />
+      </div>
 
       {activeTab === "Overview" && <OverviewTab />}
       {activeTab === "Design Tokens" && <DesignTokensTab />}

@@ -22,6 +22,8 @@ const UI_ICONS: IconType[] = [
   "x",
   "refresh-cw",
   "circle-x",
+  "circle-alert",
+  "triangle-alert",
   "ban",
   "google",
   "moon",
@@ -51,16 +53,17 @@ export default function IconographyPage() {
           usage principles to keep icons consistent and meaningful.
         </p>
         <p>
-          The icon library is based on Lucide-style icons — an open-source icon
+          The icon library is based on Lucide-style icons, an open-source icon
           set with consistent stroke widths, rounded joins, and a clean
-          geometric style. All icons follow the same optical rules for a
-          cohesive appearance.
+          geometric style. The implementation uses Lucide directly and keeps
+          the original icon stroke widths while preserving the system sizing
+          and spacing rules.
         </p>
       </DocSection>
 
       <DocSection title="Principles">
         <ul
-          className="list-none p-0 m-0 gap-3"
+          className="list-none m-0 gap-3 p-0"
           style={{
             display: "flex",
             flexDirection: "column",
@@ -99,7 +102,7 @@ export default function IconographyPage() {
             </span>
             <span>
               Use icons to support understanding, not for decoration. Every icon
-              should serve a functional role — indicating an action, status, or
+              should serve a functional role, indicating an action, status, or
               category.
             </span>
           </li>
@@ -122,32 +125,31 @@ export default function IconographyPage() {
       <DocSection title="Sizing">
         <p className="mb-4">
           Icons are available at three fixed sizes. Always use one of the
-          defined sizes — never scale icons to arbitrary dimensions.
+          defined sizes, never scale icons to arbitrary dimensions.
         </p>
         <DocTable
           headers={["Size", "Dimensions", "Usage"]}
           rows={[
             [
               "sm",
-              "20 × 20px",
+              "20 x 20px",
               "Inline UI icons inside compact components: buttons, inputs, navigation items",
             ],
             [
               "md",
-              "24 × 24px",
+              "24 x 24px",
               "Default size for standalone icons, action buttons, and section headers",
             ],
             [
               "decorative",
-              "40 × 40px",
+              "40 x 40px",
               "Feature icons, empty states, and illustrative contexts where icons are the primary visual",
             ],
           ]}
         />
 
-        {/* Visual size comparison */}
         <div
-          className="gap-6 p-5 mb-4 bg-background-surface-neutral-default rounded-md border border-border-neutral-default"
+          className="mb-4 gap-6 rounded-md border border-border-neutral-default bg-background-surface-neutral-default p-5"
           style={{
             display: "flex",
             alignItems: "end",
@@ -168,7 +170,7 @@ export default function IconographyPage() {
               }}
             >
               <div
-                className="bg-primary-100 border border-dashed border-primary-400 text-primary-600"
+                className="border border-dashed border-primary-400 bg-primary-100 text-primary-600"
                 style={{
                   width: `${item.size}px`,
                   height: `${item.size}px`,
@@ -181,7 +183,7 @@ export default function IconographyPage() {
               >
                 {item.size}
               </div>
-              <span className="text-text-neutral-secondary text-body-03 font-medium">
+              <span className="text-body-03 font-medium text-text-neutral-secondary">
                 {item.label}
               </span>
             </div>
@@ -193,30 +195,30 @@ export default function IconographyPage() {
         <p className="mb-4">
           The following icons are available in the design system. Each icon
           uses Figma-accurate padding for optical balance. Icons are shown in
-          sm (20×20) and md (24×24 or 20×20 per icon) sizes.
+          sm (20 x 20) and md (24 x 24) sizes.
         </p>
 
         <div className="mb-6">
-          <h3 className="text-text-neutral-default mb-4 font-medium text-body-02">
+          <h3 className="mb-4 text-body-02 font-medium text-text-neutral-default">
             UI icons (sm / md)
           </h3>
           <div
-            className="gap-0 border border-border-neutral-default rounded-md overflow-hidden bg-background-surface-neutral-default"
+            className="overflow-hidden rounded-md border border-border-neutral-default bg-background-surface-neutral-default"
             style={{
               display: "grid",
               gridTemplateColumns: "1fr auto",
               maxWidth: 360,
             }}
           >
-            <div className="py-2 px-4 border-b border-r border-border-neutral-default bg-background-fill-neutral-default text-body-03 font-medium text-text-neutral-placeholder">
+            <div className="border-b border-r border-border-neutral-default bg-background-fill-neutral-default px-4 py-2 text-body-03 font-medium text-text-neutral-placeholder">
               md
             </div>
-            <div className="py-2 px-4 border-b border-border-neutral-default bg-background-fill-neutral-default text-body-03 font-medium text-text-neutral-placeholder w-20 text-center">
+            <div className="w-20 border-b border-border-neutral-default bg-background-fill-neutral-default px-4 py-2 text-center text-body-03 font-medium text-text-neutral-placeholder">
               sm
             </div>
             {UI_ICONS.map((name) => (
               <div key={name} className="contents">
-                <div className="flex items-center gap-3 py-3 px-4 border-b border-r border-border-neutral-default">
+                <div className="flex items-center gap-3 border-b border-r border-border-neutral-default px-4 py-3">
                   <Icon type={name} size="md" />
                   <span
                     className="text-body-03 text-text-neutral-secondary"
@@ -225,7 +227,7 @@ export default function IconographyPage() {
                     {name}
                   </span>
                 </div>
-                <div className="flex items-center justify-center py-3 px-4 border-b border-border-neutral-default">
+                <div className="flex items-center justify-center border-b border-border-neutral-default px-4 py-3">
                   <Icon type={name} size="sm" />
                 </div>
               </div>
@@ -234,8 +236,8 @@ export default function IconographyPage() {
         </div>
 
         <div className="mb-4">
-          <h3 className="text-text-neutral-default mb-3 font-medium text-body-02">
-            Decorative icons (40 × 40px)
+          <h3 className="mb-3 text-body-02 font-medium text-text-neutral-default">
+            Decorative icons (40 x 40px)
           </h3>
           <div
             className="gap-2"
@@ -247,10 +249,8 @@ export default function IconographyPage() {
             {DECORATIVE_ICONS.map((name) => (
               <span
                 key={name}
-                className="py-1 px-3 bg-background-surface-neutral-default border border-border-neutral-default rounded-md text-body-02 text-text-neutral-secondary"
+                className="inline-flex items-center rounded-md border border-border-neutral-default bg-background-surface-neutral-default px-3 py-1 text-body-02 text-text-neutral-secondary"
                 style={{
-                  display: "inline-flex",
-                  alignItems: "center",
                   fontFamily: "var(--font-mono)",
                 }}
               >
@@ -261,15 +261,15 @@ export default function IconographyPage() {
         </div>
 
         <DocCallout variant="info" title="Figma design (node 29-1135)">
-          Icons use the exact SVG assets and padding from Figma. Each icon has
-          a specific container size (24×24 or 20×20) and padding (e.g. chevrons
-          px-9 py-6, compact icons p-2 to p-5). Do not override these values.
+          Icons use Lucide components directly across the full set. Each icon
+          keeps the Figma container size and padding rules while using the
+          original Lucide stroke width.
         </DocCallout>
       </DocSection>
 
       <DocSection title="Rules">
         <ul
-          className="list-disc pl-5 text-text-neutral-secondary gap-2"
+          className="list-disc gap-2 pl-5 text-text-neutral-secondary"
           style={{
             display: "flex",
             flexDirection: "column",
@@ -288,16 +288,16 @@ export default function IconographyPage() {
             permits.
           </li>
           <li>
-            For icon-only actions (e.g., a close button), provide an{" "}
+            For icon-only actions (for example, a close button), provide an{" "}
             <code>aria-label</code> that describes the action.
           </li>
           <li>
-            Color icons using semantic color tokens and{" "}
-            <code>currentColor</code>. Avoid hard-coded colors that break in
-            dark mode or high-contrast settings.
+            Color icons using semantic color tokens and <code>currentColor</code>
+            . Avoid hard-coded colors that break in dark mode or high-contrast
+            settings.
           </li>
           <li>
-            Do not use icons purely for decoration — every icon should have a
+            Do not use icons purely for decoration, every icon should have a
             clear communicative role.
           </li>
         </ul>
@@ -322,7 +322,7 @@ export default function IconographyPage() {
           dontItems={[
             {
               description:
-                "Scale icons to arbitrary sizes like 18px or 28px — always use a defined size step.",
+                "Scale icons to arbitrary sizes like 18px or 28px, always use a defined size step.",
             },
             {
               description:
@@ -330,7 +330,7 @@ export default function IconographyPage() {
             },
             {
               description:
-                "Use decorative (40px) icons inline with body text — they are meant for feature-level display.",
+                "Use decorative (40px) icons inline with body text, they are meant for feature-level display.",
             },
           ]}
         />
@@ -338,11 +338,11 @@ export default function IconographyPage() {
 
       <DocSection title="Usage">
         <p className="mb-4">
-          Import the <code>Icon</code> component and use the <code>type</code> and{" "}
-          <code>size</code> props. Padding is applied per Figma spec.
+          Import the <code>Icon</code> component and use the <code>type</code>{" "}
+          and <code>size</code> props. Padding is applied per Figma spec.
         </p>
         <div
-          className="bg-background-surface-neutral-default rounded-md p-4 mb-4 text-body-02 text-text-neutral-secondary border border-border-neutral-default"
+          className="mb-4 rounded-md border border-border-neutral-default bg-background-surface-neutral-default p-4 text-body-02 text-text-neutral-secondary"
           style={{
             fontFamily: "var(--font-mono)",
             lineHeight: 1.6,
@@ -351,12 +351,12 @@ export default function IconographyPage() {
           {`import Icon from "@/components/ui/Icon";`}
           <br />
           <br />
-          {`// sm size (20×20)`}
+          {`// sm size (20 x 20)`}
           <br />
           {`<Icon type="house" size="sm" />`}
           <br />
           <br />
-          {`// md size (24×24 or 20×20 per icon)`}
+          {`// md size (24 x 24)`}
           <br />
           {`<Icon type="chevron-right" size="md" />`}
         </div>

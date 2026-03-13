@@ -4,11 +4,11 @@ import { useState, type ReactNode } from "react";
 import DocHeader from "@/components/docs/DocHeader";
 import DocSection from "@/components/docs/DocSection";
 import DocTable from "@/components/docs/DocTable";
-import DocCallout from "@/components/docs/DocCallout";
 import DoDontGrid from "@/components/docs/DoDontGrid";
 import DocPreview from "@/components/docs/DocPreview";
 import DocAnatomy from "@/components/docs/DocAnatomy";
 import Alert, { type AlertType, type AlertSize } from "@/components/ui/Alert";
+import Icon from "@/components/ui/Icon";
 
 /* ─── Tabs ─── */
 const TABS = ["Overview", "Design Tokens", "Styles", "Properties"] as const;
@@ -38,7 +38,10 @@ function TabBar({ active, onChange }: { active: TabName; onChange: (t: TabName) 
 function ColorSwatch({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="size-8 rounded-md border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
+      <div
+        className="size-12 rounded-sm border border-border-neutral-default shrink-0"
+        style={{ backgroundColor: color }}
+      />
       <div>
         <p className="text-body-02 font-medium">{label}</p>
         <p className="text-body-03 text-text-neutral-placeholder">{color}</p>
@@ -111,21 +114,24 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
 function OverviewTab() {
   return (
     <>
-      <DocSection title="Overview">
-        <p className="mb-4">
-          Alerts communicate status, feedback, or important information to users
-          through contextual, color-coded banners.
-        </p>
-        <p>
-          They appear inline within the page content and persist until the user
-          acknowledges them. Use alerts for information that requires attention
-          but does not block the user from continuing.
-        </p>
-      </DocSection>
+      <div className="col-start-1">
+        <DocSection title="Overview">
+          <p className="mb-4">
+            Alerts communicate status, feedback, or important information to users
+            through contextual, color-coded banners.
+          </p>
+          <p>
+            They appear inline within the page content and persist until the user
+            acknowledges them. Use alerts for information that requires attention
+            but does not block the user from continuing.
+          </p>
+        </DocSection>
+      </div>
 
-      <DocSection title="Anatomy">
-        <DocAnatomy
-          items={[
+      <div className="col-span-2">
+        <DocSection title="Anatomy">
+          <DocAnatomy
+            items={[
             {
               label: "Container",
               description: "Rounded bordered surface with a type-specific background color. Houses all alert elements.",
@@ -148,16 +154,19 @@ function OverviewTab() {
             },
           ]}
         />
-        <DocPreview title="Anatomy example (md)">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare>
           <div className="w-full max-w-md">
             <Alert type="neutral" size="md" heading="Heading" description="Description text providing extra context." buttonLabel="Button" />
           </div>
         </DocPreview>
       </DocSection>
+      </div>
 
-      <DocSection title="Types">
-        <DocTable
-          headers={["Type", "Purpose", "When to use"]}
+      <div className="col-span-2">
+        <DocSection title="Types" hideTitle>
+          <DocTable
+            variant="surface"
+            headers={["Type", "Purpose", "When to use"]}
           rows={[
             ["Neutral", "General or low-priority information", "Tips, disclaimers, or non-urgent notices."],
             ["Success", "Confirmation of a completed action", "Form submitted, record saved, operation completed."],
@@ -165,59 +174,96 @@ function OverviewTab() {
             ["Warning", "Potential issue that doesn't block the user", "Deprecation notices, connection issues, upcoming changes."],
             ["Danger", "Error or critical issue requiring attention", "Validation errors, failed operations, security warnings."],
           ]}
-        />
-        {(["neutral", "success", "info", "warning", "danger"] as AlertType[]).map((t) => (
-          <DocPreview key={t} title={t.charAt(0).toUpperCase() + t.slice(1)}>
+          />
+          <div className="grid grid-cols-2 gap-10 items-stretch mt-6">
+            {(["neutral", "success", "info", "warning", "danger"] as AlertType[]).map((t) => (
+              <DocPreview key={t} rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+                <div className="w-full max-w-md">
+                  <Alert type={t} size="md" heading={`${t.charAt(0).toUpperCase() + t.slice(1)} alert`} description="Supporting description with more details." />
+                </div>
+              </DocPreview>
+            ))}
+          </div>
+        </DocSection>
+      </div>
+
+      <div className="col-span-2">
+        <DocSection title="Default Icon Mapping">
+          <DocTable
+            variant="surface"
+            headers={["Type", "Shared icon", "Notes"]}
+            rows={[
+              ["Neutral", '"circle-alert"', "Used for general notices and low-priority information."],
+              ["Success", '"check"', "Used for confirmations and completed actions."],
+              ["Info", '"circle-alert"', "Used for informational guidance and product updates."],
+              ["Warning", '"triangle-alert"', "Used for caution states and non-blocking issues."],
+              ["Danger", '"circle-x"', "Used for errors and critical states that need attention."],
+            ]}
+          />
+          <p className="mt-4 mb-4">
+            Alert now uses the shared <code>Icon</code> component for its default status icon,
+            which keeps sizing and stroke behavior consistent with the rest of the system.
+          </p>
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare>
             <div className="w-full max-w-md">
-              <Alert type={t} size="md" heading={`${t.charAt(0).toUpperCase() + t.slice(1)} alert`} description="Supporting description with more details." />
+              <Alert
+                type="warning"
+                heading="Custom icon override"
+                description="You can still pass a custom shared icon through the icon prop."
+                icon={<Icon type="refresh-cw" size="md" className="text-icon-warning-default" />}
+              />
             </div>
           </DocPreview>
-        ))}
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Sizes">
-        <DocTable
-          headers={["Size", "Height", "Heading", "Description", "Icon", "Padding"]}
+      <div className="col-span-2">
+        <DocSection title="Sizes" hideTitle>
+          <DocTable
+            variant="surface"
+            headers={["Size", "Height", "Heading", "Description", "Icon", "Padding"]}
           rows={[
             ["Medium (md)", "64px", "Body/01 Medium (16px / 24px / 500)", "Body/02 Regular (13px / 16px / 400)", "24×24px", "12px (space-3)"],
             ["Small (sm)", "44px", "Body/02 Medium (13px / 16px / 500)", "Body/03 Regular (11px / 12px / 400)", "20×20px", "8px (space-2)"],
           ]}
-        />
-        <DocPreview title="Medium (md)">
-          <div className="w-full max-w-md">
-            <Alert type="info" size="md" heading="Medium alert" description="Body/01 heading, Body/02 description, 24px icon." />
+          />
+          <div className="grid grid-cols-2 gap-10 items-stretch">
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+              <div className="w-full max-w-md">
+                <Alert type="info" size="md" heading="Medium alert" description="Body/01 heading, Body/02 description, 24px icon." />
+              </div>
+            </DocPreview>
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+              <div className="w-full max-w-md">
+                <Alert type="info" size="sm" heading="Small alert" description="Body/02 heading, Body/03 description, 20px icon." />
+              </div>
+            </DocPreview>
           </div>
-        </DocPreview>
-        <DocPreview title="Small (sm)">
-          <div className="w-full max-w-md">
-            <Alert type="info" size="sm" heading="Small alert" description="Body/02 heading, Body/03 description, 20px icon." />
-          </div>
-        </DocPreview>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Optional elements">
+      <div className="col-span-2">
+        <DocSection title="Optional elements">
         <p className="mb-4">
           Each sub-element can be toggled independently via boolean props:
           <code>showIcon</code>, <code>showHeading</code>, <code>showDescription</code>, <code>showButton</code>.
         </p>
-        <DocPreview title="Heading only (no description, no button)">
-          <div className="w-full max-w-md">
-            <Alert type="warning" heading="Session expiring soon" showDescription={false} showButton={false} />
-          </div>
-        </DocPreview>
-        <DocPreview title="Description only (no heading)">
-          <div className="w-full max-w-md">
-            <Alert type="success" showHeading={false} description="Your changes have been saved successfully." showButton={false} />
-          </div>
-        </DocPreview>
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="w-full max-w-md">
+              <Alert type="warning" heading="Session expiring soon" showDescription={false} showButton={false} />
+            </div>
+          </DocPreview>
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="w-full max-w-md">
+              <Alert type="success" showHeading={false} description="Your changes have been saved successfully." showButton={false} />
+            </div>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
       <DocSection title="Behavior">
-        <DocCallout variant="info" title="Alerts vs Toasts">
-          Alerts are persistent and inline — they remain until dismissed or resolved.
-          Toasts are temporary and float above content. Use alerts when the message
-          must persist; use toasts for transient feedback.
-        </DocCallout>
         <p className="mb-4">
           Alerts appear inline within the page content. They persist until the user
           acknowledges or the condition is resolved. Do not auto-dismiss alerts.
@@ -229,7 +275,7 @@ function OverviewTab() {
       </DocSection>
 
       <DocSection title="Accessibility">
-        <ul className="pl-5 mb-4">
+        <ul className="pl-5 mb-4 text-body-01 font-regular text-text-neutral-secondary">
           <li className="mb-2">
             Uses <code>role=&quot;alert&quot;</code> for screen reader announcements.
           </li>
@@ -245,22 +291,29 @@ function OverviewTab() {
         </ul>
       </DocSection>
 
-      <DocSection title="Usage guidelines">
-        <DoDontGrid
-          doItems={[
-            { description: "Use the correct type for the message severity." },
-            { description: "Include a clear, actionable heading and supporting description." },
-            { description: "Place alerts near the relevant content (e.g., above a form)." },
-            { description: "Keep the heading short (one line) and the description concise." },
-          ]}
-          dontItems={[
-            { description: "Don't use danger for non-critical information." },
-            { description: "Don't stack multiple alerts — consolidate related messages." },
-            { description: "Don't auto-dismiss alerts; that behavior is for toasts." },
+      <div className="col-span-2">
+        <DocSection title="Usage guidelines">
+          <div
+            className="overflow-hidden flex flex-row gap-10 w-full items-start justify-between"
+            style={{ backgroundColor: "#FFFFFF", padding: "200px" }}
+          >
+            <DoDontGrid
+            doItems={[
+              { description: "Use the correct type for the message severity." },
+              { description: "Include a clear, actionable heading and supporting description." },
+              { description: "Place alerts near the relevant content (e.g., above a form)." },
+              { description: "Keep the heading short (one line) and the description concise." },
+            ]}
+            dontItems={[
+              { description: "Don't use danger for non-critical information." },
+              { description: "Don't stack multiple alerts — consolidate related messages." },
+              { description: "Don't auto-dismiss alerts; that behavior is for toasts." },
             { description: "Don't rely on color alone; use icon and text as well." },
           ]}
-        />
-      </DocSection>
+          />
+          </div>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -268,77 +321,88 @@ function OverviewTab() {
 function DesignTokensTab() {
   return (
     <>
-      <DocSection title="Color Tokens per Type">
-        <TokenGroup title="Neutral">
-          <ColorSwatch color="#f1f2ec" label="bg / surface / neutral / default" />
-          <ColorSwatch color="#b7bbaf" label="border / neutral / default" />
-          <ColorSwatch color="#1c1f1b" label="text / neutral / default" />
-        </TokenGroup>
-        <TokenGroup title="Success">
-          <ColorSwatch color="#f2faf5" label="bg / surface / success / default" />
-          <ColorSwatch color="#94d7ad" label="border / success / default" />
-          <ColorSwatch color="#287d4a" label="text / success / default" />
-        </TokenGroup>
-        <TokenGroup title="Info">
-          <ColorSwatch color="#f3f7fb" label="bg / surface / information / default" />
-          <ColorSwatch color="#adc2dd" label="border / information / default" />
-          <ColorSwatch color="#4e6d92" label="text / information / default" />
-        </TokenGroup>
-        <TokenGroup title="Warning">
-          <ColorSwatch color="#fff8ee" label="bg / surface / warning / default" />
-          <ColorSwatch color="#eec67c" label="border / warning / default" />
-          <ColorSwatch color="#925f18" label="text / warning / default" />
-        </TokenGroup>
-        <TokenGroup title="Danger">
-          <ColorSwatch color="#fff4f3" label="bg / surface / danger / default" />
-          <ColorSwatch color="#eb978c" label="border / danger / default" />
-          <ColorSwatch color="#903328" label="text / danger / default" />
-        </TokenGroup>
-      </DocSection>
+      <div className="col-span-2">
+        <DocSection title="Color Tokens per Type">
+          <TokenGroup title="Neutral">
+            <ColorSwatch color="#F1F2EC" label="bg / surface / neutral / default" />
+            <ColorSwatch color="#B7BBAF" label="border / neutral / default" />
+            <ColorSwatch color="#1C1F1B" label="text / neutral / default" />
+          </TokenGroup>
+          <TokenGroup title="Success">
+            <ColorSwatch color="#F2FAF5" label="bg / surface / success / default" />
+            <ColorSwatch color="#94D7AD" label="border / success / default" />
+            <ColorSwatch color="#287D4A" label="text / success / default" />
+          </TokenGroup>
+          <TokenGroup title="Info">
+            <ColorSwatch color="#F3F7FB" label="bg / surface / information / default" />
+            <ColorSwatch color="#ADC2DD" label="border / information / default" />
+            <ColorSwatch color="#4E6D92" label="text / information / default" />
+          </TokenGroup>
+          <TokenGroup title="Warning">
+            <ColorSwatch color="#FFF8EE" label="bg / surface / warning / default" />
+            <ColorSwatch color="#EEC67C" label="border / warning / default" />
+            <ColorSwatch color="#925F18" label="text / warning / default" />
+          </TokenGroup>
+          <TokenGroup title="Danger">
+            <ColorSwatch color="#FFF4F3" label="bg / surface / danger / default" />
+            <ColorSwatch color="#EB978C" label="border / danger / default" />
+            <ColorSwatch color="#903328" label="text / danger / default" />
+          </TokenGroup>
+        </DocSection>
+      </div>
 
-      <DocSection title="Typography Tokens">
-        <DocTable
+      <div className="col-span-2">
+        <DocSection title="Typography Tokens" hideTitle>
+          <DocTable
+            variant="surface"
           headers={["Element", "Token (md)", "Token (sm)", "Weight"]}
           rows={[
             ["Heading", "Body/01/Medium — 16px / 24px", "Body/02/Medium — 13px / 16px", "500 (medium)"],
             ["Description", "Body/02/Regular — 13px / 16px", "Body/03/Regular — 11px / 12px", "400 (regular)"],
             ["Button", "Body/02/Underlined — 13px / 16px", "Body/02/Underlined — 13px / 16px", "500 (medium, underline)"],
           ]}
-        />
-        <DocCallout variant="info" title="Font family">
-          All alert text uses <code>Suisse Intl Trial</code> via the <code>font/family/default</code> token.
-        </DocCallout>
-      </DocSection>
+          />
+        </DocSection>
+      </div>
 
-      <DocSection title="Spacing Tokens">
-        <DocTable
+      <div className="col-span-2">
+        <DocSection title="Spacing Tokens" hideTitle>
+          <DocTable
+            variant="surface"
           headers={["Property", "Token (md)", "Value (md)", "Token (sm)", "Value (sm)"]}
           rows={[
             ["Container padding", "spacing/space-3", "12px", "spacing/space-2", "8px"],
             ["Inner gap", "spacing/space-3", "12px", "spacing/space-2", "8px"],
           ]}
-        />
-      </DocSection>
+          />
+        </DocSection>
+      </div>
 
-      <DocSection title="Border & Radius">
-        <DocTable
+      <div className="col-span-2">
+        <DocSection title="Border & Radius" hideTitle>
+          <DocTable
+            variant="surface"
           headers={["Property", "Value"]}
           rows={[
             ["Border width", "1px solid"],
             ["Border radius", "border-radius/sm → 8px"],
           ]}
-        />
-      </DocSection>
+          />
+        </DocSection>
+      </div>
 
-      <DocSection title="Icon Sizes">
-        <DocTable
+      <div className="col-span-2">
+        <DocSection title="Icon Sizes" hideTitle>
+          <DocTable
+            variant="surface"
           headers={["Size", "Icon dimensions"]}
           rows={[
             ["md", "24×24px"],
             ["sm", "20×20px"],
           ]}
-        />
-      </DocSection>
+          />
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -348,62 +412,82 @@ function StylesTab() {
 
   return (
     <>
-      <DocSection title="All Types — Medium (md)">
-        {types.map((t) => (
-          <DocPreview key={t} title={t.charAt(0).toUpperCase() + t.slice(1)}>
-            <div className="w-full max-w-md">
-              <Alert type={t} size="md" heading={`${t.charAt(0).toUpperCase() + t.slice(1)} heading`} description="Supporting description text." />
-            </div>
-          </DocPreview>
-        ))}
-      </DocSection>
+      <div className="col-span-2">
+        <DocSection title="All Types — Medium (md)">
+          <div className="grid grid-cols-2 gap-10 items-stretch">
+            {types.map((t) => (
+              <DocPreview key={t} rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+                <div className="w-full max-w-md">
+                  <Alert type={t} size="md" heading={`${t.charAt(0).toUpperCase() + t.slice(1)} heading`} description="Supporting description text." />
+                </div>
+              </DocPreview>
+            ))}
+          </div>
+        </DocSection>
+      </div>
 
-      <DocSection title="All Types — Small (sm)">
-        {types.map((t) => (
-          <DocPreview key={t} title={`${t.charAt(0).toUpperCase() + t.slice(1)} (sm)`}>
-            <div className="w-full max-w-md">
-              <Alert type={t} size="sm" heading={`${t.charAt(0).toUpperCase() + t.slice(1)} heading`} description="Compact description." />
-            </div>
-          </DocPreview>
-        ))}
-      </DocSection>
+      <div className="col-span-2">
+        <DocSection title="All Types — Small (sm)">
+          <div className="grid grid-cols-2 gap-10 items-stretch">
+            {types.map((t) => (
+              <DocPreview key={t} rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+                <div className="w-full max-w-md">
+                  <Alert type={t} size="sm" heading={`${t.charAt(0).toUpperCase() + t.slice(1)} heading`} description="Compact description." />
+                </div>
+              </DocPreview>
+            ))}
+          </div>
+        </DocSection>
+      </div>
 
-      <DocSection title="Optional Element Combinations">
-        <DocPreview title="Heading + Description + Button (full)">
-          <div className="w-full max-w-md">
-            <Alert type="info" heading="Full alert" description="All elements visible." buttonLabel="Action" />
+      <div className="col-span-2">
+        <DocSection title="Optional Element Combinations">
+          <div className="grid grid-cols-2 gap-10 items-stretch">
+              <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+              <div className="w-full max-w-md">
+                <Alert type="info" heading="Full alert" description="All elements visible." buttonLabel="Action" />
+              </div>
+            </DocPreview>
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+              <div className="w-full max-w-md">
+                <Alert type="success" heading="Changes saved" showDescription={false} showButton={false} />
+              </div>
+            </DocPreview>
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+              <div className="w-full max-w-md">
+                <Alert type="warning" showHeading={false} description="Your session will expire in 5 minutes." showButton={false} />
+              </div>
+            </DocPreview>
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+              <div className="w-full max-w-md">
+                <Alert type="danger" heading="Error" description="Something went wrong." showIcon={false} />
+              </div>
+            </DocPreview>
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+              <div className="w-full max-w-md">
+                <Alert type="neutral" heading="Note" description="This is informational." showButton={false} />
+              </div>
+            </DocPreview>
           </div>
-        </DocPreview>
-        <DocPreview title="Heading only">
-          <div className="w-full max-w-md">
-            <Alert type="success" heading="Changes saved" showDescription={false} showButton={false} />
-          </div>
-        </DocPreview>
-        <DocPreview title="Description only">
-          <div className="w-full max-w-md">
-            <Alert type="warning" showHeading={false} description="Your session will expire in 5 minutes." showButton={false} />
-          </div>
-        </DocPreview>
-        <DocPreview title="No icon">
-          <div className="w-full max-w-md">
-            <Alert type="danger" heading="Error" description="Something went wrong." showIcon={false} />
-          </div>
-        </DocPreview>
-        <DocPreview title="No button">
-          <div className="w-full max-w-md">
-            <Alert type="neutral" heading="Note" description="This is informational." showButton={false} />
-          </div>
-        </DocPreview>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Size Comparison">
-        <DocPreview title="Medium vs Small side by side">
-          <div className="w-full max-w-md space-y-3">
-            <Alert type="info" size="md" heading="Medium alert" description="Body/01 heading + Body/02 description." />
-            <Alert type="info" size="sm" heading="Small alert" description="Body/02 heading + Body/03 description." />
+      <div className="col-span-2">
+        <DocSection title="Size Comparison">
+          <div className="grid grid-cols-2 gap-10 items-stretch">
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+              <div className="w-full max-w-md">
+                <Alert type="info" size="md" heading="Medium alert" description="Body/01 heading + Body/02 description." />
+              </div>
+            </DocPreview>
+            <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+              <div className="w-full max-w-md">
+                <Alert type="info" size="sm" heading="Small alert" description="Body/02 heading + Body/03 description." />
+              </div>
+            </DocPreview>
           </div>
-        </DocPreview>
-      </DocSection>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -426,7 +510,7 @@ function PropertiesTab() {
 />`;
 
   return (
-    <>
+    <div className="col-span-2">
       <DocSection title="Interactive Playground">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Preview */}
@@ -515,8 +599,9 @@ function PropertiesTab() {
         </div>
       </DocSection>
 
-      <DocSection title="Props Reference">
+      <DocSection title="Props Reference" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             ["type", '"neutral" | "success" | "info" | "warning" | "danger"', '"neutral"', "Semantic color variant."],
@@ -535,47 +620,9 @@ function PropertiesTab() {
         />
       </DocSection>
 
-      <DocSection title="Code Examples">
-        <DocPreview title="Success confirmation">
-          <div className="w-full max-w-md">
-            <Alert type="success" heading="Payment received" description="A receipt was sent to your email." buttonLabel="View receipt" />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Alert
-  type="success"
-  heading="Payment received"
-  description="A receipt was sent to your email."
-  buttonLabel="View receipt"
-/>`}</code>
-        </pre>
-
-        <DocPreview title="Danger error">
-          <div className="w-full max-w-md">
-            <Alert type="danger" heading="Unable to save" description="Check your connection and try again." showButton={false} />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Alert
-  type="danger"
-  heading="Unable to save"
-  description="Check your connection and try again."
-  showButton={false}
-/>`}</code>
-        </pre>
-
-        <DocPreview title="Compact small warning">
-          <div className="w-full max-w-md">
-            <Alert type="warning" size="sm" heading="Session expiring" showDescription={false} showButton={false} />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Alert type="warning" size="sm" heading="Session expiring" showDescription={false} showButton={false} />`}</code>
-        </pre>
-      </DocSection>
-
-      <DocSection title="Validation & Constraints">
+      <DocSection title="Validation & Constraints" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Rule", "Details"]}
           rows={[
             ["At least one text element", "showHeading or showDescription should be true — an alert with no text is meaningless."],
@@ -586,7 +633,7 @@ function PropertiesTab() {
           ]}
         />
       </DocSection>
-    </>
+    </div>
   );
 }
 
@@ -598,13 +645,16 @@ export default function AlertPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <div className="col-span-2 flex flex-col">
-      <DocHeader
-        title="Alert"
-        description="Alerts communicate status, feedback, or important information to users through contextual, color-coded banners."
-      />
+    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-10">
+      <div className="col-start-1 flex flex-col">
+        <DocHeader
+          title="Alert"
+          description="Alerts communicate status, feedback, or important information to users through contextual, color-coded banners."
+          variant="foundations"
+        />
 
-      <TabBar active={activeTab} onChange={setActiveTab} />
+        <TabBar active={activeTab} onChange={setActiveTab} />
+      </div>
 
       {activeTab === "Overview" && <OverviewTab />}
       {activeTab === "Design Tokens" && <DesignTokensTab />}

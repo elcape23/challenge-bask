@@ -1,23 +1,24 @@
 "use client";
 
-import { useState } from "react";
-import Alert from "@/components/ui/Alert";
+import { useEffect, useRef, useState } from "react";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { AccordionItem } from "@/components/ui/Accordion";
 import Icon from "@/components/ui/Icon";
 import Select from "@/components/ui/Select";
+import RadioButton from "@/components/ui/RadioButton";
+import Card from "@/components/ui/Card";
 import Footer from "@/components/prototype/globals/Footer";
 import InfoCardContent from "@/components/prototype/globals/InfoCardContent";
 import Menu from "@/components/prototype/globals/Menu";
 import TopBar from "@/components/prototype/globals/TopBar";
 
 const PRODUCT_ASSETS = {
-  hero: "/images/prototype/minoxidil-5-image.webp",
   packshot: "/images/prototype/minoxidil-5-transparent.webp",
-  background: "/images/prototype/hair-regrowth.webp",
+  background: "/images/prototype/carousel-background.png",
   biotin: "/images/prototype/biotin-gummies.webp",
   shampoo: "/images/prototype/scalp-shampoo.webp",
+  finasteride: "/images/prototype/finasteride-minoxidil.webp",
 } as const;
 
 const DOSAGE_OPTIONS = [
@@ -38,81 +39,77 @@ type RelatedProductCardProps = {
 
 function ProductHero() {
   return (
-    <section className="flex flex-col gap-3 px-5 pt-5">
-      <div className="overflow-hidden rounded-xl bg-background-surface-neutral-default p-5">
+    <>
+      {/* Product image — full-width, square */}
+      <div className="-mx-5 aspect-square overflow-hidden rounded-xl bg-background-surface-neutral-default">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={PRODUCT_ASSETS.packshot}
           alt="Minoxidil 5% Topical bottle"
-          className="mx-auto h-[219px] w-full max-w-[175px] object-contain object-center"
+          className="h-full w-full object-contain object-center"
         />
       </div>
 
-      <div className="flex flex-col gap-0.5">
+      {/* Product info */}
+      <div className="flex flex-col gap-4">
         <Badge
           type="neutral"
           size="sm"
           label="Bestseller"
           showIcon={false}
-          className="mb-2 self-start"
+          className="self-start"
         />
-        <h1 className="text-body-01 font-medium text-text-neutral-default">
-          Minoxidil 5% Topical
-        </h1>
-        <p className="text-body-02 text-text-neutral-secondary">
-          $14.99
-        </p>
-        <p className="pt-2 text-body-03 text-text-neutral-secondary">
-          A stronger topical formula for patterns shedding a more intensive
-          regrowth plan. Built for daily scalp application, it&apos;s formulated
-          to help support treatment routine focused on long-term results.
+        <div className="flex flex-col gap-1">
+          <h1 className="text-heading-06 font-medium text-text-neutral-default">
+            Minoxidil 5% Topical
+          </h1>
+          <p className="text-body-01 font-medium text-text-neutral-default">
+            $14.99
+          </p>
+        </div>
+        <p className="text-body-01 text-text-neutral-secondary">
+          A stronger topical formula for patients seeking a more intensive
+          regrowth plan. Built for daily scalp application, it fits naturally
+          into a consistent treatment routine focused on long-term results.
         </p>
       </div>
-    </section>
+    </>
   );
 }
 
 function ProductConfigurator() {
+  const [strength, setStrength] = useState<"5" | "2">("5");
+
   return (
-    <section className="flex flex-col gap-5 px-5 pt-8">
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center">
-          <h2 className="flex-1 text-body-02 font-medium text-text-neutral-default">
-            Strength
-          </h2>
-        </div>
-        <div className="grid grid-cols-2 gap-2">
-          <button
-            type="button"
-            className="rounded-sm border border-border-neutral-default bg-background-surface-neutral-default px-3 py-2 text-left"
-          >
-            <span className="block text-body-03 font-medium text-text-neutral-default">
-              Minoxidil 5% Topical
-            </span>
-            <span className="block text-body-03 text-text-neutral-secondary">
-              Higher-strength topical
-            </span>
-          </button>
-          <button
-            type="button"
-            className="rounded-sm border border-border-neutral-default bg-background-default-default px-3 py-2 text-left"
-          >
-            <span className="block text-body-03 font-medium text-text-neutral-default">
-              Minoxidil 2% Topical
-            </span>
-            <span className="block text-body-03 text-text-neutral-secondary">
-              Gentler starting strength
-            </span>
-          </button>
+    <>
+      {/* Strength */}
+      <div className="flex flex-col gap-2">
+        <h2 className="text-heading-06 font-medium text-text-neutral-default">
+          Strength
+        </h2>
+        <div className="flex gap-2">
+          <RadioButton
+            name="strength"
+            heading="Minoxidil 5% Topical"
+            description="Higher-strength topical"
+            checked={strength === "5"}
+            onChange={() => setStrength("5")}
+          />
+          <RadioButton
+            name="strength"
+            heading="Minoxidil 2% Topical"
+            description="Gentler starting strength"
+            checked={strength === "2"}
+            onChange={() => setStrength("2")}
+          />
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center">
-          <h2 className="flex-1 text-body-02 font-medium text-text-neutral-default">
-            Dosage
-          </h2>
-        </div>
+      {/* Dosage */}
+      <div className="flex flex-col gap-2">
+        <h2 className="text-heading-06 font-medium text-text-neutral-default">
+          Dosage
+        </h2>
         <Select
           size="sm"
           placeholder="30 pills every month"
@@ -121,6 +118,7 @@ function ProductConfigurator() {
         />
       </div>
 
+      {/* Buy Now + Guarantee */}
       <div className="flex flex-col gap-2">
         <Button
           size="lg"
@@ -130,67 +128,101 @@ function ProductConfigurator() {
         >
           Buy Now
         </Button>
-        <Alert
-          type="success"
-          size="sm"
-          showHeading={false}
-          description="30% off on 6+ month purchase. Plus 10% Savings"
-          showButton={false}
-          icon={<Icon type="check" size="sm" className="text-icon-success-default" />}
-          className="w-full"
-        />
+        <p className="text-center text-body-02 text-text-neutral-secondary">
+          30-days risk-free guarantee. Free US shipping
+        </p>
       </div>
-    </section>
+    </>
   );
 }
 
 function ProductInfoAccordions() {
   return (
-    <section className="px-5 pt-8">
-      <div className="flex flex-col">
-        <AccordionItem heading="Benefits" size="sm" defaultOpen>
-          <ul className="space-y-1 text-body-02 text-text-neutral-secondary">
-            <li>Helps support hair regrowth</li>
-            <li>May slow further hair loss</li>
-            <li>Works best with consistent daily use</li>
-            <li>Results usually visible after months</li>
-          </ul>
-        </AccordionItem>
-        <AccordionItem heading="Ingredients" size="sm">
-          <p className="text-body-02 text-text-neutral-secondary">
-            Minoxidil 5% topical solution with supportive inactive ingredients.
-          </p>
-        </AccordionItem>
-        <AccordionItem heading="Shipping" size="sm">
-          <p className="text-body-02 text-text-neutral-secondary">
-            Standard delivery timing depends on your plan and shipping address.
-          </p>
-        </AccordionItem>
+    <div className="flex flex-col gap-3">
+      <AccordionItem heading="Benefits" size="sm" defaultOpen>
+        <ul className="list-disc list-inside space-y-1 text-body-02 text-text-neutral-secondary">
+          <li>Helps support hair regrowth</li>
+          <li>May slow further hair loss</li>
+          <li>Works best with consistent daily use</li>
+          <li>Results usually visible after months</li>
+        </ul>
+      </AccordionItem>
+      <AccordionItem heading="Ingredients" size="sm">
+        <ul className="list-disc list-inside space-y-1 text-body-02 text-text-neutral-secondary">
+          <li>Minoxidil 5% (active ingredient)</li>
+          <li>Alcohol, propylene glycol</li>
+          <li>Purified water</li>
+        </ul>
+      </AccordionItem>
+      <AccordionItem heading="Shipping" size="sm">
+        <p className="text-body-02 text-text-neutral-secondary">
+          Standard delivery timing depends on your plan and shipping address.
+        </p>
+      </AccordionItem>
+    </div>
+  );
+}
+
+function AddOnCard() {
+  return (
+    <div className="flex gap-4 rounded-2xl bg-background-surface-neutral-default p-5">
+      <div className="size-[116px] shrink-0 overflow-hidden rounded-xl">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={PRODUCT_ASSETS.finasteride}
+          alt="Minoxidil + Finasteride combo"
+          className="h-full w-full object-cover"
+        />
       </div>
-    </section>
+
+      <div className="flex min-w-0 flex-1 flex-col gap-1">
+        <p className="text-body-01 font-medium text-text-primary-default">
+          Minoxidil + Finasteride
+        </p>
+        <p className="text-body-02 text-text-primary-default">
+          A more complete treatment plan designed to support fuller, healthier
+          hair
+        </p>
+        <div className="mt-auto flex items-center gap-2 pt-2">
+          <div className="flex items-center gap-1 text-body-02">
+            <span className="font-medium text-text-primary-default">
+              $71.99
+            </span>
+            <span className="text-text-neutral-secondary line-through">
+              $99.99
+            </span>
+          </div>
+          <Button
+            size="sm"
+            variant="primary"
+            appearance="filled"
+            className="ml-auto shrink-0"
+          >
+            Add
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
 
 function HighlightSection() {
   return (
-    <section className="relative mt-8 overflow-hidden px-5 py-12">
+    <section className="relative overflow-hidden rounded-[32px] bg-background-default-invert px-5 py-12">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={PRODUCT_ASSETS.background}
         alt=""
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover opacity-40"
       />
-      <div className="absolute inset-0 bg-background-fill-neutral-muted" />
 
       <div className="relative flex flex-col gap-8">
-        <div className="max-w-[220px]">
-          <h2 className="text-heading-05 font-medium text-text-neutral-invert">
-            Feel the difference of a truly healthy gut.
-          </h2>
-        </div>
+        <h2 className="text-heading-04 font-medium text-text-neutral-invert">
+          Feel the difference of a truly healthy gut.
+        </h2>
 
-        <div className="flex gap-3 overflow-x-auto pb-1">
-          <div className="w-[300px] shrink-0 rounded-xl bg-background-fill-neutral-muted p-7 backdrop-blur-[10px]">
+        <div className="-mx-5 flex gap-3 overflow-x-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="w-[300px] shrink-0 rounded-[20px] bg-background-default-invert p-7">
             <InfoCardContent
               heading="Supports Hair Regrowth"
               description="Helps support thicker hair over time."
@@ -201,9 +233,10 @@ function HighlightSection() {
                   className="text-icon-neutral-invert"
                 />
               }
+              className="w-full"
             />
           </div>
-          <div className="w-[300px] shrink-0 rounded-xl bg-background-fill-neutral-muted p-7 backdrop-blur-[10px]">
+          <div className="w-[300px] shrink-0 rounded-[20px] bg-background-default-invert p-7">
             <InfoCardContent
               heading="Topical Daily Use"
               description="Applied directly to thinning areas as part of a daily routine."
@@ -214,9 +247,10 @@ function HighlightSection() {
                   className="text-icon-neutral-invert"
                 />
               }
+              className="w-full"
             />
           </div>
-          <div className="w-[300px] shrink-0 rounded-xl bg-background-fill-neutral-muted p-7 backdrop-blur-[10px]">
+          <div className="w-[300px] shrink-0 rounded-[20px] bg-background-default-invert p-7">
             <InfoCardContent
               heading="Consistent Routine"
               description="Best results come with regular, continued use."
@@ -227,6 +261,7 @@ function HighlightSection() {
                   className="text-icon-neutral-invert"
                 />
               }
+              className="w-full"
             />
           </div>
         </div>
@@ -237,27 +272,19 @@ function HighlightSection() {
 
 function ProductFaq() {
   return (
-    <section className="px-5 py-12">
+    <section className="flex flex-col gap-3 rounded-[32px] px-5 py-12">
+      <h2 className="text-heading-06 font-medium text-text-neutral-default">
+        FAQ about the product
+      </h2>
       <div className="flex flex-col gap-3">
-        <h2 className="text-heading-06 font-medium text-text-neutral-default">
-          FAQ about the product
-        </h2>
-        <div className="flex flex-col">
-          <AccordionItem heading="How does Minoxidil work?" size="sm" />
-          <AccordionItem
-            heading="How long does it take to see results?"
-            size="sm"
-          />
-          <AccordionItem
-            heading="How often should I use it?"
-            size="sm"
-          />
-          <AccordionItem heading="Do I need to keep using it?" size="sm" />
-          <AccordionItem
-            heading="Are there any common side effects?"
-            size="sm"
-          />
-        </div>
+        <AccordionItem heading="How does Minoxidil work?" size="sm" />
+        <AccordionItem
+          heading="How long does it take to see results?"
+          size="sm"
+        />
+        <AccordionItem heading="How often should I use it?" size="sm" />
+        <AccordionItem heading="Do I need to keep using it?" size="sm" />
+        <AccordionItem heading="Are there any common side effects?" size="sm" />
       </div>
     </section>
   );
@@ -273,9 +300,14 @@ function RelatedProductCard({
   badgeLabel,
 }: RelatedProductCardProps) {
   return (
-    <article className="w-[304px] shrink-0 rounded-xl bg-background-surface-neutral-default p-3">
+    <Card
+      size="md"
+      background="transparent"
+      showHeading={false}
+      className="w-[304px] shrink-0 !rounded-[20px] !gap-5"
+    >
       <div className="flex flex-col gap-5">
-        <div className="relative aspect-[280/200] overflow-hidden rounded-sm bg-background-default-default p-2">
+        <div className="relative aspect-[280/200] overflow-hidden rounded-lg">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imageSrc}
@@ -298,7 +330,7 @@ function RelatedProductCard({
             <h3 className="text-heading-06 font-medium text-text-neutral-default">
               {heading}
             </h3>
-            <div className="flex items-center gap-1 text-body-02 whitespace-nowrap">
+            <div className="flex items-center gap-1 whitespace-nowrap text-body-02">
               <span className="font-medium text-text-neutral-default">
                 ${finalPrice}
               </span>
@@ -310,7 +342,7 @@ function RelatedProductCard({
             </div>
           </div>
 
-          <p className="text-body-02 text-text-neutral-secondary">
+          <p className="h-8 text-body-02 text-text-neutral-secondary">
             {description}
           </p>
 
@@ -334,35 +366,33 @@ function RelatedProductCard({
           </div>
         </div>
       </div>
-    </article>
+    </Card>
   );
 }
 
 function MoreProductsSection() {
   return (
-    <section className="px-5 py-12">
-      <div className="flex flex-col gap-8">
-        <h2 className="text-heading-06 font-medium text-text-neutral-default">
-          More products for your hair
-        </h2>
-        <div className="flex gap-3 overflow-x-auto pb-1">
-          <RelatedProductCard
-            heading="Biotin Gummies"
-            description="Daily nutritional support for hair wellness."
-            finalPrice="13.99"
-            originalPrice="19.99"
-            imageSrc={PRODUCT_ASSETS.biotin}
-            imageAlt="Biotin Gummies"
-            badgeLabel="30% off"
-          />
-          <RelatedProductCard
-            heading="Scalp Shampoo"
-            description="Helps keep the scalp clean and comfortable as part of the routine."
-            finalPrice="7.99"
-            imageSrc={PRODUCT_ASSETS.shampoo}
-            imageAlt="Scalp Shampoo"
-          />
-        </div>
+    <section className="flex flex-col gap-8 rounded-[32px] px-5 py-12">
+      <h2 className="text-heading-06 font-medium text-text-neutral-default">
+        More products for your hair
+      </h2>
+      <div className="-mx-5 flex gap-3 overflow-x-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <RelatedProductCard
+          heading="Biotin Gummies"
+          description="Daily nutritional support for hair wellness."
+          finalPrice="13.99"
+          originalPrice="19.99"
+          imageSrc={PRODUCT_ASSETS.biotin}
+          imageAlt="Biotin Gummies"
+          badgeLabel="30% off"
+        />
+        <RelatedProductCard
+          heading="Scalp Shampoo"
+          description="Helps keep the scalp clean and comfortable as part of the routine."
+          finalPrice="7.99"
+          imageSrc={PRODUCT_ASSETS.shampoo}
+          imageAlt="Scalp Shampoo"
+        />
       </div>
     </section>
   );
@@ -370,35 +400,84 @@ function MoreProductsSection() {
 
 export default function ProductDetailedMobilePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [topBarHidden, setTopBarHidden] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+
+    let scrollEl: HTMLElement | Window = window;
+    let parent = wrapper.parentElement;
+    while (parent) {
+      const overflow = window.getComputedStyle(parent).overflowY;
+      if (overflow === "auto" || overflow === "scroll") {
+        scrollEl = parent;
+        break;
+      }
+      parent = parent.parentElement;
+    }
+
+    const getScrollY = () =>
+      scrollEl === window
+        ? window.scrollY
+        : (scrollEl as HTMLElement).scrollTop;
+
+    let lastScrollY = getScrollY();
+
+    const handleScroll = () => {
+      const currentScrollY = getScrollY();
+      setTopBarHidden(currentScrollY > lastScrollY && currentScrollY > 0);
+      lastScrollY = currentScrollY;
+    };
+
+    scrollEl.addEventListener("scroll", handleScroll, { passive: true });
+    return () => scrollEl.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div className="relative flex min-h-full flex-col bg-background-default-default">
-      <div className="sticky top-0 z-10 bg-background-default-default">
+    <div
+      ref={wrapperRef}
+      className="relative flex min-h-full flex-col bg-background-default-default"
+    >
+      <div
+        className={`sticky top-0 z-10 bg-background-default-default transition-transform duration-300 ${
+          topBarHidden ? "-translate-y-full" : "translate-y-0"
+        }`}
+      >
         <TopBar
           color="primary"
           showIconButton
-          iconType="chevron-left"
-          iconButtonAriaLabel="Back"
+          iconButtonAriaLabel="Menu"
+          onIconButtonClick={() => setIsMenuOpen(true)}
         />
       </div>
 
-      <ProductHero />
-      <ProductConfigurator />
-      <ProductInfoAccordions />
+      {/* Section 0 — Product details */}
+      <section className="flex flex-col gap-10 overflow-hidden rounded-[32px] bg-background-default-default px-5 pb-12">
+        <ProductHero />
+        <ProductConfigurator />
+        <ProductInfoAccordions />
+        <AddOnCard />
+      </section>
+
+      {/* Section 1 — Highlight / Benefits */}
       <HighlightSection />
+
+      {/* Section 2 — FAQ */}
       <ProductFaq />
+
+      {/* Section 3 — More Products */}
       <MoreProductsSection />
 
+      {/* Section 4 — Footer */}
       <section className="bg-background-default-invert px-5 py-12">
         <Footer variant="section" />
       </section>
 
       {isMenuOpen && (
         <div className="absolute inset-0 z-20 flex items-start justify-center pb-5">
-          <Menu
-            className="max-w-none"
-            onClose={() => setIsMenuOpen(false)}
-          />
+          <Menu className="max-w-none" onClose={() => setIsMenuOpen(false)} />
         </div>
       )}
     </div>

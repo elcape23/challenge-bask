@@ -5,10 +5,18 @@ import ProductDetailedMobilePage from "@/components/prototype/ProductDetailedMob
 
 export default function PrototypeProductDetailedPage() {
   return (
-    <div className="flex min-h-screen w-full items-start justify-center px-4 py-16">
-      <LayoutiPhone>
+    <>
+      {/* Mobile: content renders directly, no phone frame */}
+      <div className="md:hidden min-h-screen bg-background-default-default">
         <ProductDetailedMobilePage />
-      </LayoutiPhone>
-    </div>
+      </div>
+
+      {/* Desktop: content inside iPhone frame */}
+      <div className="hidden md:flex min-h-screen w-full items-start justify-center px-4 py-16">
+        <LayoutiPhone>
+          <ProductDetailedMobilePage />
+        </LayoutiPhone>
+      </div>
+    </>
   );
 }

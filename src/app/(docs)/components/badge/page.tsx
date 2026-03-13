@@ -38,7 +38,7 @@ function TabBar({ active, onChange }: { active: TabName; onChange: (t: TabName) 
 function ColorSwatch({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="size-8 rounded-md border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
+      <div className="size-12 rounded-sm border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
       <div>
         <p className="text-body-02 font-medium">{label}</p>
         <p className="text-body-03 text-text-neutral-placeholder">{color}</p>
@@ -113,7 +113,8 @@ const ALL_TYPES: BadgeType[] = ["neutral", "success", "info", "warning", "danger
 function OverviewTab() {
   return (
     <>
-      <DocSection title="Overview">
+      <div className="col-start-1">
+        <DocSection title="Overview">
         <p className="mb-4">
           Badges are compact, non-interactive indicators that surface metadata at
           a glance — status, category, or semantic classification. They attach to
@@ -124,8 +125,10 @@ function OverviewTab() {
           pair the badge with a tooltip or a supporting description.
         </p>
       </DocSection>
+      </div>
 
-      <DocSection title="Anatomy">
+      <div className="col-span-2">
+        <DocSection title="Anatomy">
         <DocAnatomy
           items={[
             {
@@ -142,16 +145,19 @@ function OverviewTab() {
             },
           ]}
         />
-        <DocPreview title="Anatomy example">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare>
           <div className="flex items-center gap-4">
             <Badge type="neutral" size="md" label="Badge" />
             <Badge type="success" size="md" label="Active" />
           </div>
         </DocPreview>
       </DocSection>
+      </div>
 
-      <DocSection title="Types">
+      <div className="col-span-2">
+        <DocSection title="Types" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Type", "Background", "Text", "When to use"]}
           rows={[
             ["Neutral", "Muted neutral fill", "Secondary text (dark)", "General-purpose labels, categories, default state."],
@@ -161,53 +167,66 @@ function OverviewTab() {
             ["Danger", "Red fill (#b84335)", "Invert text (light)", "Negative — failed, error, overdue, blocked."],
           ]}
         />
-        <DocPreview title="All types (md)">
-          <div className="flex flex-wrap items-center gap-3">
-            {ALL_TYPES.map((t) => (
-              <Badge key={t} type={t} size="md" label={t.charAt(0).toUpperCase() + t.slice(1)} />
-            ))}
-          </div>
-        </DocPreview>
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="flex flex-wrap items-center gap-3">
+              {ALL_TYPES.map((t) => (
+                <Badge key={t} type={t} size="md" label={t.charAt(0).toUpperCase() + t.slice(1)} />
+              ))}
+            </div>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Sizes">
+      <div className="col-span-2">
+        <DocSection title="Sizes" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Size", "Height", "Label", "Icon", "Padding"]}
           rows={[
             ["Medium (md)", "24px", "Body/02 Medium (13px / 16px / 500)", "24×24px", "px: 12px (space-3)"],
             ["Small (sm)", "20px", "Body/03 Medium (11px / 12px / 500)", "20×20px", "px: 8px (space-2)"],
           ]}
         />
-        <DocPreview title="Medium (md)">
-          <div className="flex flex-wrap items-center gap-3">
-            {ALL_TYPES.map((t) => (
-              <Badge key={t} type={t} size="md" label={t.charAt(0).toUpperCase() + t.slice(1)} />
-            ))}
-          </div>
-        </DocPreview>
-        <DocPreview title="Small (sm)">
-          <div className="flex flex-wrap items-center gap-3">
-            {ALL_TYPES.map((t) => (
-              <Badge key={t} type={t} size="sm" label={t.charAt(0).toUpperCase() + t.slice(1)} />
-            ))}
-          </div>
-        </DocPreview>
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="flex flex-wrap items-center gap-3">
+              {ALL_TYPES.map((t) => (
+                <Badge key={t} type={t} size="md" label={t.charAt(0).toUpperCase() + t.slice(1)} />
+              ))}
+            </div>
+          </DocPreview>
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="flex flex-wrap items-center gap-3">
+              {ALL_TYPES.map((t) => (
+                <Badge key={t} type={t} size="sm" label={t.charAt(0).toUpperCase() + t.slice(1)} />
+              ))}
+            </div>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Show Icon">
+      <div className="col-span-2">
+        <DocSection title="Show Icon">
         <p className="mb-4">
           The <code>showIcon</code> prop toggles the leading icon slot. When hidden, the badge
           displays only the label text.
         </p>
-        <DocPreview title="With icon vs Without icon">
-          <div className="flex flex-wrap items-center gap-3">
-            <Badge type="success" label="With icon" showIcon />
-            <Badge type="success" label="No icon" showIcon={false} />
-          </div>
-        </DocPreview>
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="flex flex-wrap items-center gap-3">
+              <Badge type="success" label="With icon" showIcon />
+              <Badge type="success" label="No icon" showIcon={false} />
+            </div>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Behavior">
+      <div className="col-span-2">
+        <DocSection title="Behavior">
         <DocCallout variant="info" title="Non-interactive">
           Badges are static indicators. They do not receive focus, hover states,
           or click handlers. If you need interactivity, use a chip or tag component.
@@ -217,8 +236,10 @@ function OverviewTab() {
           so they flow naturally within text or alongside other inline elements.
         </p>
       </DocSection>
+      </div>
 
-      <DocSection title="Accessibility">
+      <div className="col-span-2">
+        <DocSection title="Accessibility">
         <ul className="pl-5 mb-4">
           <li className="mb-2">
             Do not rely on color alone to convey meaning — the label text must be descriptive.
@@ -234,9 +255,15 @@ function OverviewTab() {
           </li>
         </ul>
       </DocSection>
+      </div>
 
-      <DocSection title="Usage guidelines">
-        <DoDontGrid
+      <div className="col-span-2">
+        <DocSection title="Usage guidelines">
+          <div
+            className="overflow-hidden flex flex-row gap-10 w-full items-start justify-between"
+            style={{ backgroundColor: "#FFFFFF", padding: "200px" }}
+          >
+            <DoDontGrid
           doItems={[
             { description: "Use badges for short, glanceable status indicators." },
             { description: "Be consistent with type-to-meaning mapping." },
@@ -250,7 +277,9 @@ function OverviewTab() {
             { description: "Don't mix semantic colors inconsistently." },
           ]}
         />
-      </DocSection>
+          </div>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -258,49 +287,53 @@ function OverviewTab() {
 function DesignTokensTab() {
   return (
     <>
-      <DocSection title="Color Tokens per Type">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens per Type">
         <TokenGroup title="Neutral">
-          <ColorSwatch color="#e4e6de" label="bg / fill / neutral / default" />
-          <ColorSwatch color="#4e534d" label="text / neutral / secondary" />
-          <ColorSwatch color="#4e534d" label="icon / neutral / secondary" />
+          <ColorSwatch color="#E4E6DE" label="bg / fill / neutral / default" />
+          <ColorSwatch color="#4E534D" label="text / neutral / secondary" />
+          <ColorSwatch color="#4E534D" label="icon / neutral / secondary" />
         </TokenGroup>
         <TokenGroup title="Success">
-          <ColorSwatch color="#60be81" label="bg / fill / success / default" />
-          <ColorSwatch color="#e0f4e7" label="text / success / invert" />
-          <ColorSwatch color="#e0f4e7" label="icon / success / invert" />
+          <ColorSwatch color="#60BE81" label="bg / fill / success / default" />
+          <ColorSwatch color="#E0F4E7" label="text / success / invert" />
+          <ColorSwatch color="#E0F4E7" label="icon / success / invert" />
         </TokenGroup>
         <TokenGroup title="Information">
-          <ColorSwatch color="#86a4ca" label="bg / fill / information / default" />
-          <ColorSwatch color="#e6eef7" label="text / information / invert" />
-          <ColorSwatch color="#e6eef7" label="icon / information / invert" />
+          <ColorSwatch color="#86A4CA" label="bg / fill / information / default" />
+          <ColorSwatch color="#E6EEF7" label="text / information / invert" />
+          <ColorSwatch color="#E6EEF7" label="icon / information / invert" />
         </TokenGroup>
         <TokenGroup title="Warning">
-          <ColorSwatch color="#dda146" label="bg / fill / warning / default" />
-          <ColorSwatch color="#fcefd9" label="text / warning / invert" />
-          <ColorSwatch color="#fcefd9" label="icon / warning / invert" />
+          <ColorSwatch color="#DDA146" label="bg / fill / warning / default" />
+          <ColorSwatch color="#FCEFD9" label="text / warning / invert" />
+          <ColorSwatch color="#FCEFD9" label="icon / warning / invert" />
         </TokenGroup>
         <TokenGroup title="Danger">
-          <ColorSwatch color="#b84335" label="bg / fill / danger / default" />
-          <ColorSwatch color="#f1f2ec" label="text / neutral / invert" />
-          <ColorSwatch color="#f1f2ec" label="icon / neutral / invert" />
+          <ColorSwatch color="#B84335" label="bg / fill / danger / default" />
+          <ColorSwatch color="#F1F2EC" label="text / neutral / invert" />
+          <ColorSwatch color="#F1F2EC" label="icon / neutral / invert" />
         </TokenGroup>
       </DocSection>
+      </div>
 
-      <DocSection title="Typography Tokens">
+      <div className="col-span-2">
+        <DocSection title="Typography Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Size", "Token", "Font Size", "Line Height", "Weight"]}
           rows={[
             ["md", "Body/02/Medium", "13px", "16px", "500 (medium)"],
             ["sm", "Body/03/Medium", "11px", "12px", "500 (medium)"],
           ]}
         />
-        <DocCallout variant="info" title="Font family">
-          All badge text uses <code>Suisse Intl Trial</code> (Medium weight) via the <code>font/family/default</code> token.
-        </DocCallout>
       </DocSection>
+      </div>
 
-      <DocSection title="Spacing Tokens">
+      <div className="col-span-2">
+        <DocSection title="Spacing Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Token (md)", "Value (md)", "Token (sm)", "Value (sm)"]}
           rows={[
             ["Horizontal padding", "spacing/space-3", "12px", "spacing/space-2", "8px"],
@@ -308,9 +341,12 @@ function DesignTokensTab() {
           ]}
         />
       </DocSection>
+      </div>
 
-      <DocSection title="Dimensions">
+      <div className="col-span-2">
+        <DocSection title="Dimensions" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "md", "sm"]}
           rows={[
             ["Container height", "24px", "20px"],
@@ -319,6 +355,7 @@ function DesignTokensTab() {
           ]}
         />
       </DocSection>
+      </div>
     </>
   );
 }
@@ -326,45 +363,59 @@ function DesignTokensTab() {
 function StylesTab() {
   return (
     <>
-      <DocSection title="All Types — Medium (md)">
-        <DocPreview title="Medium badges">
+      <div className="col-span-2">
+        <DocSection title="All Types — Medium (md)">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-wrap items-center gap-3">
             {ALL_TYPES.map((t) => (
               <Badge key={t} type={t} size="md" label={t.charAt(0).toUpperCase() + t.slice(1)} />
             ))}
           </div>
-        </DocPreview>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="All Types — Small (sm)">
-        <DocPreview title="Small badges">
+      <div className="col-span-2">
+        <DocSection title="All Types — Small (sm)">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-wrap items-center gap-3">
             {ALL_TYPES.map((t) => (
               <Badge key={t} type={t} size="sm" label={t.charAt(0).toUpperCase() + t.slice(1)} />
             ))}
           </div>
-        </DocPreview>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="With & Without Icon">
-        <DocPreview title="Icon visible (default)">
+      <div className="col-span-2">
+        <DocSection title="With & Without Icon">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-wrap items-center gap-3">
             {ALL_TYPES.map((t) => (
               <Badge key={t} type={t} size="md" label={t.charAt(0).toUpperCase() + t.slice(1)} showIcon />
             ))}
           </div>
-        </DocPreview>
-        <DocPreview title="Icon hidden">
-          <div className="flex flex-wrap items-center gap-3">
-            {ALL_TYPES.map((t) => (
-              <Badge key={t} type={t} size="md" label={t.charAt(0).toUpperCase() + t.slice(1)} showIcon={false} />
-            ))}
-          </div>
-        </DocPreview>
+          </DocPreview>
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="flex flex-wrap items-center gap-3">
+              {ALL_TYPES.map((t) => (
+                <Badge key={t} type={t} size="md" label={t.charAt(0).toUpperCase() + t.slice(1)} showIcon={false} />
+              ))}
+            </div>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Size Comparison">
-        <DocPreview title="md vs sm side by side">
+      <div className="col-span-2">
+        <DocSection title="Size Comparison">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-3">
               <span className="text-body-03 text-text-neutral-placeholder w-8">md</span>
@@ -379,11 +430,15 @@ function StylesTab() {
               ))}
             </div>
           </div>
-        </DocPreview>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="In Context">
-        <DocPreview title="Badges alongside text">
+      <div className="col-span-2">
+        <DocSection title="In Context">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="space-y-2">
             <p className="text-body-01 text-text-neutral-default flex items-center gap-2">
               Appointment scheduled <Badge type="success" size="sm" label="Confirmed" />
@@ -398,8 +453,10 @@ function StylesTab() {
               Insurance claim <Badge type="danger" size="sm" label="Denied" />
             </p>
           </div>
-        </DocPreview>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
     </>
   );
 }
@@ -417,7 +474,7 @@ function PropertiesTab() {
 />`;
 
   return (
-    <>
+    <div className="col-span-2">
       <DocSection title="Interactive Playground">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Preview */}
@@ -482,8 +539,9 @@ function PropertiesTab() {
         </div>
       </DocSection>
 
-      <DocSection title="Props Reference">
+      <DocSection title="Props Reference" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             ["type", '"neutral" | "success" | "info" | "warning" | "danger"', '"neutral"', "Semantic color type. Uses information tokens for info."],
@@ -496,34 +554,9 @@ function PropertiesTab() {
         />
       </DocSection>
 
-      <DocSection title="Code Examples">
-        <DocPreview title="Status badges">
-          <div className="flex flex-wrap items-center gap-3">
-            <Badge type="success" label="Active" />
-            <Badge type="warning" label="Pending" />
-            <Badge type="danger" label="Expired" />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Badge type="success" label="Active" />
-<Badge type="warning" label="Pending" />
-<Badge type="danger" label="Expired" />`}</code>
-        </pre>
-
-        <DocPreview title="Small badges without icon">
-          <div className="flex flex-wrap items-center gap-3">
-            <Badge type="info" size="sm" label="New" showIcon={false} />
-            <Badge type="neutral" size="sm" label="Draft" showIcon={false} />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Badge type="info" size="sm" label="New" showIcon={false} />
-<Badge type="neutral" size="sm" label="Draft" showIcon={false} />`}</code>
-        </pre>
-      </DocSection>
-
-      <DocSection title="Validation & Constraints">
+      <DocSection title="Validation & Constraints" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Rule", "Details"]}
           rows={[
             ["Label required", "Every badge must have a label — a blank badge is meaningless."],
@@ -533,7 +566,7 @@ function PropertiesTab() {
           ]}
         />
       </DocSection>
-    </>
+    </div>
   );
 }
 
@@ -545,13 +578,16 @@ export default function BadgePage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <div className="col-span-2 flex flex-col">
-      <DocHeader
-        title="Badge"
-        description="Badges are compact, non-interactive indicators that surface metadata at a glance — status, category, or semantic classification."
-      />
+    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-10">
+      <div className="col-start-1 flex flex-col">
+        <DocHeader
+          title="Badge"
+          description="Badges are compact, non-interactive indicators that surface metadata at a glance — status, category, or semantic classification."
+          variant="foundations"
+        />
 
-      <TabBar active={activeTab} onChange={setActiveTab} />
+        <TabBar active={activeTab} onChange={setActiveTab} />
+      </div>
 
       {activeTab === "Overview" && <OverviewTab />}
       {activeTab === "Design Tokens" && <DesignTokensTab />}

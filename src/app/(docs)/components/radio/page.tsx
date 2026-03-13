@@ -8,7 +8,11 @@ import DocCallout from "@/components/docs/DocCallout";
 import DoDontGrid from "@/components/docs/DoDontGrid";
 import DocPreview from "@/components/docs/DocPreview";
 import DocAnatomy from "@/components/docs/DocAnatomy";
-import Radio, { type RadioSize, type RadioSide } from "@/components/ui/Radio";
+import RadioGroup, {
+  type RadioGroupSize,
+  type RadioGroupSide,
+} from "@/components/ui/RadioGroup";
+import RadioButton from "@/components/ui/RadioButton";
 
 /* ─── Tabs ─── */
 const TABS = ["Overview", "Design Tokens", "Styles", "Properties"] as const;
@@ -38,7 +42,7 @@ function TabBar({ active, onChange }: { active: TabName; onChange: (t: TabName) 
 function ColorSwatch({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="size-8 rounded-md border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
+      <div className="size-12 rounded-sm border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
       <div>
         <p className="text-body-02 font-medium">{label}</p>
         <p className="text-body-03 text-text-neutral-placeholder">{color}</p>
@@ -90,34 +94,17 @@ function ControlRadioGroup<T extends string>({
   );
 }
 
-function Toggle({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
-  return (
-    <label className="flex items-center gap-2 cursor-pointer mb-2">
-      <div
-        onClick={() => onChange(!checked)}
-        className={`relative w-9 h-5 rounded-full transition-colors ${checked ? "bg-primary-900" : "bg-neutral-300"}`}
-      >
-        <div className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-white transition-transform ${checked ? "translate-x-4" : ""}`} />
-      </div>
-      <span className="text-body-03 text-text-neutral-secondary">{label}</span>
-    </label>
-  );
-}
 
 /* ─── Controlled Radio Group helper for demos ─── */
 function DemoRadioGroup({
-  name,
   options,
   size,
   side,
-  disabled,
   defaultValue,
 }: {
-  name: string;
   options: string[];
-  size?: RadioSize;
-  side?: RadioSide;
-  disabled?: boolean;
+  size?: RadioGroupSize;
+  side?: RadioGroupSide;
   defaultValue?: string;
 }) {
   const [selected, setSelected] = useState(defaultValue ?? "");
@@ -125,16 +112,19 @@ function DemoRadioGroup({
   return (
     <div className="flex flex-col">
       {options.map((opt) => (
-        <Radio
+        <button
           key={opt}
-          name={name}
-          size={size}
-          side={side}
-          label={opt}
-          checked={selected === opt}
-          onChange={() => setSelected(opt)}
-          disabled={disabled}
-        />
+          type="button"
+          onClick={() => setSelected(opt)}
+          className="text-left"
+        >
+          <RadioGroup
+            size={size}
+            side={side}
+            label={opt}
+            state={selected === opt ? "selected" : "default"}
+          />
+        </button>
       ))}
     </div>
   );
@@ -147,7 +137,8 @@ function DemoRadioGroup({
 function OverviewTab() {
   return (
     <>
-      <DocSection title="Overview">
+      <div className="col-start-1">
+        <DocSection title="Overview">
         <p className="mb-4">
           Radio buttons let users select exactly one option from a mutually
           exclusive set. They are best suited for short lists of 2–5 options
@@ -158,9 +149,11 @@ function OverviewTab() {
           dropdown instead. For binary on/off decisions, a switch is usually a
           better fit.
         </p>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Anatomy">
+      <div className="col-span-2">
+        <DocSection title="Anatomy">
         <DocAnatomy
           items={[
             {
@@ -175,70 +168,83 @@ function OverviewTab() {
             },
           ]}
         />
-        <DocPreview title="Anatomy example">
-          <div className="flex items-center gap-8">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare>
+          <div className="flex items-start gap-8">
             <div className="flex flex-col gap-1">
-              <Radio size="md" label="Unselected" name="anatomy-demo" />
-              <span className="text-body-03 text-text-neutral-placeholder">Unselected</span>
+              <RadioGroup size="md" label="Label" state="selected" />
+              <span className="text-body-03 text-text-neutral-placeholder">Radio group item</span>
             </div>
             <div className="flex flex-col gap-1">
-              <Radio size="md" label="Selected" name="anatomy-demo-2" defaultChecked />
-              <span className="text-body-03 text-text-neutral-placeholder">Selected</span>
+              <RadioButton heading="Heading" description="Description" defaultChecked />
+              <span className="text-body-03 text-text-neutral-placeholder">Radio button card</span>
             </div>
           </div>
         </DocPreview>
       </DocSection>
+      </div>
 
-      <DocSection title="Sizes">
+      <div className="col-span-2">
+        <DocSection title="Sizes" hideTitle>
         <DocTable
-          headers={["Size", "Circle size", "Container height", "Label text", "Use case"]}
+          variant="surface"
+          headers={["Size", "Control size", "Row padding", "Label text", "Use case"]}
           rows={[
             ["md", "24×24px", "48px", "Body/01 — 16px", "Default for most form contexts."],
             ["sm", "20×20px", "36px", "Body/02 — 13px", "Compact forms, settings, dense tables."],
           ]}
         />
-        <DocPreview title="Size comparison">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex gap-8">
             <div className="flex flex-col gap-1">
               <span className="text-body-03 text-text-neutral-placeholder mb-1">md</span>
-              <Radio size="md" label="Option A" name="size-md" defaultChecked />
-              <Radio size="md" label="Option B" name="size-md" />
+              <RadioGroup size="md" label="Option A" state="selected" />
+              <RadioGroup size="md" label="Option B" state="default" />
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-body-03 text-text-neutral-placeholder mb-1">sm</span>
-              <Radio size="sm" label="Option A" name="size-sm" defaultChecked />
-              <Radio size="sm" label="Option B" name="size-sm" />
+              <RadioGroup size="sm" label="Option A" state="selected" />
+              <RadioGroup size="sm" label="Option B" state="default" />
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Side">
+      <div className="col-span-2">
+        <DocSection title="Side" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Side", "Description"]}
           rows={[
             ["left", "Radio circle on the left, label on the right (default)."],
             ["right", "Label on the left, radio circle on the right."],
           ]}
         />
-        <DocPreview title="Side variants">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex gap-8">
             <div className="flex flex-col gap-1 w-48">
               <span className="text-body-03 text-text-neutral-placeholder mb-1">side=&quot;left&quot;</span>
-              <Radio size="md" side="left" label="Option A" name="side-left" defaultChecked />
-              <Radio size="md" side="left" label="Option B" name="side-left" />
+              <RadioGroup size="md" side="left" label="Option A" state="selected" />
+              <RadioGroup size="md" side="left" label="Option B" state="default" />
             </div>
             <div className="flex flex-col gap-1 w-48">
               <span className="text-body-03 text-text-neutral-placeholder mb-1">side=&quot;right&quot;</span>
-              <Radio size="md" side="right" label="Option A" name="side-right" defaultChecked />
-              <Radio size="md" side="right" label="Option B" name="side-right" />
+              <RadioGroup size="md" side="right" label="Option A" state="selected" />
+              <RadioGroup size="md" side="right" label="Option B" state="default" />
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="States">
+      <div className="col-span-2">
+        <DocSection title="States" hideTitle>
         <DocTable
+          variant="surface"
           headers={["State", "Visual treatment", "Description"]}
           rows={[
             ["Unselected", "Circle border, empty inside", "The option is available but not chosen."],
@@ -246,29 +252,33 @@ function OverviewTab() {
             ["Disabled", "50% opacity, cursor not-allowed", "Non-interactive. Visible but cannot be changed."],
           ]}
         />
-        <DocPreview title="All states">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex items-start gap-8">
             <div className="flex flex-col gap-1">
-              <Radio size="md" label="Unselected" name="state-1" />
-              <span className="text-body-03 text-text-neutral-placeholder">Unselected</span>
+              <RadioGroup label="Unselected" state="default" />
+              <span className="text-body-03 text-text-neutral-placeholder">Group default</span>
             </div>
             <div className="flex flex-col gap-1">
-              <Radio size="md" label="Selected" name="state-2" defaultChecked />
-              <span className="text-body-03 text-text-neutral-placeholder">Selected</span>
+              <RadioGroup label="Selected" state="selected" />
+              <span className="text-body-03 text-text-neutral-placeholder">Group selected</span>
             </div>
             <div className="flex flex-col gap-1">
-              <Radio size="md" label="Disabled" name="state-3" disabled />
-              <span className="text-body-03 text-text-neutral-placeholder">Disabled</span>
+              <RadioButton heading="Heading" description="Description" />
+              <span className="text-body-03 text-text-neutral-placeholder">Button default</span>
             </div>
             <div className="flex flex-col gap-1">
-              <Radio size="md" label="Disabled checked" name="state-4" disabled defaultChecked />
-              <span className="text-body-03 text-text-neutral-placeholder">Disabled + checked</span>
+              <RadioButton heading="Selected card" description="Description" defaultChecked />
+              <span className="text-body-03 text-text-neutral-placeholder">Button selected</span>
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Behavior">
+      <div className="col-span-2">
+        <DocSection title="Behavior">
         <p className="mb-4">
           Selecting a radio button immediately deselects the previously selected
           option in the same group. Arrow keys cycle through options within the
@@ -280,8 +290,10 @@ function OverviewTab() {
           submission.
         </DocCallout>
       </DocSection>
+      </div>
 
-      <DocSection title="Accessibility">
+      <div className="col-span-2">
+        <DocSection title="Accessibility">
         <ul className="pl-5 mb-4">
           <li className="mb-2">
             Uses native <code>&lt;input type=&quot;radio&quot;&gt;</code> elements with matching <code>name</code> attributes.
@@ -297,8 +309,14 @@ function OverviewTab() {
           </li>
         </ul>
       </DocSection>
+      </div>
 
-      <DocSection title="Usage guidelines">
+      <div className="col-span-2">
+        <DocSection title="Usage guidelines">
+          <div
+            className="overflow-hidden flex flex-row gap-10 w-full items-start justify-between"
+            style={{ backgroundColor: "#FFFFFF", padding: "200px" }}
+          >
         <DoDontGrid
           doItems={[
             { description: "Use radios when the user must pick exactly one option from a visible list." },
@@ -313,7 +331,9 @@ function OverviewTab() {
             { description: "Don't change page content on radio selection without warning." },
           ]}
         />
-      </DocSection>
+          </div>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -321,41 +341,52 @@ function OverviewTab() {
 function DesignTokensTab() {
   return (
     <>
-      <DocSection title="Color Tokens — Unselected">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Unselected">
         <TokenGroup title="Circle">
           <ColorSwatch color="transparent" label="background (transparent)" />
-          <ColorSwatch color="#b7bbaf" label="border / neutral / default" />
+          <ColorSwatch color="#B7BBAF" label="border / neutral / default" />
         </TokenGroup>
         <TokenGroup title="Text">
-          <ColorSwatch color="#1c1f1b" label="text / neutral / default (label)" />
+          <ColorSwatch color="#1C1F1B" label="text / neutral / default (label)" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Selected">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Selected">
         <TokenGroup title="Circle">
-          <ColorSwatch color="#a6bba0" label="border / primary / default" />
-          <ColorSwatch color="#46683e" label="bg / fill / primary / default (dot)" />
+          <ColorSwatch color="#A6BBA0" label="border / primary / default" />
+          <ColorSwatch color="#46683E" label="bg / fill / primary / default (dot)" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Color Tokens — Disabled">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens — Disabled">
         <TokenGroup title="Container">
           <ColorSwatch color="rgba(0,0,0,0.5)" label="opacity-50 on entire row" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Typography Tokens">
+      <div className="col-span-2">
+        <DocSection title="Typography Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Size", "Label text style", "Font size", "Line height", "Weight"]}
           rows={[
             ["md", "Body/01/Regular", "16px", "24px", "400 (regular)"],
             ["sm", "Body/02/Regular", "13px", "16px", "400 (regular)"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Dimension Tokens">
+      <div className="col-span-2">
+        <DocSection title="Dimension Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "md", "sm"]}
           rows={[
             ["Circle size", "24×24px (size-6)", "20×20px (size-5)"],
@@ -366,7 +397,8 @@ function DesignTokensTab() {
             ["Gap (circle ↔ label)", "12px (gap-3)", "8px (gap-2)"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -374,60 +406,76 @@ function DesignTokensTab() {
 function StylesTab() {
   return (
     <>
-      <DocSection title="Sizes — Side by Side">
-        <DocPreview title="md vs sm">
+      <div className="col-span-2">
+        <DocSection title="Sizes — Side by Side">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex gap-8">
             <div className="flex flex-col gap-1">
               <span className="text-body-03 text-text-neutral-placeholder mb-1">md</span>
-              <DemoRadioGroup name="styles-md" options={["Standard shipping", "Express shipping", "Overnight"]} size="md" defaultValue="Standard shipping" />
+              <DemoRadioGroup options={["Standard shipping", "Express shipping", "Overnight"]} size="md" defaultValue="Standard shipping" />
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-body-03 text-text-neutral-placeholder mb-1">sm</span>
-              <DemoRadioGroup name="styles-sm" options={["Standard shipping", "Express shipping", "Overnight"]} size="sm" defaultValue="Standard shipping" />
+              <DemoRadioGroup options={["Standard shipping", "Express shipping", "Overnight"]} size="sm" defaultValue="Standard shipping" />
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Side Variants">
-        <DocPreview title="left vs right">
+      <div className="col-span-2">
+        <DocSection title="Side Variants">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex gap-8">
             <div className="flex flex-col gap-1 w-48">
               <span className="text-body-03 text-text-neutral-placeholder mb-1">side=&quot;left&quot;</span>
-              <DemoRadioGroup name="styles-left" options={["Option A", "Option B", "Option C"]} side="left" defaultValue="Option A" />
+              <DemoRadioGroup options={["Option A", "Option B", "Option C"]} side="left" defaultValue="Option A" />
             </div>
             <div className="flex flex-col gap-1 w-48">
               <span className="text-body-03 text-text-neutral-placeholder mb-1">side=&quot;right&quot;</span>
-              <DemoRadioGroup name="styles-right" options={["Option A", "Option B", "Option C"]} side="right" defaultValue="Option A" />
+              <DemoRadioGroup options={["Option A", "Option B", "Option C"]} side="right" defaultValue="Option A" />
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="States">
-        <DocPreview title="All states">
+      <div className="col-span-2">
+        <DocSection title="States">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex items-start gap-8">
             <div className="flex flex-col gap-1">
               <span className="text-body-03 text-text-neutral-placeholder mb-1">Default</span>
-              <DemoRadioGroup name="styles-default" options={["Selected", "Unselected"]} defaultValue="Selected" />
+              <DemoRadioGroup options={["Selected", "Unselected"]} defaultValue="Selected" />
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-body-03 text-text-neutral-placeholder mb-1">Disabled</span>
-              <DemoRadioGroup name="styles-disabled" options={["Checked", "Unchecked"]} disabled defaultValue="Checked" />
+              <div className="flex flex-col">
+                <RadioGroup label="Checked" state="selected" />
+                <RadioGroup label="Unchecked" state="default" />
+              </div>
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="In Context — Form">
-        <DocPreview title="Appointment type">
+      <div className="col-span-2">
+        <DocSection title="In Context — Form">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div style={{ maxWidth: 320 }}>
             <fieldset className="border-none p-0 m-0">
               <legend className="text-body-02 font-medium text-text-neutral-default mb-2">
                 Appointment type
               </legend>
               <DemoRadioGroup
-                name="appointment"
                 options={["In-person visit", "Video call", "Phone consultation"]}
                 size="md"
                 defaultValue="Video call"
@@ -435,15 +483,13 @@ function StylesTab() {
             </fieldset>
           </div>
         </DocPreview>
-
-        <DocPreview title="Payment method">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div style={{ maxWidth: 320 }}>
             <fieldset className="border-none p-0 m-0">
               <legend className="text-body-02 font-medium text-text-neutral-default mb-2">
                 Payment method
               </legend>
               <DemoRadioGroup
-                name="payment"
                 options={["Credit card", "Insurance", "Pay at visit"]}
                 size="sm"
                 defaultValue="Insurance"
@@ -451,28 +497,27 @@ function StylesTab() {
             </fieldset>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
     </>
   );
 }
 
 function PropertiesTab() {
-  const [size, setSize] = useState<RadioSize>("md");
-  const [side, setSide] = useState<RadioSide>("left");
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [size, setSize] = useState<RadioGroupSize>("md");
+  const [side, setSide] = useState<RadioGroupSide>("left");
   const [selected, setSelected] = useState("Option A");
 
-  const codeSnippet = `<Radio
-  name="group"
+const codeSnippet = `<RadioGroup
   size="${size}"
   side="${side}"
-  label="Option A"${isDisabled ? "\n  disabled" : ""}
-  checked={selected === "Option A"}
-  onChange={() => setSelected("Option A")}
+  label="Option A"
+  state={selected === "Option A" ? "selected" : "default"}
 />`;
 
   return (
-    <>
+    <div className="col-span-2">
       <DocSection title="Interactive Playground">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Preview */}
@@ -483,16 +528,19 @@ function PropertiesTab() {
             <div className="flex items-center justify-center p-8 bg-white min-h-[200px]">
               <div className="flex flex-col">
                 {["Option A", "Option B", "Option C"].map((opt) => (
-                  <Radio
+                  <button
                     key={opt}
-                    name="playground"
-                    size={size}
-                    side={side}
-                    label={opt}
-                    checked={selected === opt}
-                    onChange={() => setSelected(opt)}
-                    disabled={isDisabled}
-                  />
+                    type="button"
+                    onClick={() => setSelected(opt)}
+                    className="text-left"
+                  >
+                    <RadioGroup
+                      size={size}
+                      side={side}
+                      label={opt}
+                      state={selected === opt ? "selected" : "default"}
+                    />
+                  </button>
                 ))}
               </div>
             </div>
@@ -522,7 +570,6 @@ function PropertiesTab() {
               onChange={setSide}
             />
 
-            <Toggle label="Disabled" checked={isDisabled} onChange={setIsDisabled} />
           </div>
         </div>
 
@@ -537,8 +584,9 @@ function PropertiesTab() {
         </div>
       </DocSection>
 
-      <DocSection title="Props Reference">
+      <DocSection title="Props Reference" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             ["size", '"md" | "sm"', '"md"', "Size variant — controls circle size, height, typography, and gap."],
@@ -554,30 +602,9 @@ function PropertiesTab() {
         />
       </DocSection>
 
-      <DocSection title="Code Examples">
-        <DocPreview title="Basic radio group">
-          <DemoRadioGroup name="ex-basic" options={["Option A", "Option B", "Option C"]} defaultValue="Option A" />
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`const [selected, setSelected] = useState("Option A");
-
-<Radio name="group" label="Option A" checked={selected === "Option A"} onChange={() => setSelected("Option A")} />
-<Radio name="group" label="Option B" checked={selected === "Option B"} onChange={() => setSelected("Option B")} />
-<Radio name="group" label="Option C" checked={selected === "Option C"} onChange={() => setSelected("Option C")} />`}</code>
-        </pre>
-
-        <DocPreview title="Small size with right side">
-          <DemoRadioGroup name="ex-sm-right" options={["Standard", "Express", "Overnight"]} size="sm" side="right" defaultValue="Express" />
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Radio name="shipping" size="sm" side="right" label="Standard" ... />
-<Radio name="shipping" size="sm" side="right" label="Express" ... />
-<Radio name="shipping" size="sm" side="right" label="Overnight" ... />`}</code>
-        </pre>
-      </DocSection>
-
-      <DocSection title="Controlled vs Uncontrolled">
+      <DocSection title="Controlled vs Uncontrolled" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Mode", "Props", "Behavior"]}
           rows={[
             ["Controlled", "checked + onChange", "Parent manages the selected state. Must update on every change."],
@@ -585,7 +612,7 @@ function PropertiesTab() {
           ]}
         />
       </DocSection>
-    </>
+    </div>
   );
 }
 
@@ -597,13 +624,16 @@ export default function RadioPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <div className="col-span-2 flex flex-col">
-      <DocHeader
-        title="Radio"
-        description="Radio buttons let users select exactly one option from a mutually exclusive set. They support two sizes (md, sm) and left/right positioning."
-      />
+    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-10">
+      <div className="col-start-1 flex flex-col">
+        <DocHeader
+          title="Radio"
+          description="Radio buttons let users select exactly one option from a mutually exclusive set. They support two sizes (md, sm) and left/right positioning."
+          variant="foundations"
+        />
 
-      <TabBar active={activeTab} onChange={setActiveTab} />
+        <TabBar active={activeTab} onChange={setActiveTab} />
+      </div>
 
       {activeTab === "Overview" && <OverviewTab />}
       {activeTab === "Design Tokens" && <DesignTokensTab />}

@@ -746,6 +746,20 @@ The following will be addressed later:
 
 ---
 
+## Local MCP Setup
+
+The repo keeps Figma MCP credentials out of source-controlled config.
+
+For local use:
+
+1. Create a local `.env` file from `.env.example`
+2. Set `FIGMA_API_KEY` with your own Figma key
+3. Start your MCP client normally
+
+The local `.mcp.json` file now launches `scripts/start-figma-mcp.ps1`, which reads the key from the environment at runtime.
+
+---
+
 ## Next Step
 
 Once this structure is ready, the next iteration will define:

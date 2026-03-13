@@ -38,7 +38,7 @@ function TabBar({ active, onChange }: { active: TabName; onChange: (t: TabName) 
 function ColorSwatch({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="size-8 rounded-md border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
+      <div className="size-12 rounded-sm border border-border-neutral-default shrink-0" style={{ backgroundColor: color }} />
       <div>
         <p className="text-body-02 font-medium">{label}</p>
         <p className="text-body-03 text-text-neutral-placeholder">{color}</p>
@@ -104,6 +104,16 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
   );
 }
 
+function FigmaLabelStack() {
+  return (
+    <div className="flex h-[108px] w-[90px] flex-col items-start gap-2 p-5 bg-white">
+      <Label size="md">Label</Label>
+      <Label size="sm">Label</Label>
+      <Label size="xs">Label</Label>
+    </div>
+  );
+}
+
 /* ═══════════════════════════════════════════════════
    TAB CONTENT
    ═══════════════════════════════════════════════════ */
@@ -111,7 +121,8 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
 function OverviewTab() {
   return (
     <>
-      <DocSection title="Overview">
+      <div className="col-start-1">
+        <DocSection title="Overview">
         <p className="mb-4">
           The Label component identifies form controls and provides essential
           context. It ensures users understand what information is expected
@@ -122,9 +133,11 @@ function OverviewTab() {
           indicator (asterisk) when the field is mandatory. Consistent label
           styling helps users scan forms quickly.
         </p>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Anatomy">
+      <div className="col-span-2">
+        <DocSection title="Anatomy">
         <DocAnatomy
           items={[
             {
@@ -139,7 +152,7 @@ function OverviewTab() {
             },
           ]}
         />
-        <DocPreview title="Anatomy example">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare>
           <div className="flex items-center gap-6">
             <div className="flex flex-col gap-1">
               <Label size="md">Email address</Label>
@@ -152,9 +165,12 @@ function OverviewTab() {
           </div>
         </DocPreview>
       </DocSection>
+      </div>
 
-      <DocSection title="Sizes">
+      <div className="col-span-2">
+        <DocSection title="Sizes" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Size", "Text style", "Font size / Line height", "Use case"]}
           rows={[
             ["md", "Body/01/Regular", "16px / 24px", "Default for most form labels and headings."],
@@ -162,26 +178,18 @@ function OverviewTab() {
             ["xs", "Body/03/Regular", "11px / 12px", "Captions, footnotes, micro labels."],
           ]}
         />
-        <DocPreview title="Size comparison">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-baseline gap-4">
-              <span className="text-body-03 text-text-neutral-placeholder w-8">md</span>
-              <Label size="md">Email address</Label>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <span className="text-body-03 text-text-neutral-placeholder w-8">sm</span>
-              <Label size="sm">Email address</Label>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <span className="text-body-03 text-text-neutral-placeholder w-8">xs</span>
-              <Label size="xs">Email address</Label>
-            </div>
-          </div>
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly className="h-full min-h-0">
+          <FigmaLabelStack />
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="States">
+      <div className="col-span-2">
+        <DocSection title="States" hideTitle>
         <DocTable
+          variant="surface"
           headers={["State", "Visual treatment", "Description"]}
           rows={[
             ["Default", "Regular weight, neutral foreground", "The label is associated with an available input."],
@@ -189,7 +197,8 @@ function OverviewTab() {
             ["Disabled", "50% opacity, cursor not-allowed", "The associated field is non-interactive. Label remains for context."],
           ]}
         />
-        <DocPreview title="All states">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-6">
               <div className="flex flex-col gap-1">
@@ -207,9 +216,12 @@ function OverviewTab() {
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Behavior">
+      <div className="col-span-2">
+        <DocSection title="Behavior">
         <p className="mb-4">
           Labels are associated with form controls via <code>htmlFor</code> and
           matching <code>id</code>. Clicking the label focuses the associated
@@ -221,8 +233,10 @@ function OverviewTab() {
           visible label.
         </DocCallout>
       </DocSection>
+      </div>
 
-      <DocSection title="Accessibility">
+      <div className="col-span-2">
+        <DocSection title="Accessibility">
         <ul className="pl-5 mb-4">
           <li className="mb-2">
             Always associate labels with inputs using <code>htmlFor</code> and matching <code>id</code>.
@@ -239,8 +253,14 @@ function OverviewTab() {
           </li>
         </ul>
       </DocSection>
+      </div>
 
-      <DocSection title="Usage guidelines">
+      <div className="col-span-2">
+        <DocSection title="Usage guidelines">
+          <div
+            className="overflow-hidden flex flex-row gap-10 w-full items-start justify-between"
+            style={{ backgroundColor: "#FFFFFF", padding: "200px" }}
+          >
         <DoDontGrid
           doItems={[
             { description: "Always show a visible label for every form control." },
@@ -255,7 +275,9 @@ function OverviewTab() {
             { description: "Don't use different weights/sizes for labels in the same form." },
           ]}
         />
-      </DocSection>
+          </div>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -263,17 +285,21 @@ function OverviewTab() {
 function DesignTokensTab() {
   return (
     <>
-      <DocSection title="Color Tokens">
+      <div className="col-span-2">
+        <DocSection title="Color Tokens">
         <TokenGroup title="Text">
-          <ColorSwatch color="#1c1f1b" label="text / neutral / default" />
+          <ColorSwatch color="#1C1F1B" label="text / neutral / default" />
         </TokenGroup>
         <TokenGroup title="Required indicator">
           <ColorSwatch color="#903328" label="text / danger / default" />
         </TokenGroup>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Typography Tokens">
+      <div className="col-span-2">
+        <DocSection title="Typography Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Size", "Text style", "Font size", "Line height", "Weight"]}
           rows={[
             ["md", "Body/01/Regular", "16px", "24px", "400 (regular)"],
@@ -281,26 +307,33 @@ function DesignTokensTab() {
             ["xs", "Body/03/Regular", "11px", "12px", "400 (regular)"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Spacing Tokens">
+      <div className="col-span-2">
+        <DocSection title="Spacing Tokens" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Token", "Value"]}
           rows={[
             ["Gap (label ↔ asterisk)", "spacing/space-0.5", "2px"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Disabled State">
+      <div className="col-span-2">
+        <DocSection title="Disabled State" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Property", "Value"]}
           rows={[
             ["Opacity", "50%"],
             ["Cursor", "not-allowed"],
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -308,27 +341,20 @@ function DesignTokensTab() {
 function StylesTab() {
   return (
     <>
-      <DocSection title="Sizes — Side by Side">
-        <DocPreview title="md / sm / xs">
-          <div className="flex flex-col gap-4">
-            <div className="flex items-baseline gap-4">
-              <span className="text-body-03 text-text-neutral-placeholder w-8">md</span>
-              <Label size="md">Label text</Label>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <span className="text-body-03 text-text-neutral-placeholder w-8">sm</span>
-              <Label size="sm">Label text</Label>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <span className="text-body-03 text-text-neutral-placeholder w-8">xs</span>
-              <Label size="xs">Label text</Label>
-            </div>
-          </div>
+      <div className="col-span-2">
+        <DocSection title="Sizes — Side by Side">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly className="h-full min-h-0">
+          <FigmaLabelStack />
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="With Required Indicator">
-        <DocPreview title="Required across sizes">
+      <div className="col-span-2">
+        <DocSection title="With Required Indicator">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4">
             <div className="flex items-baseline gap-4">
               <span className="text-body-03 text-text-neutral-placeholder w-8">md</span>
@@ -344,20 +370,28 @@ function StylesTab() {
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Disabled">
-        <DocPreview title="Disabled labels">
+      <div className="col-span-2">
+        <DocSection title="Disabled">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4">
             <Label size="md" disabled>Disabled label (md)</Label>
             <Label size="sm" disabled>Disabled label (sm)</Label>
             <Label size="xs" disabled>Disabled label (xs)</Label>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="In Context — Form">
-        <DocPreview title="Labels paired with inputs">
+      <div className="col-span-2">
+        <DocSection title="In Context — Form">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+        <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
           <div className="flex flex-col gap-4" style={{ maxWidth: 320 }}>
             <div>
               <Label size="sm" required htmlFor="ctx-name">Full name</Label>
@@ -388,7 +422,9 @@ function StylesTab() {
             </div>
           </div>
         </DocPreview>
+        </div>
       </DocSection>
+      </div>
     </>
   );
 }
@@ -407,7 +443,7 @@ function PropertiesTab() {
 </Label>`;
 
   return (
-    <>
+    <div className="col-span-2">
       <DocSection title="Interactive Playground">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Preview */}
@@ -463,8 +499,9 @@ function PropertiesTab() {
         </div>
       </DocSection>
 
-      <DocSection title="Props Reference">
+      <DocSection title="Props Reference" hideTitle>
         <DocTable
+          variant="surface"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             ["size", '"md" | "sm" | "xs"', '"md"', "Size variant — controls typography (Body/01, 02, 03)."],
@@ -476,41 +513,7 @@ function PropertiesTab() {
           ]}
         />
       </DocSection>
-
-      <DocSection title="Code Examples">
-        <DocPreview title="Basic label">
-          <Label size="md">Full name</Label>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Label size="md">Full name</Label>`}</code>
-        </pre>
-
-        <DocPreview title="Required label with input">
-          <div style={{ maxWidth: 280 }}>
-            <Label size="sm" required htmlFor="ex-email">Email address</Label>
-            <input
-              id="ex-email"
-              type="email"
-              placeholder="you@example.com"
-              className="mt-1 w-full py-2 px-3 border border-border-neutral-default rounded-md text-body-02 bg-white"
-            />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Label size="sm" required htmlFor="email">
-  Email address
-</Label>
-<input id="email" type="email" ... />`}</code>
-        </pre>
-
-        <DocPreview title="Disabled label">
-          <Label size="md" disabled>Cannot edit</Label>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Label size="md" disabled>Cannot edit</Label>`}</code>
-        </pre>
-      </DocSection>
-    </>
+    </div>
   );
 }
 
@@ -522,13 +525,16 @@ export default function LabelPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Overview");
 
   return (
-    <div className="col-span-2 flex flex-col">
-      <DocHeader
-        title="Label"
-        description="Labels identify form controls and provide essential context. They support three sizes (md, sm, xs) and an optional required indicator."
-      />
+    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-10">
+      <div className="col-start-1 flex flex-col">
+        <DocHeader
+          title="Label"
+          description="Labels identify form controls and provide essential context. They support three sizes (md, sm, xs) and an optional required indicator."
+          variant="foundations"
+        />
 
-      <TabBar active={activeTab} onChange={setActiveTab} />
+        <TabBar active={activeTab} onChange={setActiveTab} />
+      </div>
 
       {activeTab === "Overview" && <OverviewTab />}
       {activeTab === "Design Tokens" && <DesignTokensTab />}

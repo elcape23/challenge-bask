@@ -216,7 +216,7 @@ export default function SpacingPage() {
         <p>
           When building new components, start by choosing internal padding from
           the lower end of the scale (space-2 to space-5) and external margins
-          from the higher end (space-8 to space-16) based on the component's
+          from the higher end (space-8 to space-16) based on the component&apos;s
           context in the layout.
         </p>
       </DocSection>

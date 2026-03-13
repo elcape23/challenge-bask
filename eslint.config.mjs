@@ -12,6 +12,13 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local tool output and nested worktrees should not be linted as part of this repo.
+    ".claude/**",
+    ".cursor/**",
+    "coverage/**",
+    "dev-server.err",
+    "dev-server.log",
+    "nul",
   ]),
 ]);
 

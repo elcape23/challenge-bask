@@ -132,9 +132,9 @@ const VARIANT_STYLES: Record<string, string> = {
 };
 
 const ICON_SIZE_CLASSES: Record<ButtonSize, string> = {
-  lg: "[&_svg]:size-6",
-  sm: "[&_svg]:size-5",
-  icon: "[&_svg]:size-6",
+  lg: "[&>svg]:size-6",
+  sm: "[&>svg]:size-5",
+  icon: "[&>svg]:size-6",
 };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(

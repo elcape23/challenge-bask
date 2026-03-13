@@ -5,7 +5,6 @@ import Image from "next/image";
 import DocHeader from "@/components/docs/DocHeader";
 import DocSection from "@/components/docs/DocSection";
 import DocTable from "@/components/docs/DocTable";
-import DocCallout from "@/components/docs/DocCallout";
 import DoDontGrid from "@/components/docs/DoDontGrid";
 import DocPreview from "@/components/docs/DocPreview";
 import DocAnatomy from "@/components/docs/DocAnatomy";
@@ -51,7 +50,7 @@ function ColorSwatch({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
       <div
-        className="size-8 rounded-md border border-border-neutral-default shrink-0"
+        className="size-12 rounded-sm border border-border-neutral-default shrink-0"
         style={{ backgroundColor: color }}
       />
       <div>
@@ -199,13 +198,13 @@ function OverviewTab() {
             style={{ backgroundColor: "#FFFFFF", padding: "200px" }}
           >
             <Image
-              src="/images/accordion-anatomy-collapsed.png"
+              src="/images/accordion-anatomy-collapsed.webp"
               alt="Accordion header anatomy when collapsed: heading (1), separator line (2), chevron-down icon (3)"
               width={640}
               height={122}
             />
             <Image
-              src="/images/accordion-anatomy-expanded.png"
+              src="/images/accordion-anatomy-expanded.webp"
               alt="Accordion header anatomy when expanded: heading, chevron-up icon (4), bottom separator"
               width={640}
               height={122}
@@ -218,7 +217,6 @@ function OverviewTab() {
         <DocSection title="Sizes" hideTitle>
           <DocTable
             variant="surface"
-            title="Sizes"
             headers={[
               "Size",
               "Height (closed)",
@@ -276,7 +274,6 @@ function OverviewTab() {
         <DocSection title="States" hideTitle>
           <DocTable
             variant="surface"
-            title="States"
             headers={["State", "Description"]}
             rows={[
               [
@@ -327,13 +324,13 @@ function OverviewTab() {
             style={{ backgroundColor: "#FFFFFF", padding: "200px" }}
           >
             <Image
-              src="/images/accordion-behavior-collapsed.png"
+              src="/images/accordion-behavior-collapsed.webp"
               alt="Accordion header collapsed: heading, separator line, chevron-down icon"
               width={640}
               height={122}
             />
             <Image
-              src="/images/accordion-behavior-expanded.png"
+              src="/images/accordion-behavior-expanded.webp"
               alt="Accordion header expanded: heading, chevron-up icon, separator line below"
               width={640}
               height={122}
@@ -414,24 +411,26 @@ function OverviewTab() {
 function DesignTokensTab() {
   return (
     <>
-      <DocSection title="Color Tokens">
-        <TokenGroup title="Default State">
-          <ColorSwatch color="#1c1f1b" label="text / neutral / default" />
-          <ColorSwatch color="#1c1f1b" label="icon / neutral / default" />
-          <ColorSwatch color="#b7bbaf" label="border / neutral / default" />
-        </TokenGroup>
+      <div className="col-span-2">
+        <DocSection title="Color Tokens">
+          <TokenGroup title="Default State">
+<ColorSwatch color="#1C1F1B" label="text / neutral / default" />
+          <ColorSwatch color="#1C1F1B" label="icon / neutral / default" />
+          <ColorSwatch color="#B7BBAF" label="border / neutral / default" />
+          </TokenGroup>
 
-        <TokenGroup title="Disabled State">
-          <ColorSwatch color="#b7bbaf" label="text / neutral / disabled" />
-          <ColorSwatch color="#b7bbaf" label="icon / neutral / disabled" />
-          <ColorSwatch color="#e4e6de" label="border / neutral / disabled" />
-        </TokenGroup>
-      </DocSection>
+          <TokenGroup title="Disabled State">
+<ColorSwatch color="#B7BBAF" label="text / neutral / disabled" />
+          <ColorSwatch color="#B7BBAF" label="icon / neutral / disabled" />
+          <ColorSwatch color="#E4E6DE" label="border / neutral / disabled" />
+          </TokenGroup>
+        </DocSection>
+      </div>
 
-      <DocSection title="Typography Tokens" hideTitle>
+      <div className="col-span-2">
+        <DocSection title="Typography Tokens" hideTitle>
         <DocTable
           variant="surface"
-          title="Typography Tokens"
           headers={["Token", "Size", "Size (px)", "Line Height", "Weight"]}
           rows={[
             [
@@ -450,16 +449,13 @@ function DesignTokensTab() {
             ],
           ]}
         />
-        <DocCallout variant="info" title="Font family">
-          All accordion text uses <code>Suisse Intl Trial</code> (Regular
-          weight) via the <code>font/family/default</code> token.
-        </DocCallout>
       </DocSection>
+      </div>
 
-      <DocSection title="Spacing Tokens" hideTitle>
+      <div className="col-span-2">
+        <DocSection title="Spacing Tokens" hideTitle>
         <DocTable
           variant="surface"
-          title="Spacing Tokens"
           headers={["Property", "Token", "Value", "Size"]}
           rows={[
             ["Horizontal padding", "spacing/space-2", "8px", "Both"],
@@ -474,14 +470,15 @@ function DesignTokensTab() {
             ],
             ["Content padding bottom (sm)", "spacing/space-3", "12px", "sm"],
             ["Content padding bottom (md)", "spacing/space-4", "16px", "md"],
-          ]}
+        ]}
         />
       </DocSection>
+      </div>
 
-      <DocSection title="Icon Sizes" hideTitle>
+      <div className="col-span-2">
+        <DocSection title="Icon Sizes" hideTitle>
         <DocTable
           variant="surface"
-          title="Icon Sizes"
           headers={["Size", "Icon dimensions", "Chevron"]}
           rows={[
             ["sm", "20×20px", "chevron-down / chevron-up"],
@@ -489,11 +486,12 @@ function DesignTokensTab() {
           ]}
         />
       </DocSection>
+      </div>
 
-      <DocSection title="Border" hideTitle>
+      <div className="col-span-2">
+        <DocSection title="Border" hideTitle>
         <DocTable
           variant="surface"
-          title="Border"
           headers={["Property", "Value", "Token"]}
           rows={[
             ["Border position", "Bottom only", "—"],
@@ -501,22 +499,23 @@ function DesignTokensTab() {
             ["Border style", "Solid", "—"],
             [
               "Border color (default)",
-              "#b7bbaf",
+              "#B7BBAF",
               "color/border/neutral/default",
             ],
             [
               "Border color (disabled)",
-              "#e4e6de",
+              "#E4E6DE",
               "color/border/neutral/disabled",
             ],
           ]}
         />
       </DocSection>
+      </div>
 
-      <DocSection title="Animation / Transition Tokens" hideTitle>
+      <div className="col-span-2">
+        <DocSection title="Animation / Transition Tokens" hideTitle>
         <DocTable
           variant="surface"
-          title="Animation / Transition Tokens"
           headers={["Property", "Duration", "Easing"]}
           rows={[
             ["Chevron rotation", "200ms", "ease (CSS default)"],
@@ -524,6 +523,7 @@ function DesignTokensTab() {
           ]}
         />
       </DocSection>
+      </div>
     </>
   );
 }
@@ -531,111 +531,153 @@ function DesignTokensTab() {
 function StylesTab() {
   return (
     <>
-      <DocSection title="Size Variations">
-        <DocPreview title="Small (sm) — Closed & Open">
-          <div className="w-full max-w-sm">
-            <AccordionItem heading="Closed small item" size="sm" />
-            <AccordionItem heading="Open small item" size="sm" defaultOpen>
-              <p className="text-body-02 text-text-neutral-secondary">
-                The content panel for a small accordion. Uses Body/01 (16px)
-                heading text and a 20px chevron icon.
-              </p>
-            </AccordionItem>
-          </div>
-        </DocPreview>
-        <DocPreview title="Medium (md) — Closed & Open">
-          <div className="w-full max-w-sm">
-            <AccordionItem heading="Closed medium item" size="md" />
-            <AccordionItem heading="Open medium item" size="md" defaultOpen>
-              <p className="text-body-01 text-text-neutral-secondary">
-                The content panel for a medium accordion. Uses Heading/06 (19px)
-                heading text and a 24px chevron icon.
-              </p>
-            </AccordionItem>
-          </div>
-        </DocPreview>
+      <div className="col-span-2">
+        <DocSection title="Size Variations" hideTitle>
+        <DocTable
+          variant="surface"
+          headers={[
+            "Size",
+            "Height (closed)",
+            "Typography",
+            "Icon",
+            "Padding",
+          ]}
+          rows={[
+            [
+              "Small (sm)",
+              "48px",
+              "Body/01 Regular (16px / 24px)",
+              "20×20px",
+              "px: 8px, py: 12px",
+            ],
+            [
+              "Medium (md)",
+              "56px",
+              "Heading/06 Regular (19px / 24px)",
+              "24×24px",
+              "px: 8px, py: 16px",
+            ],
+          ]}
+        />
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="w-full max-w-sm h-[150px]">
+              <AccordionItem heading="Small accordion" size="sm" defaultOpen>
+                <ul className="list-disc pl-5 m-0 text-body-02 text-text-neutral-secondary space-y-1">
+                  <li>First item</li>
+                  <li>Second item</li>
+                  <li>Third item</li>
+                </ul>
+              </AccordionItem>
+              <AccordionItem heading="Another item" size="sm" />
+            </div>
+          </DocPreview>
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="w-full max-w-sm h-[150px]">
+              <AccordionItem heading="Medium accordion" size="md" defaultOpen>
+                <ul className="list-disc pl-5 m-0 text-body-01 text-text-neutral-secondary space-y-1">
+                  <li>First item</li>
+                  <li>Second item</li>
+                  <li>Third item</li>
+                </ul>
+              </AccordionItem>
+              <AccordionItem heading="Another item" size="md" />
+            </div>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="State Demonstrations">
-        <DocPreview title="Default state">
-          <div className="w-full max-w-sm">
-            <AccordionItem heading="Default accordion" size="sm" />
-          </div>
-        </DocPreview>
-        <DocPreview title="Disabled state">
-          <div className="w-full max-w-sm">
-            <AccordionItem heading="Disabled accordion" size="sm" disabled />
-            <AccordionItem heading="Disabled medium" size="md" disabled />
-          </div>
-        </DocPreview>
-        <p className="mb-4 text-body-02 text-text-neutral-secondary">
+      <div className="col-span-2">
+        <DocSection title="State Demonstrations">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="w-full max-w-sm">
+              <AccordionItem heading="Default accordion" size="sm" />
+            </div>
+          </DocPreview>
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="w-full max-w-sm">
+              <AccordionItem heading="Disabled accordion" size="sm" disabled />
+              <AccordionItem heading="Disabled medium" size="md" disabled />
+            </div>
+          </DocPreview>
+        </div>
+        <p className="mb-4 text-body-02 text-text-neutral-secondary mt-4">
           Focus states are interactive — use Tab to focus the trigger and
           observe the focus ring.
         </p>
       </DocSection>
+      </div>
 
-      <DocSection title="Single Mode (one open at a time)">
-        <DocPreview title="Single accordion group">
-          <div className="w-full max-w-sm">
-            <Accordion type="single" size="sm">
-              <AccordionItem heading="What is your return policy?">
-                <p className="text-body-02 text-text-neutral-secondary">
-                  You can return items within 30 days of purchase with a valid
-                  receipt.
-                </p>
-              </AccordionItem>
-              <AccordionItem heading="How do I track my order?">
-                <p className="text-body-02 text-text-neutral-secondary">
-                  Go to Account → Orders and click the tracking number.
-                </p>
-              </AccordionItem>
-              <AccordionItem heading="Do you ship internationally?">
-                <p className="text-body-02 text-text-neutral-secondary">
-                  Yes, we ship to over 50 countries worldwide.
-                </p>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        </DocPreview>
+      <div className="col-span-2">
+        <DocSection title="Single Mode & Multiple Mode">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="w-full max-w-sm">
+              <Accordion type="single" size="sm">
+                <AccordionItem heading="What is your return policy?">
+                  <p className="text-body-02 text-text-neutral-secondary">
+                    You can return items within 30 days of purchase with a valid
+                    receipt.
+                  </p>
+                </AccordionItem>
+                <AccordionItem heading="How do I track my order?">
+                  <p className="text-body-02 text-text-neutral-secondary">
+                    Go to Account → Orders and click the tracking number.
+                  </p>
+                </AccordionItem>
+                <AccordionItem heading="Do you ship internationally?">
+                  <p className="text-body-02 text-text-neutral-secondary">
+                    Yes, we ship to over 50 countries worldwide.
+                  </p>
+                </AccordionItem>
+              </Accordion>
+            </div>
+          </DocPreview>
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="w-full max-w-sm">
+              <Accordion type="multiple" size="md">
+                <AccordionItem heading="Account settings">
+                  <p className="text-body-01 text-text-neutral-secondary">
+                    Email, password, and profile preferences.
+                  </p>
+                </AccordionItem>
+                <AccordionItem heading="Notifications">
+                  <p className="text-body-01 text-text-neutral-secondary">
+                    Configure how and when you receive alerts.
+                  </p>
+                </AccordionItem>
+                <AccordionItem heading="Privacy">
+                  <p className="text-body-01 text-text-neutral-secondary">
+                    Data sharing, cookies, and visibility settings.
+                  </p>
+                </AccordionItem>
+              </Accordion>
+            </div>
+          </DocPreview>
+        </div>
       </DocSection>
+      </div>
 
-      <DocSection title="Multiple Mode (many open at once)">
-        <DocPreview title="Multiple accordion group">
-          <div className="w-full max-w-sm">
-            <Accordion type="multiple" size="md">
-              <AccordionItem heading="Account settings">
-                <p className="text-body-01 text-text-neutral-secondary">
-                  Email, password, and profile preferences.
+      <div className="col-span-2">
+        <DocSection title="Mixed Default & Disabled">
+        <div className="grid grid-cols-2 gap-10 items-stretch">
+          <DocPreview rounded={false} border={false} verticalPaddingOnly aspectSquare className="h-full min-h-0">
+            <div className="w-full max-w-sm">
+              <AccordionItem heading="Active section" size="sm" defaultOpen>
+                <p className="text-body-02 text-text-neutral-secondary">
+                  This section is interactive and open by default.
                 </p>
               </AccordionItem>
-              <AccordionItem heading="Notifications">
-                <p className="text-body-01 text-text-neutral-secondary">
-                  Configure how and when you receive alerts.
-                </p>
-              </AccordionItem>
-              <AccordionItem heading="Privacy">
-                <p className="text-body-01 text-text-neutral-secondary">
-                  Data sharing, cookies, and visibility settings.
-                </p>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        </DocPreview>
-      </DocSection>
-
-      <DocSection title="Mixed Default & Disabled">
-        <DocPreview title="Group with some disabled items">
-          <div className="w-full max-w-sm">
-            <AccordionItem heading="Active section" size="sm" defaultOpen>
-              <p className="text-body-02 text-text-neutral-secondary">
-                This section is interactive and open by default.
-              </p>
-            </AccordionItem>
-            <AccordionItem heading="Coming soon" size="sm" disabled />
-            <AccordionItem heading="Another active" size="sm" />
-          </div>
-        </DocPreview>
-      </DocSection>
+              <AccordionItem heading="Coming soon" size="sm" disabled />
+              <AccordionItem heading="Another active" size="sm" />
+            </div>
+          </DocPreview>
+          <div aria-hidden />
+        </div>
+        </DocSection>
+      </div>
     </>
   );
 }
@@ -664,7 +706,7 @@ function PropertiesTab() {
 </AccordionItem>`;
 
   return (
-    <>
+    <div className="col-span-2">
       <DocSection title="Interactive Playground">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Preview */}
@@ -753,7 +795,6 @@ function PropertiesTab() {
       <DocSection title="Props Reference — AccordionItem" hideTitle>
         <DocTable
           variant="surface"
-          title="Props Reference — AccordionItem"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             [
@@ -811,7 +852,6 @@ function PropertiesTab() {
       <DocSection title="Props Reference — Accordion (group)" hideTitle>
         <DocTable
           variant="surface"
-          title="Props Reference — Accordion (group)"
           headers={["Prop", "Type", "Default", "Description"]}
           rows={[
             [
@@ -838,75 +878,9 @@ function PropertiesTab() {
         />
       </DocSection>
 
-      <DocSection title="Code Examples">
-        <DocPreview title="Basic FAQ">
-          <div className="w-full max-w-sm">
-            <AccordionItem
-              heading="How do I reset my password?"
-              size="sm"
-              defaultOpen
-            >
-              <p className="text-body-02 text-text-neutral-secondary">
-                Go to Account → Security and click &quot;Reset password&quot;.
-              </p>
-            </AccordionItem>
-            <AccordionItem heading="Can I change my email?" size="sm" />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<AccordionItem heading="How do I reset my password?" size="sm" defaultOpen>
-  <p>Go to Account → Security and click "Reset password".</p>
-</AccordionItem>
-<AccordionItem heading="Can I change my email?" size="sm" />`}</code>
-        </pre>
-
-        <DocPreview title="Single-open group">
-          <div className="w-full max-w-sm">
-            <Accordion type="single" size="md">
-              <AccordionItem heading="Appearance">
-                <p className="text-body-01 text-text-neutral-secondary">
-                  Theme, font size, and layout preferences.
-                </p>
-              </AccordionItem>
-              <AccordionItem heading="Notifications">
-                <p className="text-body-01 text-text-neutral-secondary">
-                  Email, push, and in-app alerts.
-                </p>
-              </AccordionItem>
-              <AccordionItem heading="Privacy & Security">
-                <p className="text-body-01 text-text-neutral-secondary">
-                  Two-factor, sessions, and data export.
-                </p>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<Accordion type="single" size="md">
-  <AccordionItem heading="Appearance">
-    <p>Theme, font size, and layout preferences.</p>
-  </AccordionItem>
-  <AccordionItem heading="Notifications">
-    <p>Email, push, and in-app alerts.</p>
-  </AccordionItem>
-</Accordion>`}</code>
-        </pre>
-
-        <DocPreview title="Disabled items">
-          <div className="w-full max-w-sm">
-            <AccordionItem heading="Active section" size="sm" />
-            <AccordionItem heading="Locked (disabled)" size="sm" disabled />
-          </div>
-        </DocPreview>
-        <pre className="mb-6 p-4 rounded-md bg-neutral-900 text-neutral-100 text-body-02 overflow-x-auto">
-          <code>{`<AccordionItem heading="Locked (disabled)" size="sm" disabled />`}</code>
-        </pre>
-      </DocSection>
-
       <DocSection title="Validation & Constraints" hideTitle>
         <DocTable
           variant="surface"
-          title="Validation & Constraints"
           headers={["Rule", "Details"]}
           rows={[
             [
@@ -932,7 +906,7 @@ function PropertiesTab() {
           ]}
         />
       </DocSection>
-    </>
+    </div>
   );
 }
 
