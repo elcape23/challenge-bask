@@ -12,7 +12,7 @@ export default function DocSection({ title, children, id, hideTitle }: DocSectio
   return (
     <section id={sectionId} className="mb-12">
       {!hideTitle && (
-        <h2 className="text-heading-06 font-medium text-text-neutral-default mb-4 pb-3 border-b border-border-neutral-disabled">
+        <h2 className="text-heading-04 font-medium text-text-neutral-default mb-4 pb-3">
           {title}
         </h2>
       )}

@@ -24,7 +24,7 @@ const components = [
 
 export default function ComponentsPage() {
   return (
-    <div className="col-span-2 grid grid-cols-2 gap-x-20 gap-y-20">
+    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-20">
       <div className="col-span-2 flex flex-col gap-4">
         <h1
           className="font-bold tracking-tight text-text-neutral-default leading-none"

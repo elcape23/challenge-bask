@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navigation, type NavItem } from "@/data/navigation";
@@ -45,10 +46,23 @@ export default function DocsSidebar() {
   if (!activeGroup) return null;
 
   return (
-    <aside className="sticky top-[var(--height-topbar)] h-[calc(100vh-var(--height-topbar))] shrink-0 overflow-y-auto w-sidebar px-4 pt-14 pb-6">
-      <nav>
+    <>
+      <div className="w-sidebar shrink-0" aria-hidden />
+      <aside className="fixed left-[120px] top-0 h-screen w-sidebar overflow-y-auto px-4 pt-10 pb-6 flex flex-col bg-background-default-default z-10">
+      <Link href="/" className="h-10 flex items-center shrink-0 mb-20">
+        <Image
+          src="/logo.png"
+          alt="Sena Design System"
+          width={120}
+          height={40}
+          className="h-10 w-auto object-contain"
+          priority
+        />
+      </Link>
+      <nav className="flex-1 min-h-0">
         <NavSection items={activeGroup.items} />
       </nav>
     </aside>
+    </>
   );
 }

@@ -17,9 +17,9 @@ export default function NavbarPage() {
       <DocSection title="Overview">
         <p className="mb-4">
           The navbar sits at the top of every page and serves as the main
-          orientation point for users. It contains the brand identity,
-          primary navigation links, and global actions like search or user
-          account controls.
+          orientation point for users. It contains the brand identity, primary
+          navigation links, and global actions like search or user account
+          controls.
         </p>
         <p>
           A well-structured navbar reduces navigation effort and reinforces
@@ -93,24 +93,31 @@ export default function NavbarPage() {
           headers={["State", "Description"]}
           rows={[
             ["Default", "Navbar at rest with current page link highlighted"],
-            ["Scrolled", "Elevated with shadow or background change after the user scrolls past the top"],
-            ["Mobile open", "Hamburger menu expanded, revealing navigation links in a slide-down or side panel"],
-            ["Mobile closed", "Navigation links hidden behind a hamburger icon on small viewports"],
+            [
+              "Scrolled",
+              "Elevated with shadow or background change after the user scrolls past the top",
+            ],
+            [
+              "Mobile open",
+              "Hamburger menu expanded, revealing navigation links in a slide-down or side panel",
+            ],
+            [
+              "Mobile closed",
+              "Navigation links hidden behind a hamburger icon on small viewports",
+            ],
           ]}
         />
       </DocSection>
 
       <DocSection title="Behavior">
-        <ul
-          className="list-disc pl-5 space-y-2 text-text-neutral-secondary"
-        >
+        <ul className="list-disc pl-5 space-y-2 text-text-neutral-secondary">
           <li>
             The navbar remains fixed at the top of the viewport on scroll,
             providing constant access to navigation.
           </li>
           <li>
-            On small viewports, navigation links collapse into a hamburger
-            menu. The logo and key actions remain visible.
+            On small viewports, navigation links collapse into a hamburger menu.
+            The logo and key actions remain visible.
           </li>
           <li>
             The active link is determined by the current route and highlighted
@@ -134,9 +141,7 @@ export default function NavbarPage() {
           navigation landmark. If multiple <code>&lt;nav&gt;</code> elements
           exist, each must have a unique label.
         </DocCallout>
-        <ul
-          className="list-disc pl-5 space-y-2 text-text-neutral-secondary"
-        >
+        <ul className="list-disc pl-5 space-y-2 text-text-neutral-secondary">
           <li>
             The current page link must use{" "}
             <code>aria-current=&quot;page&quot;</code> to announce the active
@@ -148,8 +153,8 @@ export default function NavbarPage() {
             state.
           </li>
           <li>
-            Dropdown menus in the navbar must be keyboard navigable with
-            Escape to close and arrow keys to move between items.
+            Dropdown menus in the navbar must be keyboard navigable with Escape
+            to close and arrow keys to move between items.
           </li>
           <li>
             Skip-to-content links should be provided as the first focusable
@@ -166,24 +171,48 @@ export default function NavbarPage() {
         </p>
         <p>
           Ensure the navbar is consistent across all pages. Changing the navbar
-          structure between routes creates disorientation and erodes user
-          trust in the navigation system.
+          structure between routes creates disorientation and erodes user trust
+          in the navigation system.
         </p>
       </DocSection>
 
       <DocSection title="Do / Don't">
         <DoDontGrid
           doItems={[
-            { description: "Keep navigation links to 4–7 top-level items for clarity." },
-            { description: "Highlight the current page link to orient the user." },
-            { description: "Use a hamburger menu on mobile to conserve horizontal space." },
-            { description: "Include a skip-to-content link as the first focusable element." },
+            {
+              description:
+                "Keep navigation links to 4–7 top-level items for clarity.",
+            },
+            {
+              description:
+                "Highlight the current page link to orient the user.",
+            },
+            {
+              description:
+                "Use a hamburger menu on mobile to conserve horizontal space.",
+            },
+            {
+              description:
+                "Include a skip-to-content link as the first focusable element.",
+            },
           ]}
           dontItems={[
-            { description: "Don't use the navbar for secondary or contextual navigation." },
-            { description: "Don't change the navbar structure between different pages." },
-            { description: "Don't hide the logo on mobile — it's a key orientation anchor." },
-            { description: "Don't open dropdown menus on hover — use click for touch compatibility." },
+            {
+              description:
+                "Don't use the navbar for secondary or contextual navigation.",
+            },
+            {
+              description:
+                "Don't change the navbar structure between different pages.",
+            },
+            {
+              description:
+                "Don't hide the logo on mobile — it's a key orientation anchor.",
+            },
+            {
+              description:
+                "Don't open dropdown menus on hover — use click for touch compatibility.",
+            },
           ]}
         />
       </DocSection>
@@ -198,7 +227,10 @@ export default function NavbarPage() {
             ["Border bottom", "1px solid var(--color-border-subtle)"],
             ["Logo area min-width", "120px"],
             ["Nav link padding", "var(--spacing-3) var(--spacing-4)"],
-            ["Active link indicator", "2px bottom border, var(--color-primary)"],
+            [
+              "Active link indicator",
+              "2px bottom border, var(--color-primary)",
+            ],
             ["Scroll shadow", "var(--shadow-sm)"],
             ["Z-index", "var(--z-navbar)"],
             ["Mobile breakpoint", "768px"],

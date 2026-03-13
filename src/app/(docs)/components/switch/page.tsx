@@ -20,7 +20,7 @@ function TabBar({ active, onChange }: { active: TabName; onChange: (t: TabName) 
         <button
           key={tab}
           onClick={() => onChange(tab)}
-          className={`px-4 py-2 text-body-02 font-medium transition-colors cursor-pointer -mb-px ${
+          className={`px-4 py-2 text-body-01 font-medium transition-colors cursor-pointer -mb-px ${
             active === tab
               ? "border-b-2 border-primary-900 text-text-neutral-default"
               : "text-text-neutral-placeholder hover:text-text-neutral-secondary"

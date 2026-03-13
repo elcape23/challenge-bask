@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -14,18 +13,8 @@ export default function DocsTopbar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-10 flex items-center justify-between p-6">
-      <Link href="/">
-        <Image
-          src="/logo.png"
-          alt="Sena Design System"
-          width={120}
-          height={40}
-          priority
-        />
-      </Link>
-
-      <nav className="flex items-center gap-6">
+    <header className="flex items-center justify-end pt-10 px-20 pb-10">
+      <nav className="flex items-center gap-14 h-10">
         {topNavLinks.map(({ label, href }) => {
           const isActive = pathname.startsWith(href);
           return (
