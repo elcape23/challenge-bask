@@ -13,7 +13,6 @@ import CardContent from "@/components/prototype/globals/CardContent";
 import ListItem from "@/components/prototype/globals/ListItem";
 import TopBar from "@/components/prototype/globals/TopBar";
 import InputGroup from "@/components/ui/InputGroup";
-import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Checkbox from "@/components/ui/Checkbox";
 
@@ -28,51 +27,208 @@ const STATE_OPTIONS = [
   { value: "tx", label: "Texas" },
 ] as const;
 
+function OrDivider() {
+  return (
+    <div className="flex items-center gap-1">
+      <hr className="flex-1 border-border-neutral-default" />
+      <span className="text-body-02 text-text-neutral-secondary">or</span>
+      <hr className="flex-1 border-border-neutral-default" />
+    </div>
+  );
+}
+
+function CreateAccountContent({
+  onContinueWithGoogle,
+}: {
+  onContinueWithGoogle: () => void;
+}) {
+  return (
+    <div className="flex flex-col gap-5">
+      <p className="text-body-01 text-text-neutral-default">
+        Create Your Account
+      </p>
+
+      <Button
+        size="lg"
+        variant="neutral"
+        appearance="outlined"
+        className="w-full"
+        onClick={onContinueWithGoogle}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/icons/google-md.svg"
+          alt=""
+          aria-hidden
+          className="size-6 shrink-0"
+        />
+        Continue with Google
+      </Button>
+
+      <OrDivider />
+
+      <Button
+        size="lg"
+        variant="primary"
+        appearance="filled"
+        className="w-full"
+      >
+        Sign Up with Email
+      </Button>
+
+      <div className="flex items-center gap-2">
+        <p className="text-body-02 text-text-neutral-default">
+          Have an account?
+        </p>
+        <Button size="sm" variant="neutral" appearance="link">
+          Sign In
+        </Button>
+      </div>
+
+      <p className="text-body-02 text-text-neutral-secondary">
+        I understand that by creating an account, I agree to receive updates,
+        Sena news, and member-only offers. I understand that I can unsuscribe
+        from emails at any time.
+      </p>
+    </div>
+  );
+}
+
 function AccountSummaryContent() {
   return (
-    <p className="text-body-01 text-text-neutral-default">
-      arqcledesma91@gmail.com
+    <p className="text-body-01 text-text-neutral-secondary">
+      arqledesma91@gmail.com
     </p>
   );
 }
 
 function ShippingInformationContent() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [address, setAddress] = useState("");
+  const [apartment, setApartment] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("us");
+  const [state, setState] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [hasAcceptedSmsConsent, setHasAcceptedSmsConsent] = useState(false);
+  const zipHasError = zipCode.length > 0 && !/^\d{5}$/.test(zipCode);
+  const isShippingFormComplete =
+    firstName.trim().length > 0 &&
+    lastName.trim().length > 0 &&
+    address.trim().length > 0 &&
+    city.trim().length > 0 &&
+    country.trim().length > 0 &&
+    state.trim().length > 0 &&
+    /^\d{5}$/.test(zipCode) &&
+    phoneNumber.trim().length > 0 &&
+    hasAcceptedSmsConsent;
+
   return (
     <div className="flex flex-col gap-2">
       <div className="grid grid-cols-2 gap-3">
-        <Input size="md" placeholder="First Name*" />
-        <Input size="md" placeholder="Last Name*" />
+        <InputGroup
+          size="md"
+          placeholder="First Name*"
+          showButton={false}
+          required
+          value={firstName}
+          onChange={(event) => setFirstName(event.target.value)}
+        />
+        <InputGroup
+          size="md"
+          placeholder="Last Name*"
+          showButton={false}
+          required
+          value={lastName}
+          onChange={(event) => setLastName(event.target.value)}
+        />
       </div>
 
-      <Input size="md" placeholder="Address*" />
-      <Input size="md" placeholder="Apr / Suite / Unit" />
-      <Input size="md" placeholder="City*" />
+      <InputGroup
+        size="md"
+        placeholder="Address*"
+        showButton={false}
+        required
+        value={address}
+        onChange={(event) => setAddress(event.target.value)}
+      />
+      <InputGroup
+        size="md"
+        placeholder="Apr / Suite / Unit"
+        showButton={false}
+        value={apartment}
+        onChange={(event) => setApartment(event.target.value)}
+      />
+      <InputGroup
+        size="md"
+        placeholder="City*"
+        showButton={false}
+        required
+        value={city}
+        onChange={(event) => setCity(event.target.value)}
+      />
 
       <Select
         size="md"
         placeholder="United States of America"
         options={[...COUNTRY_OPTIONS]}
-        defaultValue="us"
+        value={country}
+        onChange={setCountry}
       />
 
       <div className="grid grid-cols-2 gap-3">
-        <Select size="md" placeholder="State" options={[...STATE_OPTIONS]} />
-        <Input size="md" placeholder="Zip code*" />
+        <Select
+          size="md"
+          placeholder="State"
+          options={[...STATE_OPTIONS]}
+          value={state}
+          onChange={setState}
+        />
+        <InputGroup
+          size="md"
+          placeholder="ZIP code*"
+          showButton={false}
+          required
+          value={zipCode}
+          state={zipHasError ? "danger" : "default"}
+          feedback={zipHasError ? "Invalid ZIP format" : " "}
+          inputMode="numeric"
+          maxLength={5}
+          onChange={(event) => {
+            const nextValue = event.target.value.replace(/\D/g, "").slice(0, 5);
+            setZipCode(nextValue);
+          }}
+        />
       </div>
 
-      <Input size="md" placeholder="Phone number*" />
+      <InputGroup
+        size="md"
+        placeholder="Phone number*"
+        showButton={false}
+        required
+        value={phoneNumber}
+        inputMode="numeric"
+        onChange={(event) => {
+          const nextValue = event.target.value.replace(/\D/g, "");
+          setPhoneNumber(nextValue);
+        }}
+      />
 
       <Checkbox
         size="sm"
         label="By signing up via text, you agree to receive recurring automated promotional and personalized marketing messages (e.g. cart reminders, order updates, exclusive health and science content, and member-only offers) from Sena at the cell number provided. Consent is not a condition of any purchase. Reply STOP to cancel. Email care@senacom for help. Msg frequency varies. Msg and data rates may apply. See our Privacy Policy and Terms of Service."
         className="items-start h-auto"
+        checked={hasAcceptedSmsConsent}
+        onChange={(event) => setHasAcceptedSmsConsent(event.target.checked)}
       />
 
       <Button
         size="lg"
         variant="primary"
         appearance="filled"
-        disabled
+        disabled={!isShippingFormComplete}
         className="mt-2 w-full"
       >
         Save and Continue
@@ -122,6 +278,7 @@ export default function CheckoutMobilePage() {
   const [promoState, setPromoState] = useState<"default" | "success">(
     "default",
   );
+  const [checkoutStep, setCheckoutStep] = useState<1 | 2>(1);
   const quantity = cartItem?.quantity ?? 1;
   const subtotal = Number(cartItem?.subtotalPrice ?? 0) * quantity;
   const discount = Number(cartItem?.discountAmount ?? 0) * quantity;
@@ -152,6 +309,9 @@ export default function CheckoutMobilePage() {
     setPromoDiscountRate(0);
     setPromoState("default");
     setPromoFeedback("");
+  };
+  const handleContinueWithGoogle = () => {
+    setCheckoutStep(2);
   };
 
   return (
@@ -235,14 +395,24 @@ export default function CheckoutMobilePage() {
           </AccordionItem>
         </div>
 
-        {/* Step 1 - Account (completed) */}
+        {/* Step 1 - Account */}
         <ListItem subheading="1 of 3" heading="Account" state="default">
-          <AccountSummaryContent />
+          {checkoutStep === 1 ? (
+            <CreateAccountContent
+              onContinueWithGoogle={handleContinueWithGoogle}
+            />
+          ) : (
+            <AccountSummaryContent />
+          )}
         </ListItem>
 
-        {/* Step 2 - Shipping Information (active) */}
-        <ListItem subheading="2 of 3" heading="Shipping Information" state="default">
-          <ShippingInformationContent />
+        {/* Step 2 - Shipping Information */}
+        <ListItem
+          subheading="2 of 3"
+          heading="Shipping Information"
+          state={checkoutStep === 2 ? "default" : "disabled"}
+        >
+          {checkoutStep === 2 ? <ShippingInformationContent /> : null}
         </ListItem>
 
         {/* Step 3 - Payment (inactive) */}

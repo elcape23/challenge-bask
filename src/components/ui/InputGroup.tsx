@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useId, type InputHTMLAttributes } from "react";
+import { forwardRef, useId, useState, type InputHTMLAttributes } from "react";
 import Button from "./Button";
 
 export type InputGroupState =
@@ -30,6 +30,8 @@ export interface InputGroupProps
   buttonLabel?: string;
   /** Right-side action click */
   onButtonClick?: () => void;
+  /** Whether to show the right-side action button */
+  showButton?: boolean;
 }
 
 function CheckIcon({ className }: { className?: string }) {
@@ -77,12 +79,12 @@ const CONTAINER_BASE =
 const SIZE_HEIGHT = { lg: "h-12", md: "h-10", sm: "h-8" } as const;
 const SIZE_PADDING = {
   lg: "px-4 py-3",
-  md: "px-3 py-3",
+  md: "px-4 py-3",
   sm: "px-3 py-2",
 } as const;
 const SIZE_TEXT = {
   lg: "text-body-01",
-  md: "text-body-02",
+  md: "text-body-01",
   sm: "text-body-02",
 } as const;
 
@@ -98,6 +100,7 @@ const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
       className,
       buttonLabel = "Apply",
       onButtonClick,
+      showButton = true,
       id: externalId,
       ...inputProps
     },
@@ -105,34 +108,37 @@ const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
   ) => {
     const autoId = useId();
     const inputId = externalId ?? autoId;
+    const [isActive, setIsActive] = useState(false);
     const isDisabled = state === "disabled" || disabled;
     const isSuccess = state === "success";
     const isDanger = state === "danger";
     const showAttachedIcon = isSuccess || isDanger;
+    const visualState =
+      state === "default" && isActive ? "pressed" : state;
 
     if (
-      state === "default" ||
-      state === "focus" ||
-      state === "hover" ||
-      state === "pressed" ||
-      state === "disabled"
+      visualState === "default" ||
+      visualState === "focus" ||
+      visualState === "hover" ||
+      visualState === "pressed" ||
+      visualState === "disabled"
     ) {
       const s = size;
-      const isFocus = state === "focus";
+      const isFocus = visualState === "focus";
       const containerClasses =
-        state === "hover"
+        visualState === "hover"
           ? "bg-background-surface-neutral-hover border-border-neutral-hover"
-          : state === "pressed"
+          : visualState === "pressed"
             ? "bg-background-default-default border-[var(--color-neutral-800)]"
-            : state === "disabled"
+            : visualState === "disabled"
               ? "border-border-neutral-disabled bg-background-surface-neutral-default cursor-not-allowed opacity-90"
               : "bg-background-default-default border-border-neutral-default";
       const textClasses =
-        state === "hover"
+        visualState === "hover"
           ? "text-text-neutral-hover placeholder:text-text-neutral-hover"
-          : state === "pressed"
+          : visualState === "pressed"
             ? "text-text-neutral-pressed placeholder:text-text-neutral-pressed"
-            : state === "disabled"
+            : visualState === "disabled"
               ? "text-text-neutral-disabled placeholder:text-text-neutral-disabled"
               : "text-text-neutral-default placeholder:text-text-neutral-placeholder";
 
@@ -172,19 +178,29 @@ const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
                 placeholder={placeholder}
                 autoFocus={isFocus}
                 {...inputProps}
+                onFocus={(event) => {
+                  setIsActive(true);
+                  inputProps.onFocus?.(event);
+                }}
+                onBlur={(event) => {
+                  setIsActive(false);
+                  inputProps.onBlur?.(event);
+                }}
               />
             </div>
-            <div className="shrink-0 px-4">
-              <Button
-                size="sm"
-                variant="neutral"
-                appearance="link"
-                disabled={isDisabled}
-                onClick={onButtonClick}
-              >
-                {buttonLabel}
-              </Button>
-            </div>
+            {showButton ? (
+              <div className="shrink-0 px-4">
+                <Button
+                  size="sm"
+                  variant="neutral"
+                  appearance="link"
+                  disabled={isDisabled}
+                  onClick={onButtonClick}
+                >
+                  {buttonLabel}
+                </Button>
+              </div>
+            ) : null}
           </div>
           <p
             id={`${inputId}-feedback`}

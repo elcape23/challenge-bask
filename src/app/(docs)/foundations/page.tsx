@@ -56,7 +56,7 @@ export default function FoundationsPage() {
         </p>
       </div>
 
-      <div className="col-span-1 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-3">
+      <div className="col-span-1 grid grid-cols-1 gap-4 lg:col-span-2 lg:grid-cols-3">
         {foundations.map((item) => (
           <Link
             key={item.name}
