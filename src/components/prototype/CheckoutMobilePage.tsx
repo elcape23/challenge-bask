@@ -13,69 +13,70 @@ import CardContent from "@/components/prototype/globals/CardContent";
 import ListItem from "@/components/prototype/globals/ListItem";
 import TopBar from "@/components/prototype/globals/TopBar";
 import InputGroup from "@/components/ui/InputGroup";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
+import Checkbox from "@/components/ui/Checkbox";
 
-function OrDivider() {
+const COUNTRY_OPTIONS = [
+  { value: "us", label: "United States of America" },
+  { value: "ca", label: "Canada" },
+] as const;
+
+const STATE_OPTIONS = [
+  { value: "ca", label: "California" },
+  { value: "ny", label: "New York" },
+  { value: "tx", label: "Texas" },
+] as const;
+
+function AccountSummaryContent() {
   return (
-    <div className="flex items-center gap-1">
-      <hr className="flex-1 border-border-neutral-default" />
-      <span className="text-body-02 text-text-neutral-secondary">or</span>
-      <hr className="flex-1 border-border-neutral-default" />
-    </div>
+    <p className="text-body-01 text-text-neutral-default">
+      arqcledesma91@gmail.com
+    </p>
   );
 }
 
-function CreateAccountContent() {
+function ShippingInformationContent() {
   return (
-    <div className="flex flex-col gap-5">
-      <p className="text-body-01 text-text-neutral-default">
-        Create Your Account
-      </p>
+    <div className="flex flex-col gap-2">
+      <div className="grid grid-cols-2 gap-3">
+        <Input size="md" placeholder="First Name*" />
+        <Input size="md" placeholder="Last Name*" />
+      </div>
 
-      {/* Continue with Google */}
-      <Button
-        size="lg"
-        variant="neutral"
-        appearance="outlined"
-        className="w-full"
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/icons/google-md.svg"
-          alt=""
-          aria-hidden
-          className="size-6 shrink-0"
-        />
-        Continue with Google
-      </Button>
+      <Input size="md" placeholder="Address*" />
+      <Input size="md" placeholder="Apr / Suite / Unit" />
+      <Input size="md" placeholder="City*" />
 
-      <OrDivider />
+      <Select
+        size="md"
+        placeholder="United States of America"
+        options={[...COUNTRY_OPTIONS]}
+        defaultValue="us"
+      />
 
-      {/* Sign Up with Email */}
+      <div className="grid grid-cols-2 gap-3">
+        <Select size="md" placeholder="State" options={[...STATE_OPTIONS]} />
+        <Input size="md" placeholder="Zip code*" />
+      </div>
+
+      <Input size="md" placeholder="Phone number*" />
+
+      <Checkbox
+        size="sm"
+        label="By signing up via text, you agree to receive recurring automated promotional and personalized marketing messages (e.g. cart reminders, order updates, exclusive health and science content, and member-only offers) from Sena at the cell number provided. Consent is not a condition of any purchase. Reply STOP to cancel. Email care@senacom for help. Msg frequency varies. Msg and data rates may apply. See our Privacy Policy and Terms of Service."
+        className="items-start h-auto"
+      />
+
       <Button
         size="lg"
         variant="primary"
         appearance="filled"
-        className="w-full"
+        disabled
+        className="mt-2 w-full"
       >
-        Sign Up with Email
+        Save and Continue
       </Button>
-
-      {/* Have an account? */}
-      <div className="flex items-center gap-2">
-        <p className="text-body-02 text-text-neutral-default">
-          Have an account?
-        </p>
-        <Button size="sm" variant="neutral" appearance="link">
-          Sign In
-        </Button>
-      </div>
-
-      {/* Legal */}
-      <p className="text-body-02 text-text-neutral-secondary">
-        I understand that by creating an account, I agree to receive updates,
-        Sena news, and member-only offers. I understand that I can unsuscribe
-        from emails at any time.
-      </p>
     </div>
   );
 }
@@ -234,19 +235,17 @@ export default function CheckoutMobilePage() {
           </AccordionItem>
         </div>
 
-        {/* Step 1 — Account (active) */}
+        {/* Step 1 - Account (completed) */}
         <ListItem subheading="1 of 3" heading="Account" state="default">
-          <CreateAccountContent />
+          <AccountSummaryContent />
         </ListItem>
 
-        {/* Step 2 — Shipping Information (inactive) */}
-        <ListItem
-          subheading="2 of 3"
-          heading="Shipping Information"
-          state="disabled"
-        />
+        {/* Step 2 - Shipping Information (active) */}
+        <ListItem subheading="2 of 3" heading="Shipping Information" state="default">
+          <ShippingInformationContent />
+        </ListItem>
 
-        {/* Step 3 — Payment (inactive) */}
+        {/* Step 3 - Payment (inactive) */}
         <ListItem subheading="3 of 3" heading="Payment" state="disabled" />
       </div>
     </div>

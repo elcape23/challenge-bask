@@ -5,6 +5,7 @@ import RelatedCardContent from "@/components/prototype/globals/RelatedCardConten
 import Footer from "@/components/prototype/globals/Footer";
 import Menu from "@/components/prototype/globals/Menu";
 import TopBar from "@/components/prototype/globals/TopBar";
+import type { BadgeType } from "@/components/ui/Badge";
 
 const HERO_IMAGE =
   "/images/prototype/category-top-background.webp";
@@ -17,7 +18,7 @@ type ProductCardProps = {
   imageSrc: string;
   imageAlt: string;
   badgeLabel: string;
-  badgeType: "neutral" | "success";
+  badgeType: BadgeType;
   heightClassName?: string;
   onClick?: () => void;
   onSecondaryClick?: () => void;
