@@ -317,4 +317,5 @@ export const logoSizes = {
   sm: { width: 120, height: 32 },
   md: { width: 180, height: 48 },
   lg: { width: 270, height: 72 },
+  xl: { width: 360, height: 96 },
 } as const;

@@ -4,7 +4,7 @@ import { logoSizes } from "@/data/tokens";
 
 type SenaLogoProps = {
   variant?: "default" | "invert";
-  size?: "sm" | "md";
+  size?: keyof typeof logoSizes;
   className?: string;
 };
 
@@ -18,7 +18,7 @@ export default function SenaLogo({
 }: SenaLogoProps) {
   const logoColor =
     variant === "invert" ? "bg-icon-primary-invert" : "bg-icon-primary-default";
-  const dimensions = size === "sm" ? logoSizes.xs : logoSizes.md;
+  const dimensions = logoSizes[size];
 
   return (
     <div className={`shrink-0 ${className}`} aria-label="Sena" role="img">
@@ -28,8 +28,8 @@ export default function SenaLogo({
         style={{
           width: `${dimensions.width}px`,
           height: `${dimensions.height}px`,
-          WebkitMaskImage: "url('/logo.webp')",
-          maskImage: "url('/logo.webp')",
+          WebkitMaskImage: "url('/logo.svg')",
+          maskImage: "url('/logo.svg')",
           WebkitMaskPosition: "center",
           maskPosition: "center",
           WebkitMaskRepeat: "no-repeat",
