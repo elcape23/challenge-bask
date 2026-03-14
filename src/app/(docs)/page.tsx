@@ -1,17 +1,34 @@
 import SenaLogo from "@/components/prototype/globals/SenaLogo";
-import ButtonContainer from "@/components/prototype/globals/ButtonContainer";
+import Button from "@/components/ui/Button";
 
 export default function OverviewPage() {
   return (
-    <>
-      <section className="mb-10 flex flex-col items-center gap-4 text-center">
-        <SenaLogo size="xl" />
-        <h1 className="text-heading-04 font-medium text-text-neutral-default">
+    <div className="col-span-full flex min-h-full flex-col items-center justify-center gap-10">
+      <section className="flex flex-col items-center gap-4 text-center">
+        <SenaLogo size="md" />
+        <h1 className="text-heading-04 font-medium text-text-neutral-secondary">
           Design System
         </h1>
       </section>
 
-      <ButtonContainer primaryLabel="Prototype" secondaryLabel="Docs" />
-    </>
+      <div className="flex w-full max-w-[220px] flex-col gap-3">
+        <Button
+          size="lg"
+          variant="primary"
+          appearance="outlined"
+          className="w-full"
+        >
+          Docs
+        </Button>
+        <Button
+          size="lg"
+          variant="primary"
+          appearance="filled"
+          className="w-full"
+        >
+          Prototype
+        </Button>
+      </div>
+    </div>
   );
 }
