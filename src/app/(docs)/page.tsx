@@ -7,7 +7,7 @@ import Button from "@/components/ui/Button";
 export default function OverviewPage() {
   const router = useRouter();
   const handleDocsClick = () => {
-    if (window.matchMedia("(max-width: 767px)").matches) {
+    if (window.matchMedia("(max-width: 1023px)").matches) {
       router.push("/docs-mobile");
       return;
     }
