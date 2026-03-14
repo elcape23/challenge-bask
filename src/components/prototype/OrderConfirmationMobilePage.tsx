@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getPrototypeCartItem } from "@/data/prototypeCart";
 import { getPrototypeProductBySlug } from "@/data/prototypeProducts";
@@ -42,8 +43,73 @@ function SummaryRow({
   );
 }
 
+function Bone({ className }: { className?: string }) {
+  return (
+    <div
+      className={`animate-pulse rounded-sm bg-background-surface-neutral-default ${className ?? ""}`}
+    />
+  );
+}
+
+function OrderConfirmationSkeleton() {
+  return (
+    <div className="flex flex-col min-h-full">
+      <TopBar />
+
+      <div className="flex flex-1 flex-col pb-5">
+        {/* Hero image */}
+        <div className="px-10 pt-5">
+          <Bone className="w-full aspect-[3/2] rounded-[20px]" />
+        </div>
+
+        {/* Heading */}
+        <div className="flex justify-center px-5 pt-5 pb-2">
+          <Bone className="h-8 w-48" />
+        </div>
+
+        <div className="flex flex-col px-5">
+          {/* Items section */}
+          <div className="flex flex-col gap-3 pt-5">
+            <Bone className="h-4 w-12" />
+            <div className="flex gap-3">
+              <Bone className="size-[84px] shrink-0 rounded-sm" />
+              <div className="flex flex-1 flex-col gap-2 py-1">
+                <Bone className="h-4 w-3/4" />
+                <Bone className="h-3 w-1/3" />
+              </div>
+            </div>
+          </div>
+
+          {/* Summary rows */}
+          <div className="flex flex-col gap-3 pt-5">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="flex justify-between">
+                <Bone className="h-4 w-28" />
+                <Bone className="h-4 w-16" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Button */}
+      <div className="sticky bottom-0 bg-background-default-default p-5">
+        <Bone className="h-12 w-full rounded-max" />
+      </div>
+    </div>
+  );
+}
+
 export default function OrderConfirmationMobilePage() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) return <OrderConfirmationSkeleton />;
 
   const cartItem =
     getPrototypeCartItem() ??

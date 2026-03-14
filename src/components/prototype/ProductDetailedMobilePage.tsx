@@ -519,13 +519,63 @@ function MoreProductsSection({
   );
 }
 
+function Bone({ className }: { className?: string }) {
+  return (
+    <div
+      className={`animate-pulse rounded-sm bg-background-surface-neutral-default ${className ?? ""}`}
+    />
+  );
+}
+
+function ProductDetailedSkeleton() {
+  return (
+    <div className="relative flex min-h-full flex-col bg-background-default-default">
+      <TopBar state="loading" />
+
+      <section className="flex flex-col gap-10 overflow-hidden rounded-[32px] bg-background-default-default px-5 pb-12">
+        {/* Hero image */}
+        <Bone className="mt-4 h-[260px] w-full rounded-xl" />
+
+        {/* Title + price */}
+        <div className="flex flex-col gap-3">
+          <Bone className="h-7 w-3/4" />
+          <Bone className="h-5 w-1/2" />
+          <Bone className="h-8 w-1/3" />
+        </div>
+
+        {/* Strength selector */}
+        <div className="flex gap-2">
+          <Bone className="h-10 w-28 rounded-max" />
+          <Bone className="h-10 w-28 rounded-max" />
+        </div>
+
+        {/* Dosage options */}
+        <div className="flex flex-col gap-2">
+          <Bone className="h-14 w-full rounded-md" />
+          <Bone className="h-14 w-full rounded-md" />
+          <Bone className="h-14 w-full rounded-md" />
+        </div>
+
+        {/* Buy button */}
+        <Bone className="h-12 w-full rounded-max" />
+      </section>
+    </div>
+  );
+}
+
 export default function ProductDetailedMobilePage({
   product,
   relatedProducts = [],
 }: ProductDetailedMobilePageProps) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const [cartCount, setCartCount] = useState(getPrototypeCartCount());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
   const [topBarHidden, setTopBarHidden] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const selectableProducts =
@@ -629,6 +679,8 @@ export default function ProductDetailedMobilePage({
     scrollEl.addEventListener("scroll", handleScroll, { passive: true });
     return () => scrollEl.removeEventListener("scroll", handleScroll);
   }, [cartCount]);
+
+  if (isLoading) return <ProductDetailedSkeleton />;
 
   return (
     <div

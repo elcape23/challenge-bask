@@ -453,6 +453,64 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
   );
 }
 
+function Bone({ className }: { className?: string }) {
+  return (
+    <div
+      className={`animate-pulse rounded-sm bg-background-surface-neutral-default ${className ?? ""}`}
+    />
+  );
+}
+
+function CheckoutSkeleton() {
+  return (
+    <div className="relative flex min-h-full flex-col bg-background-default-default">
+      <div className="sticky top-0 z-10 bg-background-default-default">
+        <TopBar color="primary" logoOnly />
+      </div>
+
+      <div className="flex flex-col px-5 pb-10">
+        {/* Cart item */}
+        <div className="flex gap-3 py-5 border-b border-border-neutral-default">
+          <Bone className="size-[84px] shrink-0 rounded-sm" />
+          <div className="flex flex-1 flex-col gap-2 py-1">
+            <Bone className="h-4 w-3/4" />
+            <Bone className="h-3 w-1/2" />
+            <Bone className="h-8 w-24 rounded-max" />
+          </div>
+        </div>
+
+        {/* Promo code */}
+        <div className="py-5 border-b border-border-neutral-default">
+          <Bone className="h-10 w-full rounded-md" />
+        </div>
+
+        {/* Order summary rows */}
+        <div className="flex flex-col gap-3 py-5 border-b border-border-neutral-default">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="flex justify-between">
+              <Bone className="h-4 w-28" />
+              <Bone className="h-4 w-16" />
+            </div>
+          ))}
+        </div>
+
+        {/* Step list items */}
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="flex flex-col gap-1 py-5 border-b border-border-neutral-default">
+            <Bone className="h-3 w-20" />
+            <Bone className="h-5 w-40" />
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom button */}
+      <div className="sticky bottom-0 bg-background-default-default p-5">
+        <Bone className="h-12 w-full rounded-max" />
+      </div>
+    </div>
+  );
+}
+
 export default function CheckoutMobilePage() {
   const initialCartItem: PrototypeCartItem | null =
     getPrototypeCartItem() ??
@@ -474,7 +532,13 @@ export default function CheckoutMobilePage() {
         savingsText: undefined,
       };
     })();
+  const [isLoading, setIsLoading] = useState(true);
   const [cartItem, setCartItem] = useState(initialCartItem);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
   const [promoCode, setPromoCode] = useState("");
   const [promoDiscountRate, setPromoDiscountRate] = useState(0);
   const [promoFeedback, setPromoFeedback] = useState("");
@@ -540,6 +604,8 @@ export default function CheckoutMobilePage() {
     setShippingAddress(address);
     setCheckoutStep(3);
   };
+
+  if (isLoading) return <CheckoutSkeleton />;
 
   return (
     <div className="relative flex min-h-full flex-col bg-background-default-default">
