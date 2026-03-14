@@ -577,6 +577,20 @@ function getScrollableAncestor(element: HTMLDivElement | null): HTMLElement | Wi
   return window;
 }
 
+function getScrollMetrics(scrollEl: HTMLElement | Window) {
+  if (scrollEl === window) {
+    return {
+      top: window.scrollY,
+      height: window.innerHeight,
+    };
+  }
+
+  return {
+    top: scrollEl.scrollTop,
+    height: scrollEl.clientHeight,
+  };
+}
+
 export default function ProductDetailedMobilePage({
   product,
   relatedProducts = [],
@@ -659,14 +673,10 @@ export default function ProductDetailedMobilePage({
   };
   const handleOpenMenu = () => {
     const scrollEl = getScrollableAncestor(wrapperRef.current);
+    const { top, height } = getScrollMetrics(scrollEl);
 
-    if (scrollEl === window) {
-      setMenuOffsetTop(window.scrollY);
-      setMenuViewportHeight(window.innerHeight);
-    } else {
-      setMenuOffsetTop(scrollEl.scrollTop);
-      setMenuViewportHeight(scrollEl.clientHeight);
-    }
+    setMenuOffsetTop(top);
+    setMenuViewportHeight(height);
 
     setIsMenuOpen(true);
   };
