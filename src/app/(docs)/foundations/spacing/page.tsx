@@ -24,16 +24,23 @@ const spacingScale = [
   { token: "28", tailwind: "p-28, m-28, gap-28", px: 112 },
 ];
 
+function getSpaceTokenLabel(token: string) {
+  return token === "0.5" ? "space-0" : `space-${token}`;
+}
+
 export default function SpacingPage() {
   return (
-    <>
-      <DocHeader
-        title="Spacing"
-        description="A consistent spacing scale creates visual rhythm and structural clarity."
-        variant="foundations"
-      />
+    <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-10">
+      <div className="col-span-2 w-full lg:col-span-1 lg:col-start-1 flex flex-col">
+        <DocHeader
+          title="Spacing"
+          description="A consistent spacing scale creates visual rhythm and structural clarity."
+          variant="foundations"
+        />
+      </div>
 
-      <DocSection title="Overview">
+      <div className="col-span-2 w-full lg:col-span-1 lg:col-start-1">
+        <DocSection title="Overview">
         <p className="mb-4">
           The spacing system uses a fixed scale of values to control margin,
           padding, and gap across all components and layouts. Every spatial
@@ -45,16 +52,22 @@ export default function SpacingPage() {
           easier to maintain, and creates a consistent vertical and horizontal
           rhythm throughout the interface.
         </p>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Scale">
+      <div className="col-span-2">
+        <DocSection title="Scale" hideTitle>
         <DocTable
+          variant="surface"
+          title="Scale"
           headers={["Scale", "Tailwind Utilities", "Value"]}
           rows={spacingScale.map((s) => [s.token, s.tailwind, `${s.px}px`])}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Visual Scale">
+      <div className="col-span-2">
+        <DocSection title="Visual Scale">
         <div
           className="gap-2"
           style={{
@@ -72,16 +85,16 @@ export default function SpacingPage() {
               }}
             >
               <span
-                className="text-text-neutral-secondary font-mono text-body-03"
+                className="text-body-01 text-text-neutral-secondary"
                 style={{
                   minWidth: 90,
                   textAlign: "right",
                 }}
               >
-                {s.token}
+                {getSpaceTokenLabel(s.token)}
               </span>
               <div
-                className="rounded-md bg-primary-500"
+                className="bg-primary-500"
                 style={{
                   width: s.px,
                   height: 16,
@@ -89,15 +102,17 @@ export default function SpacingPage() {
                   flexShrink: 0,
                 }}
               />
-              <span className="text-text-neutral-secondary text-body-03">
+              <span className="text-body-01 text-text-neutral-secondary">
                 {s.px}px
               </span>
             </div>
           ))}
         </div>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Principles">
+      <div className="col-span-2">
+        <DocSection title="Principles">
         <ul
           className="list-none p-0 m-0 gap-3"
           style={{
@@ -144,9 +159,11 @@ export default function SpacingPage() {
             </span>
           </li>
         </ul>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Rules">
+      <div className="col-span-2">
+        <DocSection title="Rules">
         <ul
           className="list-disc pl-5 text-text-neutral-secondary gap-2"
           style={{
@@ -172,9 +189,11 @@ export default function SpacingPage() {
             explicitly calls for asymmetry.
           </li>
         </ul>
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Do / Don't">
+      <div className="col-span-2">
+        <DocSection title="Do / Don't">
         <DoDontGrid
           doItems={[
             {
@@ -205,9 +224,11 @@ export default function SpacingPage() {
             },
           ]}
         />
-      </DocSection>
+        </DocSection>
+      </div>
 
-      <DocSection title="Usage">
+      <div className="col-span-2">
+        <DocSection title="Usage">
         <p className="mb-4">
           Spacing tokens are applied through CSS custom properties on margin,
           padding, and gap. Reference them in inline styles or CSS modules to
@@ -219,7 +240,8 @@ export default function SpacingPage() {
           from the higher end (space-8 to space-16) based on the component&apos;s
           context in the layout.
         </p>
-      </DocSection>
-    </>
+        </DocSection>
+      </div>
+    </div>
   );
 }

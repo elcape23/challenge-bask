@@ -10,7 +10,10 @@ export default function DocSection({ title, children, id, hideTitle }: DocSectio
   const sectionId = id ?? title.toLowerCase().replace(/\s+/g, "-");
 
   return (
-    <section id={sectionId} className="mb-12">
+    <section
+      id={sectionId}
+      className={`${hideTitle ? "col-span-2" : ""} mb-12`}
+    >
       {!hideTitle && (
         <h2 className="text-heading-04 font-medium text-text-neutral-default mb-4 pb-3">
           {title}

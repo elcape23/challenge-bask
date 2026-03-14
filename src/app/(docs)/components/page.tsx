@@ -4,22 +4,16 @@ import Card from "@/components/ui/Card";
 const components = [
   { name: "Accordion", href: "/components/accordion", description: "Organizes content into collapsible sections for progressive disclosure." },
   { name: "Alert", href: "/components/alert", description: "Communicates status or feedback through color-coded banners." },
-  { name: "Avatar", href: "/components/avatar", description: "Represents users with a profile image, initials, or icon." },
   { name: "Badge", href: "/components/badge", description: "Displays status, counts, or categorical labels." },
   { name: "Button", href: "/components/button", description: "Triggers actions and events with a single click." },
   { name: "Card", href: "/components/card", description: "Groups related content and actions in a container." },
   { name: "Checkbox", href: "/components/checkbox", description: "Allows selection of one or more items from a set." },
   { name: "Counter", href: "/components/counter", description: "Adjusts a numeric value incrementally with stepper controls." },
-  { name: "Divider", href: "/components/divider", description: "Creates visual separation between content sections." },
   { name: "Input", href: "/components/input", description: "Captures short-form text from the user." },
   { name: "Label", href: "/components/label", description: "Identifies form controls and provides essential context." },
-  { name: "Navigation Bar", href: "/components/navbar", description: "Provides top-level navigation across the application." },
   { name: "Radio", href: "/components/radio", description: "Selects a single option from a mutually exclusive group." },
   { name: "Select", href: "/components/select", description: "Lets users choose one option from a dropdown list." },
-  { name: "Sheet", href: "/components/sheet", description: "Presents secondary content in a sliding side panel." },
   { name: "Switch", href: "/components/switch", description: "Toggles a setting between two states instantly." },
-  { name: "Textarea", href: "/components/textarea", description: "Captures multi-line text input from the user." },
-  { name: "Toast", href: "/components/toast", description: "Delivers brief, non-blocking feedback messages." },
 ];
 
 export default function ComponentsPage() {

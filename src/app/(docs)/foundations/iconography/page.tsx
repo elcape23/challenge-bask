@@ -30,36 +30,117 @@ const UI_ICONS: IconType[] = [
   "sun-medium",
 ];
 
-const DECORATIVE_ICONS = [
+const DECORATIVE_ICONS: IconType[] = [
   "square-arrow-up-right",
   "chart-column-increasing",
   "calendar-sync",
 ];
 
+function IconTable({
+  title,
+  headers,
+  rows,
+}: {
+  title: string;
+  headers: string[];
+  rows: { icon: IconType; values: string[] }[];
+}) {
+  return (
+    <div className="bg-background-surface-neutral-default p-10 mb-6 overflow-x-auto">
+      <h3 className="text-heading-04 font-medium text-text-neutral-default mb-6">
+        {title}
+      </h3>
+      <table
+        className="w-full table-fixed text-left text-body-01"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        <colgroup>
+          <col style={{ width: "96px" }} />
+          {headers.map((_, i) => (
+            <col
+              key={i}
+              style={{ width: `${(100 - 96 / 10) / headers.length}%` }}
+            />
+          ))}
+        </colgroup>
+        <thead>
+          <tr className="border-b border-border-neutral-default">
+            <th className="py-10 pl-0 pr-4 font-medium text-text-neutral-default">
+              Preview
+            </th>
+            {headers.map((header, index) => (
+              <th
+                key={header}
+                className={`py-10 font-medium text-text-neutral-default ${
+                  index === 0 ? "pl-0 pr-4" : "px-4"
+                }`}
+              >
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, rowIndex) => (
+            <tr
+              key={row.icon}
+              className={
+                rowIndex < rows.length - 1
+                  ? "border-b border-border-neutral-default"
+                  : ""
+              }
+            >
+              <td className="py-10 pl-0 pr-4 text-text-neutral-secondary">
+                <div className="flex items-center">
+                  <Icon type={row.icon} size="md" />
+                </div>
+              </td>
+              {row.values.map((value, valueIndex) => (
+                <td
+                  key={`${row.icon}-${valueIndex}`}
+                  className={`py-10 font-regular text-text-neutral-secondary ${
+                    valueIndex === 0 ? "pl-0 pr-4" : "px-4"
+                  }`}
+                >
+                  {value}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export default function IconographyPage() {
   return (
     <>
-      <DocHeader
-        title="Iconography"
-        description="Icons support communication, navigation, and visual hierarchy across the interface."
-        variant="foundations"
-      />
+      <div className="col-span-2 w-full lg:col-span-1 lg:col-start-1">
+        <DocHeader
+          title="Iconography"
+          description="Icons support communication, navigation, and visual hierarchy across the interface."
+          variant="foundations"
+        />
+      </div>
 
-      <DocSection title="Overview">
-        <p className="mb-4">
-          Icons are a core part of the interface language. They help users
-          quickly identify actions, navigate between sections, and understand
-          status at a glance. The icon system defines sizing, style rules, and
-          usage principles to keep icons consistent and meaningful.
-        </p>
-        <p>
-          The icon library is based on Lucide-style icons, an open-source icon
-          set with consistent stroke widths, rounded joins, and a clean
-          geometric style. The implementation uses Lucide directly and keeps
-          the original icon stroke widths while preserving the system sizing
-          and spacing rules.
-        </p>
-      </DocSection>
+      <div className="col-span-2 w-full lg:col-span-1 lg:col-start-1">
+        <DocSection title="Overview">
+          <p className="mb-4">
+            Icons are a core part of the interface language. They help users
+            quickly identify actions, navigate between sections, and understand
+            status at a glance. The icon system defines sizing, style rules, and
+            usage principles to keep icons consistent and meaningful.
+          </p>
+          <p>
+            The icon library uses Lucide icons directly. Lucide is an
+            open-source icon set with consistent stroke widths, rounded joins,
+            and a clean geometric style. The implementation keeps the original
+            Lucide stroke widths while preserving the system sizing and spacing
+            rules.
+          </p>
+        </DocSection>
+      </div>
 
       <DocSection title="Principles">
         <ul
@@ -122,12 +203,10 @@ export default function IconographyPage() {
         </ul>
       </DocSection>
 
-      <DocSection title="Sizing">
-        <p className="mb-4">
-          Icons are available at three fixed sizes. Always use one of the
-          defined sizes, never scale icons to arbitrary dimensions.
-        </p>
+      <DocSection title="Sizing" hideTitle>
         <DocTable
+          variant="surface"
+          title="Sizing"
           headers={["Size", "Dimensions", "Usage"]}
           rows={[
             [
@@ -191,80 +270,24 @@ export default function IconographyPage() {
         </div>
       </DocSection>
 
-      <DocSection title="Available icons">
-        <p className="mb-4">
-          The following icons are available in the design system. Each icon
-          uses Figma-accurate padding for optical balance. Icons are shown in
-          sm (20 x 20) and md (24 x 24) sizes.
-        </p>
+      <DocSection title="Available icons" hideTitle>
+        <IconTable
+          title="UI icons"
+          headers={["Icon", "Sizes"]}
+          rows={UI_ICONS.map((name) => ({
+            icon: name,
+            values: [name, "md, sm"],
+          }))}
+        />
 
-        <div className="mb-6">
-          <h3 className="mb-4 text-body-02 font-medium text-text-neutral-default">
-            UI icons (sm / md)
-          </h3>
-          <div
-            className="overflow-hidden rounded-md border border-border-neutral-default bg-background-surface-neutral-default"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr auto",
-              maxWidth: 360,
-            }}
-          >
-            <div className="border-b border-r border-border-neutral-default bg-background-fill-neutral-default px-4 py-2 text-body-03 font-medium text-text-neutral-placeholder">
-              md
-            </div>
-            <div className="w-20 border-b border-border-neutral-default bg-background-fill-neutral-default px-4 py-2 text-center text-body-03 font-medium text-text-neutral-placeholder">
-              sm
-            </div>
-            {UI_ICONS.map((name) => (
-              <div key={name} className="contents">
-                <div className="flex items-center gap-3 border-b border-r border-border-neutral-default px-4 py-3">
-                  <Icon type={name} size="md" />
-                  <span
-                    className="text-body-03 text-text-neutral-secondary"
-                    style={{ fontFamily: "var(--font-mono)" }}
-                  >
-                    {name}
-                  </span>
-                </div>
-                <div className="flex items-center justify-center border-b border-border-neutral-default px-4 py-3">
-                  <Icon type={name} size="sm" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mb-4">
-          <h3 className="mb-3 text-body-02 font-medium text-text-neutral-default">
-            Decorative icons (40 x 40px)
-          </h3>
-          <div
-            className="gap-2"
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-            }}
-          >
-            {DECORATIVE_ICONS.map((name) => (
-              <span
-                key={name}
-                className="inline-flex items-center rounded-md border border-border-neutral-default bg-background-surface-neutral-default px-3 py-1 text-body-02 text-text-neutral-secondary"
-                style={{
-                  fontFamily: "var(--font-mono)",
-                }}
-              >
-                {name}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <DocCallout variant="info" title="Figma design (node 29-1135)">
-          Icons use Lucide components directly across the full set. Each icon
-          keeps the Figma container size and padding rules while using the
-          original Lucide stroke width.
-        </DocCallout>
+        <IconTable
+          title="Decorative icons"
+          headers={["Icon", "Size"]}
+          rows={DECORATIVE_ICONS.map((name) => ({
+            icon: name,
+            values: [name, "40 x 40px"],
+          }))}
+        />
       </DocSection>
 
       <DocSection title="Rules">
@@ -292,9 +315,9 @@ export default function IconographyPage() {
             <code>aria-label</code> that describes the action.
           </li>
           <li>
-            Color icons using semantic color tokens and <code>currentColor</code>
-            . Avoid hard-coded colors that break in dark mode or high-contrast
-            settings.
+            Color icons using semantic color tokens and{" "}
+            <code>currentColor</code>. Avoid hard-coded colors that break in
+            dark mode or high-contrast settings.
           </li>
           <li>
             Do not use icons purely for decoration, every icon should have a

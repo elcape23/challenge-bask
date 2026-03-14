@@ -37,11 +37,6 @@ const foundations = [
     href: "/foundations/iconography",
     description: "Icon sizing, style guidelines, and usage principles.",
   },
-  {
-    name: "Motion",
-    href: "/foundations/motion",
-    description: "Animation timing, easing, and interaction guidance.",
-  },
 ];
 
 export default function FoundationsPage() {

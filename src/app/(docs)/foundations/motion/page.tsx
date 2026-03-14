@@ -7,12 +7,15 @@ import DoDontGrid from "@/components/docs/DoDontGrid";
 export default function MotionPage() {
   return (
     <>
-      <DocHeader
-        title="Motion"
-        description="Motion adds meaning to interactions and guides attention through purposeful animation."
-        variant="foundations"
-      />
+      <div className="col-span-2 w-full lg:col-span-1 lg:col-start-1">
+        <DocHeader
+          title="Motion"
+          description="Motion adds meaning to interactions and guides attention through purposeful animation."
+          variant="foundations"
+        />
+      </div>
 
+      <div className="col-span-2 w-full lg:col-span-1 lg:col-start-1">
       <DocSection title="Overview">
         <p className="mb-4">
           Motion in the design system is functional, not decorative. Animations
@@ -26,6 +29,7 @@ export default function MotionPage() {
           preferences — including reduced motion settings.
         </p>
       </DocSection>
+      </div>
 
       <DocCallout variant="warning" title="Tokens in progress">
         Motion tokens have not yet been extracted from Figma. The values
@@ -97,14 +101,10 @@ export default function MotionPage() {
         </ul>
       </DocSection>
 
-      <DocSection title="Recommended duration scale">
-        <p className="mb-4">
-          Duration values define how long an animation takes. Shorter durations
-          suit micro-interactions; longer durations suit page transitions and
-          larger element movements. These are recommended values until formal
-          tokens are established.
-        </p>
+      <DocSection title="Recommended duration scale" hideTitle>
         <DocTable
+          variant="surface"
+          title="Recommended duration scale"
           headers={["Token (proposed)", "Value", "Usage"]}
           rows={[
             [
@@ -136,12 +136,10 @@ export default function MotionPage() {
         />
       </DocSection>
 
-      <DocSection title="Recommended easing curves">
-        <p className="mb-4">
-          Easing curves control the acceleration and deceleration of animations.
-          Choosing the right curve makes motion feel natural and intentional.
-        </p>
+      <DocSection title="Recommended easing curves" hideTitle>
         <DocTable
+          variant="surface"
+          title="Recommended easing curves"
           headers={["Token (proposed)", "Value", "Usage"]}
           rows={[
             [

@@ -1,7 +1,6 @@
 import DocHeader from "@/components/docs/DocHeader";
 import DocSection from "@/components/docs/DocSection";
 import DocTable from "@/components/docs/DocTable";
-import DocCallout from "@/components/docs/DocCallout";
 import DoDontGrid from "@/components/docs/DoDontGrid";
 
 const radiusTokens = [
@@ -20,73 +19,37 @@ const radiusTokens = [
 export default function RadiusPage() {
   return (
     <>
-      <DocHeader
-        title="Radius"
-        variant="foundations"
-        description="Border radius values define the roundness of UI elements for a cohesive visual feel."
-      />
+      <div className="col-span-2 w-full lg:col-span-1 lg:col-start-1">
+        <DocHeader
+          title="Radius"
+          variant="foundations"
+          description="Border radius values define the roundness of UI elements for a cohesive visual feel."
+        />
+      </div>
 
-      <DocSection title="Overview">
-        <p className="mb-4">
-          Border radius tokens control the roundness applied to corners of UI
-          elements — from subtle rounding on input fields to fully circular
-          avatars. A consistent radius scale keeps the interface feeling unified
-          and intentional.
-        </p>
-        <p>
-          The design system defines a full radius scale from <code>min</code> (2px) to{" "}
-          <code>max</code> (9999px). Use the appropriate token based on the
-          element size and visual hierarchy.
-        </p>
-      </DocSection>
+      <div className="col-span-2 w-full lg:col-span-1 lg:col-start-1">
+        <DocSection title="Overview">
+          <p className="mb-4">
+            Border radius tokens control the roundness applied to corners of UI
+            elements — from subtle rounding on input fields to fully circular
+            avatars. A consistent radius scale keeps the interface feeling
+            unified and intentional.
+          </p>
+          <p>
+            The design system defines a full radius scale from <code>min</code>{" "}
+            (2px) to <code>max</code> (9999px). Use the appropriate token based
+            on the element size and visual hierarchy.
+          </p>
+        </DocSection>
+      </div>
 
-      <DocSection title="Scale">
+      <DocSection title="Scale" hideTitle>
         <DocTable
+          variant="surface"
+          title="Scale"
           headers={["Token", "Value", "CSS Variable", "Usage"]}
           rows={radiusTokens.map((t) => [t.token, t.value, t.css, t.usage])}
         />
-
-        {/* Visual examples of each radius */}
-        <div
-          className="gap-3 mb-6"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(5, 1fr)",
-          }}
-        >
-          {radiusTokens.map((t) => (
-            <div
-              key={t.token}
-              className="border border-border-neutral-default"
-              style={{ overflow: "hidden", borderRadius: "var(--radius-md)" }}
-            >
-              <div
-                className="bg-primary-100 border border-dashed border-primary-400"
-                style={{
-                  height: "64px",
-                  borderRadius: t.value === "9999px" ? "9999px" : t.value,
-                  margin: "12px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <span className="text-body-03 text-primary-700 font-medium">
-                  {t.value}
-                </span>
-              </div>
-              <div className="py-1.5 px-2 bg-background-surface-neutral-default border-t border-border-neutral-default text-body-03 text-text-neutral-secondary text-center font-medium">
-                {t.token}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <DocCallout variant="info" title="Choosing the right radius">
-          Match the radius to the element size: smaller elements use smaller
-          radii (min–xs), standard components use sm–md, and large containers
-          use lg–4xl. Use max only for intentionally circular or pill shapes.
-        </DocCallout>
       </DocSection>
 
       <DocSection title="Rules">
@@ -190,8 +153,8 @@ export default function RadiusPage() {
         <p>
           When creating new components, select the radius token that matches
           the component scale. Only use <code>radius-max</code> for circular
-          elements (avatars, pills), and <code>radius-min</code> for
-          subtle micro-rounding.
+          elements (avatars, pills), and <code>radius-min</code> for subtle
+          micro-rounding.
         </p>
       </DocSection>
     </>

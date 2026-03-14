@@ -1,39 +1,39 @@
 import DocHeader from "@/components/docs/DocHeader";
 import DocSection from "@/components/docs/DocSection";
 import DocTable from "@/components/docs/DocTable";
-import DocCallout from "@/components/docs/DocCallout";
 import DoDontGrid from "@/components/docs/DoDontGrid";
 
 export default function GridPage() {
   return (
     <>
-      <DocHeader
-        title="Grid"
-        description="The grid system provides structural consistency for layout and content alignment across screen sizes."
-        variant="foundations"
-      />
+      <div className="col-span-2 w-full lg:col-span-1 lg:col-start-1">
+        <DocHeader
+          title="Grid"
+          description="The grid system provides structural consistency for layout and content alignment across screen sizes."
+          variant="foundations"
+        />
+      </div>
 
-      <DocSection title="Overview">
-        <p className="mb-4">
-          The grid establishes a flexible column-based structure that adapts
-          across screen sizes. It defines how content is organized horizontally,
-          how columns relate to gutters, and how layouts respond to viewport
-          changes.
-        </p>
-        <p>
-          All page layouts and major content areas should align to the grid.
-          Components placed within the grid inherit its rhythm, creating a sense
-          of order even across varied content types.
-        </p>
-      </DocSection>
+      <div className="col-span-2 w-full lg:col-span-1 lg:col-start-1">
+        <DocSection title="Overview">
+          <p className="mb-4">
+            The grid establishes a flexible column-based structure that adapts
+            across screen sizes. It defines how content is organized
+            horizontally, how columns relate to gutters, and how layouts
+            respond to viewport changes.
+          </p>
+          <p>
+            All page layouts and major content areas should align to the grid.
+            Components placed within the grid inherit its rhythm, creating a
+            sense of order even across varied content types.
+          </p>
+        </DocSection>
+      </div>
 
-      <DocSection title="Mobile grid specification">
-        <p className="mb-4">
-          The mobile grid is the foundation of the layout system. All
-          responsive layouts collapse down to this structure at the smallest
-          breakpoint.
-        </p>
+      <DocSection title="Mobile grid specification" hideTitle>
         <DocTable
+          variant="surface"
+          title="Mobile grid specification"
           headers={["Property", "Value", "CSS Variable"]}
           rows={[
             ["Columns", "4", "--ds-grid-columns: 4"],
@@ -41,72 +41,6 @@ export default function GridPage() {
             ["Gutter", "16px", "--ds-grid-gutter: 16px"],
           ]}
         />
-
-        {/* Visual representation of the 4-column mobile grid */}
-        <div
-          className="mb-6 border border-border-neutral-default rounded-md"
-          style={{ overflow: "hidden" }}
-        >
-          <div className="py-2 px-4 bg-background-surface-neutral-default text-text-neutral-secondary border-b border-border-neutral-default text-body-03 font-medium">
-            Mobile grid — 4 columns, 20px margins, 16px gutters
-          </div>
-          <div
-            className="py-4 bg-background-default-default"
-            style={{ paddingLeft: "20px", paddingRight: "20px" }}
-          >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
-                gap: "16px",
-              }}
-            >
-              {[1, 2, 3, 4].map((col) => (
-                <div
-                  key={col}
-                  className="bg-primary-100 border border-dashed border-primary-400 rounded-md text-body-02 text-primary-600"
-                  style={{
-                    height: "64px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontWeight: 600,
-                  }}
-                >
-                  Col {col}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div
-            className="py-2 px-4 text-text-neutral-placeholder border-t border-border-neutral-disabled bg-background-surface-neutral-default text-body-03"
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <span>← 20px margin</span>
-            <span>16px gutters between columns</span>
-            <span>20px margin →</span>
-          </div>
-        </div>
-
-        <DocCallout variant="info" title="CSS custom properties">
-          Apply the grid using the provided CSS variables:
-          <code
-            className="mt-2 text-body-02"
-            style={{
-              display: "block",
-              fontFamily: "var(--font-mono)",
-            }}
-          >
-            grid-template-columns: repeat(var(--ds-grid-columns), 1fr);
-            <br />
-            gap: var(--ds-grid-gutter);
-            <br />
-            padding-inline: var(--ds-grid-margin);
-          </code>
-        </DocCallout>
       </DocSection>
 
       <DocSection title="Principles">
@@ -150,9 +84,9 @@ export default function GridPage() {
               Simplicity
             </span>
             <span>
-              Prefer simple column spans (full, half) over complex nesting.
-              On mobile, most content should span the full 4 columns or
-              half (2 columns) for side-by-side layouts.
+              Prefer simple column spans (full, half) over complex nesting. On
+              mobile, most content should span the full 4 columns or half (2
+              columns) for side-by-side layouts.
             </span>
           </li>
         </ul>
@@ -183,8 +117,8 @@ export default function GridPage() {
             (full-width, 2-column, or 1-column spans).
           </li>
           <li>
-            Avoid nesting grids more than one level deep. If the layout requires
-            deep nesting, reconsider the content structure.
+            Avoid nesting grids more than one level deep. If the layout
+            requires deep nesting, reconsider the content structure.
           </li>
         </ul>
       </DocSection>
@@ -248,9 +182,9 @@ export default function GridPage() {
           &#125;
         </div>
         <p>
-          For responsive layouts, override the grid variables at each breakpoint.
-          Content should flow naturally from multi-column at wider sizes to the
-          4-column mobile grid at narrow sizes.
+          For responsive layouts, override the grid variables at each
+          breakpoint. Content should flow naturally from multi-column at wider
+          sizes to the 4-column mobile grid at narrow sizes.
         </p>
       </DocSection>
     </>

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { prototypeProducts } from "@/data/prototypeProducts";
 import RelatedCardContent from "@/components/prototype/globals/RelatedCardContent";
@@ -57,6 +57,46 @@ function ProductCard({
   );
 }
 
+function Bone({ className }: { className?: string }) {
+  return (
+    <div
+      className={`animate-pulse rounded-sm bg-background-surface-neutral-default ${className ?? ""}`}
+    />
+  );
+}
+
+function ProductsListSkeleton() {
+  return (
+    <div className="relative flex min-h-full flex-col bg-background-default-default">
+      {/* Hero */}
+      <section className="relative h-[200px] overflow-hidden rounded-b-xl">
+        <Bone className="absolute inset-0 rounded-none" />
+        <div className="relative flex h-full flex-col justify-between p-5 pt-0">
+          <TopBar color="invert" showIconButton state="loading" />
+          <Bone className="h-8 w-40" />
+        </div>
+      </section>
+
+      {/* Product cards */}
+      <div className="flex flex-col gap-4 px-5 pt-5 pb-12">
+        {[...Array(4)].map((_, i) => (
+          <div
+            key={i}
+            className="rounded-lg bg-background-surface-neutral-default p-3"
+          >
+            <Bone className="h-[184px] w-full rounded-md" />
+            <div className="flex flex-col gap-2 pt-3">
+              <Bone className="h-4 w-3/4" />
+              <Bone className="h-3 w-1/2" />
+              <Bone className="h-8 w-24 rounded-max mt-1" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function getScrollableAncestor(element: HTMLDivElement | null): HTMLElement | Window {
   let parent = element?.parentElement;
 
@@ -88,7 +128,15 @@ function getScrollMetrics(scrollEl: HTMLElement | Window) {
 export default function ProductsListMobilePage() {
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) return <ProductsListSkeleton />;
   const [menuOffsetTop, setMenuOffsetTop] = useState(0);
   const [menuViewportHeight, setMenuViewportHeight] = useState(0);
   const handleOpenProduct = (slug: string) => {

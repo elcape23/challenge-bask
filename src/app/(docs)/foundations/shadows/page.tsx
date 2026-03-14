@@ -40,12 +40,15 @@ const blurToken = {
 export default function ShadowsPage() {
   return (
     <>
-      <DocHeader
-        title="Shadows"
-        description="Shadows create depth and establish visual hierarchy between surface layers."
-        variant="foundations"
-      />
+      <div className="col-span-2 w-full lg:col-span-1 lg:col-start-1">
+        <DocHeader
+          title="Shadows"
+          description="Shadows create depth and establish visual hierarchy between surface layers."
+          variant="foundations"
+        />
+      </div>
 
+      <div className="col-span-2 w-full lg:col-span-1 lg:col-start-1">
       <DocSection title="Overview">
         <p className="mb-4">
           The shadow system defines a set of elevation levels that communicate
@@ -59,9 +62,12 @@ export default function ShadowsPage() {
           broader, more diffused shadows for overlays and modals.
         </p>
       </DocSection>
+      </div>
 
-      <DocSection title="Shadow Tokens">
+      <DocSection title="Shadow Tokens" hideTitle>
         <DocTable
+          variant="surface"
+          title="Shadow tokens"
           headers={["Token", "CSS Variable", "Value", "Use Case"]}
           rows={shadowTokens.map((s) => [
             s.token,
@@ -106,8 +112,10 @@ export default function ShadowsPage() {
         </div>
       </DocSection>
 
-      <DocSection title="Blur Token">
+      <DocSection title="Blur Token" hideTitle>
         <DocTable
+          variant="surface"
+          title="Blur token"
           headers={["Token", "CSS Variable", "Value", "Use Case"]}
           rows={[
             [
@@ -118,52 +126,6 @@ export default function ShadowsPage() {
             ],
           ]}
         />
-        <div
-          className="gap-6 py-6"
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <div
-            className="rounded-md border border-border-neutral-disabled"
-            style={{
-              position: "relative",
-              width: 180,
-              height: 120,
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(135deg, var(--color-primary-500, #6366f1) 0%, var(--color-primary-300, #a5b4fc) 100%)",
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                backdropFilter: "blur(20px)",
-                WebkitBackdropFilter: "blur(20px)",
-                backgroundColor: "rgba(255,255,255,0.25)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <span className="text-text-neutral-default font-mono text-body-03">
-                blur-20
-              </span>
-            </div>
-          </div>
-          <span className="text-text-neutral-secondary text-body-02">
-            Backdrop blur applied over a gradient to simulate a frosted-glass
-            surface.
-          </span>
-        </div>
       </DocSection>
 
       <DocSection title="Rules">

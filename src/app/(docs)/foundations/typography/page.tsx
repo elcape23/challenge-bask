@@ -27,37 +27,18 @@ const weights = [
 export default function TypographyPage() {
   return (
     <>
-      <DocHeader
-        title="Typography"
-        description="Typography establishes hierarchy, readability, and personality across the interface. The system is built on the Suisse Intl typeface and a purposeful scale that ensures consistency at every level."
-        variant="foundations"
-      />
+      <div className="col-span-2 w-full lg:col-span-1 lg:col-start-1">
+        <DocHeader
+          title="Typography"
+          description="Typography establishes hierarchy, readability, and personality across the interface. The system is built on the Suisse Intl typeface and a purposeful scale that ensures consistency at every level."
+          variant="foundations"
+        />
+      </div>
 
-      {/* ── Overview ── */}
-      <DocSection title="Overview">
-        <p className="mb-4">
-          All interface text uses <strong>Suisse Intl</strong> (CSS variable{" "}
-          <code
-            className="text-body-02 rounded-md bg-background-surface-neutral-default"
-            style={{ padding: "2px 6px" }}
-          >
-            --font-sans
-          </code>
-          ) as the sole typeface. A single family keeps the visual language
-          unified while the scale and weight system provides all the variation
-          needed to create clear hierarchy.
-        </p>
-        <p>
-          Every text element in the interface maps to a defined step in the type
-          scale. By constraining typography to fixed tokens, the system prevents
-          arbitrary font sizes and ensures that text relationships remain
-          predictable across pages and components.
-        </p>
-      </DocSection>
-
-      {/* ── Font family ── */}
-      <DocSection title="Font family">
+      <DocSection title="Font family" hideTitle>
         <DocTable
+          variant="surface"
+          title="Font family"
           headers={["Token", "Value", "Usage"]}
           rows={[
             [
@@ -69,14 +50,10 @@ export default function TypographyPage() {
         />
       </DocSection>
 
-      {/* ── Heading scale ── */}
-      <DocSection title="Heading scale">
-        <p className="mb-4">
-          Six heading levels cover the full range from display titles to inline
-          section headings. Each level has Regular, Medium, and Bold weight
-          variants.
-        </p>
+      <DocSection title="Heading scale" hideTitle>
         <DocTable
+          variant="surface"
+          title="Heading scale"
           headers={["Token", "Size", "Line height", "Letter spacing", "CSS variable (size)", "CSS variable (lh)"]}
           rows={headingScale.map((h) => [
             h.token,
@@ -89,14 +66,10 @@ export default function TypographyPage() {
         />
       </DocSection>
 
-      {/* ── Body scale ── */}
-      <DocSection title="Body scale">
-        <p className="mb-4">
-          Three body levels handle all running text, from default paragraphs
-          down to captions and fine print. Each level also supports Regular,
-          Medium, and Bold weight variants.
-        </p>
+      <DocSection title="Body scale" hideTitle>
         <DocTable
+          variant="surface"
+          title="Body scale"
           headers={["Token", "Size", "Line height", "Letter spacing", "CSS variable (size)", "CSS variable (lh)"]}
           rows={bodyScale.map((b) => [
             b.token,
@@ -109,14 +82,10 @@ export default function TypographyPage() {
         />
       </DocSection>
 
-      {/* ── Weight scale ── */}
-      <DocSection title="Weight scale">
-        <p className="mb-4">
-          Three weights provide enough variation to build hierarchy without
-          visual noise. Every heading and body level can be set in any of these
-          weights.
-        </p>
+      <DocSection title="Weight scale" hideTitle>
         <DocTable
+          variant="surface"
+          title="Weight scale"
           headers={["Token", "Value", "Name", "Usage"]}
           rows={[
             ["--font-weight-regular", "400", "Regular", "Body text, descriptions, supporting content"],
@@ -126,7 +95,6 @@ export default function TypographyPage() {
         />
       </DocSection>
 
-      {/* ── Visual preview ── */}
       <DocSection title="Visual preview">
         <p className="mb-6">
           Live rendering of each scale step using the actual CSS custom
@@ -199,7 +167,6 @@ export default function TypographyPage() {
           ))}
         </div>
 
-        {/* Weight variants preview */}
         <p className="mb-4">
           Weight variants demonstrated at the <strong>heading-04</strong> level
           (28 px / 32 px):
@@ -240,7 +207,6 @@ export default function TypographyPage() {
         </div>
       </DocSection>
 
-      {/* ── Letter spacing ── */}
       <DocSection title="Letter spacing">
         <p>
           All heading and body tokens use a letter-spacing of{" "}
@@ -249,7 +215,6 @@ export default function TypographyPage() {
         </p>
       </DocSection>
 
-      {/* ── Principles ── */}
       <DocSection title="Principles">
         <ul
           className="list-none p-0 m-0 gap-3"
@@ -286,7 +251,6 @@ export default function TypographyPage() {
         </ul>
       </DocSection>
 
-      {/* ── Rules ── */}
       <DocSection title="Rules">
         <ul
           className="list-disc pl-5 text-text-neutral-secondary gap-2"
@@ -319,7 +283,6 @@ export default function TypographyPage() {
         </ul>
       </DocSection>
 
-      {/* ── Do / Don't ── */}
       <DocSection title="Do / Don't">
         <DoDontGrid
           doItems={[
@@ -337,7 +300,6 @@ export default function TypographyPage() {
         />
       </DocSection>
 
-      {/* ── Usage ── */}
       <DocSection title="Usage">
         <p className="mb-4">
           Reference typography tokens through CSS custom properties. Size,
