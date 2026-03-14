@@ -314,7 +314,7 @@ export const decorativeIconTypes = [
 
 export const logoSizes = {
   xs: { width: 90, height: 24 },
-  sm: { width: 120, height: 32 },
+  sm: { width: 90, height: 24 },
   md: { width: 180, height: 48 },
   lg: { width: 270, height: 72 },
   xl: { width: 360, height: 96 },

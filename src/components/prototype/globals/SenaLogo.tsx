@@ -28,8 +28,8 @@ export default function SenaLogo({
         style={{
           width: `${dimensions.width}px`,
           height: `${dimensions.height}px`,
-          WebkitMaskImage: "url('/logo.webp')",
-          maskImage: "url('/logo.webp')",
+          WebkitMaskImage: "url('/logo.svg')",
+          maskImage: "url('/logo.svg')",
           WebkitMaskPosition: "center",
           maskPosition: "center",
           WebkitMaskRepeat: "no-repeat",
