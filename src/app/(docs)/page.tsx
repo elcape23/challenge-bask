@@ -6,6 +6,14 @@ import Button from "@/components/ui/Button";
 
 export default function OverviewPage() {
   const router = useRouter();
+  const handleDocsClick = () => {
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      router.push("/docs-mobile");
+      return;
+    }
+
+    router.push("/foundations");
+  };
 
   return (
     <div className="col-span-full flex min-h-full flex-col items-center justify-center gap-10">
@@ -22,7 +30,7 @@ export default function OverviewPage() {
           variant="primary"
           appearance="outlined"
           className="w-full"
-          onClick={() => router.push("/foundations")}
+          onClick={handleDocsClick}
         >
           Docs
         </Button>
