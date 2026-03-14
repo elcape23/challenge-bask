@@ -85,6 +85,7 @@ function CreateAccountContent({
         variant="primary"
         appearance="filled"
         className="w-full"
+        disabled
       >
         Sign Up with Email
       </Button>

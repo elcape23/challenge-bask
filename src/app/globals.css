@@ -346,6 +346,7 @@ body {
   box-shadow: var(--shadow-xs);
 }
 
+
 /* ─── Typography utilities (workaround for Tailwind v4 text- prefix conflict) ─── */
 @utility text-heading-01 {
   font-family: var(--font-sans);

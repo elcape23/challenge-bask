@@ -150,7 +150,6 @@ export default function ProductsListMobilePage() {
 
     setMenuOffsetTop(top);
     setMenuViewportHeight(height);
-
     setIsMenuOpen(true);
   };
 
