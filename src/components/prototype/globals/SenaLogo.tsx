@@ -17,7 +17,7 @@ export default function SenaLogo({
   className = "",
 }: SenaLogoProps) {
   const logoColor =
-    variant === "invert" ? "bg-text-neutral-invert" : "bg-text-primary-default";
+    variant === "invert" ? "bg-icon-primary-invert" : "bg-icon-primary-default";
   const dimensions = size === "sm" ? logoSizes.xs : logoSizes.md;
 
   return (

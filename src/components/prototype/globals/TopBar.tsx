@@ -29,7 +29,9 @@ export interface TopBarProps {
 }
 
 function ThemeToggle({ muted = false }: { muted?: boolean }) {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(
+    () => document.documentElement.classList.contains("dark")
+  );
 
   const handleToggle = () => {
     const next = !isDark;

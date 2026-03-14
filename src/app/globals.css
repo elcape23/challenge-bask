@@ -237,31 +237,31 @@
 
 /* ─── Dark mode — primitive scale + semantic token overrides ─── */
 .dark {
-  /* Neutral dark scale */
+  /* Neutral dark scale (Figma node 141:814) */
   --color-neutral-50:  #1b1f1a;
-  --color-neutral-100: #1c1f1b;
-  --color-neutral-200: #31352f;
-  --color-neutral-300: #4e534d;
-  --color-neutral-400: #6e736a;
-  --color-neutral-500: #93988d;
-  --color-neutral-600: #b7bbaf;
-  --color-neutral-700: #d3d6cc;
-  --color-neutral-800: #e4e6de;
+  --color-neutral-100: #31362f;
+  --color-neutral-200: #4d534b;
+  --color-neutral-300: #6c7369;
+  --color-neutral-400: #91988d;
+  --color-neutral-500: #b4baae;
+  --color-neutral-600: #d2d6c9;
+  --color-neutral-700: #e4e6dd;
+  --color-neutral-800: #f2f3ed;
   --color-neutral-900: #f7f8f4;
 
-  /* Primary dark scale */
+  /* Primary dark scale (Figma node 141:814) */
   --color-primary-50:  #16300f;
-  --color-primary-100: #153014;
-  --color-primary-200: #223f1e;
-  --color-primary-300: #33522d;
-  --color-primary-400: #46683e;
-  --color-primary-500: #5e7f55;
-  --color-primary-600: #7e9b76;
-  --color-primary-700: #a6bba0;
-  --color-primary-800: #c9d7c6;
+  --color-primary-100: #204217;
+  --color-primary-200: #2e5425;
+  --color-primary-300: #406736;
+  --color-primary-400: #587f4b;
+  --color-primary-500: #7ea271;
+  --color-primary-600: #a9c19f;
+  --color-primary-700: #cbdcc5;
+  --color-primary-800: #e5eee1;
   --color-primary-900: #f3f7f1;
 
-  /* Secondary dark scale */
+  /* Secondary dark scale (Figma node 141:814) */
   --color-secondary-50:  #352a1f;
   --color-secondary-100: #4b3d2d;
   --color-secondary-200: #625039;
@@ -276,54 +276,54 @@
   /* ─── Semantic token overrides (same step → dark scale value) ─── */
 
   /* text */
-  --color-text-neutral-default:     #f7f8f4;
-  --color-text-neutral-secondary:   #d3d6cc;
-  --color-text-neutral-hover:       #e4e6de;
-  --color-text-neutral-pressed:     #d3d6cc;
-  --color-text-neutral-disabled:    #6e736a;
-  --color-text-neutral-invert:      #1c1f1b;
-  --color-text-neutral-placeholder: #93988d;
-  --color-text-primary-default:     #c9d7c6;
-  --color-text-primary-invert:      #153014;
-  --color-text-primary-disabled:    #46683e;
+  --color-text-neutral-default:     #f7f8f4;  /* neutral-900 */
+  --color-text-neutral-secondary:   #e4e6dd;  /* neutral-700 */
+  --color-text-neutral-hover:       #f2f3ed;  /* neutral-800 */
+  --color-text-neutral-pressed:     #e4e6dd;  /* neutral-700 */
+  --color-text-neutral-disabled:    #91988d;  /* neutral-400 */
+  --color-text-neutral-invert:      #31362f;  /* neutral-100 */
+  --color-text-neutral-placeholder: #b4baae;  /* neutral-500 */
+  --color-text-primary-default:     #f3f7f1;  /* primary-900 */
+  --color-text-primary-invert:      #204217;  /* primary-100 */
+  --color-text-primary-disabled:    #587f4b;  /* primary-400 */
 
   /* icon */
-  --color-icon-neutral-default:     #f7f8f4;
-  --color-icon-neutral-secondary:   #d3d6cc;
-  --color-icon-neutral-hover:       #e4e6de;
-  --color-icon-neutral-pressed:     #d3d6cc;
-  --color-icon-neutral-disabled:    #6e736a;
-  --color-icon-neutral-invert:      #1c1f1b;
-  --color-icon-primary-default:     #c9d7c6;
-  --color-icon-primary-invert:      #153014;
-  --color-icon-primary-disabled:    #46683e;
+  --color-icon-neutral-default:     #f7f8f4;  /* neutral-900 */
+  --color-icon-neutral-secondary:   #e4e6dd;  /* neutral-700 */
+  --color-icon-neutral-hover:       #f2f3ed;  /* neutral-800 */
+  --color-icon-neutral-pressed:     #e4e6dd;  /* neutral-700 */
+  --color-icon-neutral-disabled:    #91988d;  /* neutral-400 */
+  --color-icon-neutral-invert:      #31362f;  /* neutral-100 */
+  --color-icon-primary-default:     #f3f7f1;  /* primary-900 */
+  --color-icon-primary-invert:      #204217;  /* primary-100 */
+  --color-icon-primary-disabled:    #587f4b;  /* primary-400 */
 
   /* background/default */
-  --color-background-default-default: #1b1f1a;
-  --color-background-default-invert:  #f7f8f4;
+  --color-background-default-default: #1b1f1a;  /* neutral-50 */
+  --color-background-default-invert:  #f7f8f4;  /* neutral-900 */
 
   /* background/fill */
-  --color-background-fill-neutral-default:  #31352f;
-  --color-background-fill-neutral-hover:    #4e534d;
-  --color-background-fill-neutral-pressed:  #6e736a;
-  --color-background-fill-neutral-disabled: #b7bbaf;
-  --color-background-fill-neutral-muted:    #f7f8f466;
-  --color-background-fill-primary-default:  #7e9b76;
-  --color-background-fill-primary-hover:    #5e7f55;
-  --color-background-fill-primary-pressed:  #46683e;
-  --color-background-fill-primary-disabled: #31352f;
+  --color-background-fill-neutral-default:  #4d534b;  /* neutral-200 */
+  --color-background-fill-neutral-hover:    #6c7369;  /* neutral-300 */
+  --color-background-fill-neutral-pressed:  #91988d;  /* neutral-400 */
+  --color-background-fill-neutral-disabled: #d2d6c9;  /* neutral-600 */
+  --color-background-fill-neutral-muted:    #f7f8f466; /* neutral-900 40% */
+  --color-background-fill-primary-default:  #f3f7f1;  /* primary-900 */
+  --color-background-fill-primary-hover:    #e5eee1;  /* primary-800 */
+  --color-background-fill-primary-pressed:  #cbdcc5;  /* primary-700 */
+  --color-background-fill-primary-disabled: #2e5425;  /* primary-200 */
 
   /* background/surface */
-  --color-background-surface-neutral-default: #1c1f1b;
-  --color-background-surface-neutral-hover:   #4e534d;
+  --color-background-surface-neutral-default: #31362f;  /* neutral-100 */
+  --color-background-surface-neutral-hover:   #6c7369;  /* neutral-300 */
 
   /* border */
-  --color-border-neutral-default:  #6e736a;
-  --color-border-neutral-hover:    #93988d;
-  --color-border-neutral-pressed:  #e4e6de;
-  --color-border-neutral-disabled: #31352f;
-  --color-border-primary-default:  #5e7f55;
-  --color-border-primary-disabled: #33522d;
+  --color-border-neutral-default:  #91988d;  /* neutral-400 */
+  --color-border-neutral-hover:    #b4baae;  /* neutral-500 */
+  --color-border-neutral-pressed:  #f2f3ed;  /* neutral-800 */
+  --color-border-neutral-disabled: #4d534b;  /* neutral-200 */
+  --color-border-primary-default:  #406736;  /* primary-300 */
+  --color-border-primary-disabled: #2e5425;  /* primary-200 */
 }
 
 * {

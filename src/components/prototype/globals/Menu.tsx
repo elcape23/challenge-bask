@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import CardContent from "./CardContent";
 import TopBar from "./TopBar";
 
@@ -63,8 +63,32 @@ export default function Menu({
   sections = DEFAULT_SECTIONS,
   onClose,
 }: MenuProps) {
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    let scrollParent: HTMLElement | null = null;
+    let el = menuRef.current?.parentElement;
+    while (el) {
+      const overflow = window.getComputedStyle(el).overflowY;
+      if (overflow === "auto" || overflow === "scroll") {
+        scrollParent = el;
+        scrollParent.style.overflow = "hidden";
+        break;
+      }
+      el = el.parentElement;
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      if (scrollParent) scrollParent.style.overflow = "";
+    };
+  }, []);
+
   return (
     <div
+      ref={menuRef}
       className={`relative flex w-full flex-col items-start pb-3 pt-20 ${className ?? ""}`}
     >
       <TopBar
