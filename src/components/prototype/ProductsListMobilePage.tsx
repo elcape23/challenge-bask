@@ -136,9 +136,11 @@ export default function ProductsListMobilePage() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading) return <ProductsListSkeleton />;
   const [menuOffsetTop, setMenuOffsetTop] = useState(0);
   const [menuViewportHeight, setMenuViewportHeight] = useState(0);
+
+  if (isLoading) return <ProductsListSkeleton />;
+
   const handleOpenProduct = (slug: string) => {
     router.push(`/prototype/product-detailed/${slug}`);
   };
