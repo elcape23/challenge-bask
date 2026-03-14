@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Icon, { type IconType } from "@/components/ui/Icon";
 import Button from "@/components/ui/Button";
@@ -29,9 +29,11 @@ export interface TopBarProps {
 }
 
 function ThemeToggle({ muted = false }: { muted?: boolean }) {
-  const [isDark, setIsDark] = useState(
-    () => document.documentElement.classList.contains("dark")
-  );
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    setIsDark(document.documentElement.classList.contains("dark"));
+  }, []);
 
   const handleToggle = () => {
     const next = !isDark;
