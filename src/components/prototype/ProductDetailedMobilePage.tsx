@@ -563,6 +563,20 @@ function ProductDetailedSkeleton() {
   );
 }
 
+function getScrollableAncestor(element: HTMLDivElement | null): HTMLElement | Window {
+  let parent = element?.parentElement;
+
+  while (parent) {
+    const overflow = window.getComputedStyle(parent).overflowY;
+    if (overflow === "auto" || overflow === "scroll") {
+      return parent;
+    }
+    parent = parent.parentElement;
+  }
+
+  return window;
+}
+
 export default function ProductDetailedMobilePage({
   product,
   relatedProducts = [],
@@ -571,6 +585,8 @@ export default function ProductDetailedMobilePage({
   const [isLoading, setIsLoading] = useState(true);
   const [cartCount, setCartCount] = useState(getPrototypeCartCount());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [menuOffsetTop, setMenuOffsetTop] = useState(0);
+  const [menuViewportHeight, setMenuViewportHeight] = useState(0);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 800);
@@ -641,21 +657,25 @@ export default function ProductDetailedMobilePage({
     setCartCount(getPrototypeCartCount());
     setTopBarHidden(false);
   };
+  const handleOpenMenu = () => {
+    const scrollEl = getScrollableAncestor(wrapperRef.current);
+
+    if (scrollEl === window) {
+      setMenuOffsetTop(window.scrollY);
+      setMenuViewportHeight(window.innerHeight);
+    } else {
+      setMenuOffsetTop(scrollEl.scrollTop);
+      setMenuViewportHeight(scrollEl.clientHeight);
+    }
+
+    setIsMenuOpen(true);
+  };
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
 
-    let scrollEl: HTMLElement | Window = window;
-    let parent = wrapper.parentElement;
-    while (parent) {
-      const overflow = window.getComputedStyle(parent).overflowY;
-      if (overflow === "auto" || overflow === "scroll") {
-        scrollEl = parent;
-        break;
-      }
-      parent = parent.parentElement;
-    }
+    const scrollEl = getScrollableAncestor(wrapper);
 
     const getScrollY = () =>
       scrollEl === window
@@ -699,7 +719,7 @@ export default function ProductDetailedMobilePage({
           onButtonClick={handleCheckout}
           showIconButton
           iconButtonAriaLabel="Menu"
-          onIconButtonClick={() => setIsMenuOpen(true)}
+          onIconButtonClick={handleOpenMenu}
         />
       </div>
 
@@ -739,7 +759,10 @@ export default function ProductDetailedMobilePage({
       </section>
 
       {isMenuOpen && (
-        <div className="absolute inset-0 z-20 flex items-start justify-center pb-5">
+        <div
+          className="absolute left-0 right-0 z-20 flex items-start justify-center overflow-y-auto pb-5"
+          style={{ top: menuOffsetTop, height: menuViewportHeight }}
+        >
           <Menu className="max-w-none" onClose={() => setIsMenuOpen(false)} />
         </div>
       )}

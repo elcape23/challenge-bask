@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { prototypeProducts } from "@/data/prototypeProducts";
 import RelatedCardContent from "@/components/prototype/globals/RelatedCardContent";
@@ -57,15 +57,48 @@ function ProductCard({
   );
 }
 
+function getScrollableAncestor(element: HTMLDivElement | null): HTMLElement | Window {
+  let parent = element?.parentElement;
+
+  while (parent) {
+    const overflow = window.getComputedStyle(parent).overflowY;
+    if (overflow === "auto" || overflow === "scroll") {
+      return parent;
+    }
+    parent = parent.parentElement;
+  }
+
+  return window;
+}
+
 export default function ProductsListMobilePage() {
   const router = useRouter();
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [menuOffsetTop, setMenuOffsetTop] = useState(0);
+  const [menuViewportHeight, setMenuViewportHeight] = useState(0);
   const handleOpenProduct = (slug: string) => {
     router.push(`/prototype/product-detailed/${slug}`);
   };
+  const handleOpenMenu = () => {
+    const scrollEl = getScrollableAncestor(wrapperRef.current);
+
+    if (scrollEl === window) {
+      setMenuOffsetTop(window.scrollY);
+      setMenuViewportHeight(window.innerHeight);
+    } else {
+      setMenuOffsetTop(scrollEl.scrollTop);
+      setMenuViewportHeight(scrollEl.clientHeight);
+    }
+
+    setIsMenuOpen(true);
+  };
 
   return (
-    <div className="relative flex min-h-full flex-col bg-background-default-default">
+    <div
+      ref={wrapperRef}
+      className="relative flex min-h-full flex-col bg-background-default-default"
+    >
       <section className="relative h-[200px] overflow-hidden rounded-b-xl pb-5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -81,7 +114,7 @@ export default function ProductsListMobilePage() {
             showIconButton
             iconType="plus"
             iconButtonAriaLabel="Add product"
-            onIconButtonClick={() => setIsMenuOpen(true)}
+            onIconButtonClick={handleOpenMenu}
           />
 
           <h1 className="max-w-[200px] px-5 text-heading-04 font-medium text-text-primary-invert">
@@ -116,7 +149,10 @@ export default function ProductsListMobilePage() {
       </section>
 
       {isMenuOpen && (
-        <div className="absolute inset-0 z-20 flex items-start justify-center pb-5">
+        <div
+          className="absolute left-0 right-0 z-20 flex items-start justify-center overflow-y-auto pb-5"
+          style={{ top: menuOffsetTop, height: menuViewportHeight }}
+        >
           <Menu
             className="max-w-none"
             onClose={() => setIsMenuOpen(false)}
