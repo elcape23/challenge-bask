@@ -72,16 +72,16 @@ function getScrollableAncestor(element: HTMLDivElement | null): HTMLElement | Wi
 }
 
 function getScrollMetrics(scrollEl: HTMLElement | Window) {
-  if (scrollEl === window) {
+  if (scrollEl instanceof HTMLElement) {
     return {
-      top: window.scrollY,
-      height: window.innerHeight,
+      top: scrollEl.scrollTop,
+      height: scrollEl.clientHeight,
     };
   }
 
   return {
-    top: scrollEl.scrollTop,
-    height: scrollEl.clientHeight,
+    top: window.scrollY,
+    height: window.innerHeight,
   };
 }
 
