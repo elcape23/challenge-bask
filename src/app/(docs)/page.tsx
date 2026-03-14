@@ -14,6 +14,14 @@ export default function OverviewPage() {
 
     router.push("/foundations");
   };
+  const handlePrototypeClick = () => {
+    if (window.matchMedia("(min-width: 1024px)").matches) {
+      router.push("/prototype-desktop");
+      return;
+    }
+
+    router.push("/prototype");
+  };
 
   return (
     <div className="col-span-full flex min-h-full flex-col items-center justify-center gap-10">
@@ -39,7 +47,7 @@ export default function OverviewPage() {
           variant="primary"
           appearance="filled"
           className="w-full"
-          onClick={() => router.push("/prototype")}
+          onClick={handlePrototypeClick}
         >
           Prototype
         </Button>
