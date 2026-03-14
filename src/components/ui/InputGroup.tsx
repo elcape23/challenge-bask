@@ -238,7 +238,7 @@ const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
                 isSuccess
                   ? "bg-background-surface-success-default border-border-success-default"
                   : "bg-background-surface-danger-default border-border-danger-default",
-                "focus-within:shadow-focus",
+                isSuccess ? "focus-within:shadow-focus" : "",
               ].join(" ")}
             >
               <input

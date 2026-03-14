@@ -1,7 +1,8 @@
 "use client";
 
 import type { PrototypeCartItem } from "@/data/prototypeCart";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   getPrototypeCartItem,
   setPrototypeCartItem,
@@ -26,6 +27,18 @@ const STATE_OPTIONS = [
   { value: "ny", label: "New York" },
   { value: "tx", label: "Texas" },
 ] as const;
+
+type ShippingAddress = {
+  firstName: string;
+  lastName: string;
+  address: string;
+  apartment: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  phoneNumber: string;
+};
 
 function OrDivider() {
   return (
@@ -102,7 +115,11 @@ function AccountSummaryContent() {
   );
 }
 
-function ShippingInformationContent() {
+function ShippingInformationContent({
+  onComplete,
+}: {
+  onComplete: (address: ShippingAddress) => void;
+}) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
@@ -112,7 +129,6 @@ function ShippingInformationContent() {
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [hasAcceptedSmsConsent, setHasAcceptedSmsConsent] = useState(false);
   const zipHasError = zipCode.length > 0 && !/^\d{5}$/.test(zipCode);
   const isShippingFormComplete =
     firstName.trim().length > 0 &&
@@ -122,8 +138,22 @@ function ShippingInformationContent() {
     country.trim().length > 0 &&
     state.trim().length > 0 &&
     /^\d{5}$/.test(zipCode) &&
-    phoneNumber.trim().length > 0 &&
-    hasAcceptedSmsConsent;
+    phoneNumber.trim().length > 0;
+
+  const handleSave = () => {
+    if (!isShippingFormComplete) return;
+    onComplete({
+      firstName,
+      lastName,
+      address,
+      apartment,
+      city,
+      state,
+      zipCode,
+      country,
+      phoneNumber,
+    });
+  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -209,19 +239,14 @@ function ShippingInformationContent() {
         showButton={false}
         required
         value={phoneNumber}
-        inputMode="numeric"
-        onChange={(event) => {
-          const nextValue = event.target.value.replace(/\D/g, "");
-          setPhoneNumber(nextValue);
-        }}
+        inputMode="tel"
+        onChange={(event) => setPhoneNumber(event.target.value)}
       />
 
       <Checkbox
         size="sm"
-        label="By signing up via text, you agree to receive recurring automated promotional and personalized marketing messages (e.g. cart reminders, order updates, exclusive health and science content, and member-only offers) from Sena at the cell number provided. Consent is not a condition of any purchase. Reply STOP to cancel. Email care@senacom for help. Msg frequency varies. Msg and data rates may apply. See our Privacy Policy and Terms of Service."
+        label="By signing up via text, you agree to receive recurring automated promotional and personalized marketing messages (e.g. cart reminders, order updates, exclusive health and science content, and member-only offers) from Sena at the cell number provided. Consent is not a condition of any purchase. Reply STOP to cancel. Email care@sena.com for help. Msg frequency varies. Msg and data rates may apply. See our Privacy Policy and Terms of Service."
         className="items-start h-auto"
-        checked={hasAcceptedSmsConsent}
-        onChange={(event) => setHasAcceptedSmsConsent(event.target.checked)}
       />
 
       <Button
@@ -230,8 +255,186 @@ function ShippingInformationContent() {
         appearance="filled"
         disabled={!isShippingFormComplete}
         className="mt-2 w-full"
+        onClick={handleSave}
       >
         Save and Continue
+      </Button>
+    </div>
+  );
+}
+
+function ShippingSummaryContent({ address }: { address: ShippingAddress }) {
+  const countryLabel =
+    COUNTRY_OPTIONS.find((o) => o.value === address.country)?.label ??
+    address.country;
+  const stateLabel =
+    STATE_OPTIONS.find((o) => o.value === address.state)?.label ??
+    address.state;
+
+  return (
+    <div className="flex flex-col gap-1 text-body-01 text-text-neutral-secondary">
+      <p>
+        {address.firstName} {address.lastName}
+      </p>
+      <p>{address.address}</p>
+      {address.apartment ? <p>{address.apartment}</p> : null}
+      <p>
+        {address.city} {stateLabel} {address.zipCode}
+      </p>
+      <p>{countryLabel}</p>
+    </div>
+  );
+}
+
+const PAYMENT_METHODS = [
+  { name: "Visa", src: "/images/prototype/visa.svg" },
+  { name: "Mastercard", src: "/images/prototype/mastercard.svg" },
+  { name: "Amex", src: "/images/prototype/amex.svg" },
+  { name: "Diners Club", src: "/images/prototype/diners.svg" },
+  { name: "Stripe", src: "/images/prototype/stripe.svg" },
+  { name: "PayPal", src: "/images/prototype/paypal.svg" },
+  { name: "Apple Pay", src: "/images/prototype/apple-pay.svg" },
+  { name: "Google Pay", src: "/images/prototype/google-pay.svg" },
+];
+
+function PaymentContent({ onCompleteOrder }: { onCompleteOrder: () => void }) {
+  const [billingIsSameAsShipping, setBillingIsSameAsShipping] = useState(true);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [cardNumber, setCardNumber] = useState("");
+  const [expiry, setExpiry] = useState("");
+  const [cvv, setCvv] = useState("");
+
+  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 16);
+    setCardNumber(digits.match(/.{1,4}/g)?.join(" ") ?? "");
+  };
+
+  const isExpiryInvalid = (() => {
+    const digits = expiry.replace(/\D/g, "");
+    if (digits.length < 4) return false;
+    const mm = parseInt(digits.slice(0, 2), 10);
+    const yy = parseInt(digits.slice(2, 4), 10);
+    const year = 2000 + yy;
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1;
+    if (mm < 1 || mm > 12) return true;
+    if (year < currentYear) return true;
+    if (year === currentYear && mm < currentMonth) return true;
+    return false;
+  })();
+
+  const isPaymentFormComplete =
+    cardNumber.replace(/\s/g, "").length === 16 &&
+    expiry.replace(/\D/g, "").length === 4 &&
+    !isExpiryInvalid &&
+    cvv.length === 3 &&
+    agreedToTerms;
+
+  const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    const digits = raw.replace(/\D/g, "").slice(0, 4);
+    let formatted: string;
+    if (digits.length > 2) {
+      formatted = digits.slice(0, 2) + "/" + digits.slice(2);
+    } else if (digits.length === 2 && raw.length >= expiry.length) {
+      formatted = digits + "/";
+    } else {
+      formatted = digits;
+    }
+    setExpiry(formatted);
+  };
+
+  return (
+    <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-3">
+        <p className="text-body-01 font-medium text-text-neutral-default">
+          Pay with credit or debit card
+        </p>
+        <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {PAYMENT_METHODS.map((method) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={method.name}
+              src={method.src}
+              alt={method.name}
+              className="h-6 w-[35px] shrink-0 object-contain"
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2 pt-5">
+        <div className="relative">
+          <InputGroup
+            size="md"
+            placeholder="Card Number"
+            showButton={false}
+            value={cardNumber}
+            inputMode="numeric"
+            onChange={handleCardNumberChange}
+          />
+          {cardNumber.replace(/\s/g, "").length >= 4 && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src="/images/prototype/mastercard.svg"
+              alt="Mastercard"
+              className="pointer-events-none absolute right-4 top-5 h-6 w-[35px] -translate-y-1/2 object-contain"
+            />
+          )}
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <InputGroup
+            size="md"
+            placeholder="MM/YY"
+            showButton={false}
+            value={expiry}
+            inputMode="numeric"
+            state={isExpiryInvalid ? "danger" : "default"}
+            feedback={isExpiryInvalid ? "Invalid date" : undefined}
+            onChange={handleExpiryChange}
+          />
+          <InputGroup
+            size="md"
+            placeholder="CVV"
+            showButton={false}
+            type="password"
+            inputMode="numeric"
+            maxLength={3}
+            value={cvv}
+            onChange={(event) =>
+              setCvv(event.target.value.replace(/\D/g, "").slice(0, 3))
+            }
+          />
+        </div>
+      </div>
+
+      <div className="flex flex-col">
+        <Checkbox
+          size="sm"
+          label="Billling same as shipping address"
+          checked={billingIsSameAsShipping}
+          onChange={(e) => setBillingIsSameAsShipping(e.target.checked)}
+          className="h-auto items-start"
+        />
+        <Checkbox
+          size="sm"
+          label={`I understand that I'm agreeing to these Subscription Terms. The subscription will renew at the price and frequency listed until it ends or is canceled. By clicking "Complete Order" and submitting this order, I agree to Sena's Terms of Use and Privacy Policy.`}
+          checked={agreedToTerms}
+          onChange={(e) => setAgreedToTerms(e.target.checked)}
+          className="h-auto items-start"
+        />
+      </div>
+
+      <Button
+        size="lg"
+        variant="primary"
+        appearance="filled"
+        disabled={!isPaymentFormComplete}
+        className="w-full"
+        onClick={onCompleteOrder}
+      >
+        Complete Order
       </Button>
     </div>
   );
@@ -278,7 +481,18 @@ export default function CheckoutMobilePage() {
   const [promoState, setPromoState] = useState<"default" | "success">(
     "default",
   );
-  const [checkoutStep, setCheckoutStep] = useState<1 | 2>(1);
+  const [checkoutStep, setCheckoutStep] = useState<1 | 2 | 3>(1);
+  const [shippingAddress, setShippingAddress] =
+    useState<ShippingAddress | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const router = useRouter();
+
+  const handleCompleteOrder = () => {
+    setIsProcessing(true);
+    setTimeout(() => {
+      router.push("/prototype/order-confirmation");
+    }, 2500);
+  };
   const quantity = cartItem?.quantity ?? 1;
   const subtotal = Number(cartItem?.subtotalPrice ?? 0) * quantity;
   const discount = Number(cartItem?.discountAmount ?? 0) * quantity;
@@ -287,17 +501,14 @@ export default function CheckoutMobilePage() {
   const taxes = 0;
   const total = subtotal - discount - promoDiscount + shipping + taxes;
   const lineItemTotal = Number(cartItem?.finalPrice ?? 0) * quantity;
+
   const handleQuantityChange = (nextQuantity: number) => {
     if (!cartItem) return;
-
-    const nextCartItem = {
-      ...cartItem,
-      quantity: nextQuantity,
-    };
-
+    const nextCartItem = { ...cartItem, quantity: nextQuantity };
     setCartItem(nextCartItem);
     setPrototypeCartItem(nextCartItem);
   };
+
   const handleApplyPromoCode = () => {
     if (promoCode.trim().toUpperCase() === "25OFF") {
       setPromoDiscountRate(0.25);
@@ -305,18 +516,36 @@ export default function CheckoutMobilePage() {
       setPromoFeedback("Code applied successfully");
       return;
     }
-
     setPromoDiscountRate(0);
     setPromoState("default");
     setPromoFeedback("");
   };
+
   const handleContinueWithGoogle = () => {
     setCheckoutStep(2);
   };
 
+  useEffect(() => {
+    if (isProcessing) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isProcessing]);
+
+  const handleShippingComplete = (address: ShippingAddress) => {
+    setShippingAddress(address);
+    setCheckoutStep(3);
+  };
+
   return (
     <div className="relative flex min-h-full flex-col bg-background-default-default">
-      <TopBar color="primary" logoOnly />
+      <div className="sticky top-0 z-10 bg-background-default-default">
+        <TopBar color="primary" logoOnly />
+      </div>
 
       <div className="flex flex-col px-5 pb-10">
         {/* Cart Summary */}
@@ -324,7 +553,6 @@ export default function CheckoutMobilePage() {
           <AccordionItem
             heading={`Cart Summary (${cartItem?.quantity ?? 0})`}
             size="md"
-            defaultOpen
           >
             {cartItem ? (
               <div className="flex flex-col">
@@ -410,14 +638,40 @@ export default function CheckoutMobilePage() {
         <ListItem
           subheading="2 of 3"
           heading="Shipping Information"
-          state={checkoutStep === 2 ? "default" : "disabled"}
+          state={checkoutStep >= 2 ? "default" : "disabled"}
         >
-          {checkoutStep === 2 ? <ShippingInformationContent /> : null}
+          {checkoutStep === 2 ? (
+            <ShippingInformationContent onComplete={handleShippingComplete} />
+          ) : checkoutStep === 3 && shippingAddress ? (
+            <ShippingSummaryContent address={shippingAddress} />
+          ) : null}
         </ListItem>
 
-        {/* Step 3 - Payment (inactive) */}
-        <ListItem subheading="3 of 3" heading="Payment" state="disabled" />
+        {/* Step 3 - Payment */}
+        <ListItem
+          subheading="3 of 3"
+          heading="Payment"
+          state={checkoutStep === 3 ? "default" : "disabled"}
+        >
+          {checkoutStep === 3 ? (
+            <PaymentContent onCompleteOrder={handleCompleteOrder} />
+          ) : null}
+        </ListItem>
       </div>
+
+      {isProcessing && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-background-fill-neutral-muted">
+          <div className="flex size-[88px] items-center justify-center rounded-xl ">
+            <div className="relative size-12 animate-spin">
+              <div className="absolute inset-0 rounded-full border-[3px] border-icon-primary-invert" />
+              <div className="absolute left-0 top-0 size-4 -translate-x-1/2 translate-y-1/2 rounded-full bg-icon-primary-default" />
+            </div>
+          </div>
+          <p className="text-body-01 font-medium text-text-primary-invert">
+            Your transaction is processing...
+          </p>
+        </div>
+      )}
     </div>
   );
 }

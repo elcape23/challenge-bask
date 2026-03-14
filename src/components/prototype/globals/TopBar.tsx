@@ -31,6 +31,12 @@ export interface TopBarProps {
 function ThemeToggle({ muted = false }: { muted?: boolean }) {
   const [isDark, setIsDark] = useState(false);
 
+  const handleToggle = () => {
+    const next = !isDark;
+    setIsDark(next);
+    document.documentElement.classList.toggle("dark", next);
+  };
+
   const trackClasses = muted
     ? "bg-background-fill-neutral-muted"
     : "border border-border-neutral-default bg-background-default-default";
@@ -44,7 +50,7 @@ function ThemeToggle({ muted = false }: { muted?: boolean }) {
       type="button"
       aria-label="Toggle theme"
       aria-pressed={isDark}
-      onClick={() => setIsDark((value) => !value)}
+      onClick={handleToggle}
       className={`inline-flex w-[68px] rounded-max p-1 ${trackClasses}`}
     >
       <span

@@ -235,6 +235,97 @@
   --ds-grid-gutter: 16px;
 }
 
+/* ─── Dark mode — primitive scale + semantic token overrides ─── */
+.dark {
+  /* Neutral dark scale */
+  --color-neutral-50:  #1b1f1a;
+  --color-neutral-100: #1c1f1b;
+  --color-neutral-200: #31352f;
+  --color-neutral-300: #4e534d;
+  --color-neutral-400: #6e736a;
+  --color-neutral-500: #93988d;
+  --color-neutral-600: #b7bbaf;
+  --color-neutral-700: #d3d6cc;
+  --color-neutral-800: #e4e6de;
+  --color-neutral-900: #f7f8f4;
+
+  /* Primary dark scale */
+  --color-primary-50:  #16300f;
+  --color-primary-100: #153014;
+  --color-primary-200: #223f1e;
+  --color-primary-300: #33522d;
+  --color-primary-400: #46683e;
+  --color-primary-500: #5e7f55;
+  --color-primary-600: #7e9b76;
+  --color-primary-700: #a6bba0;
+  --color-primary-800: #c9d7c6;
+  --color-primary-900: #f3f7f1;
+
+  /* Secondary dark scale */
+  --color-secondary-50:  #352a1f;
+  --color-secondary-100: #4b3d2d;
+  --color-secondary-200: #625039;
+  --color-secondary-300: #7c664a;
+  --color-secondary-400: #9b7f5b;
+  --color-secondary-500: #b99e79;
+  --color-secondary-600: #d2bea0;
+  --color-secondary-700: #e5d9c4;
+  --color-secondary-800: #f3eee4;
+  --color-secondary-900: #faf8f4;
+
+  /* ─── Semantic token overrides (same step → dark scale value) ─── */
+
+  /* text */
+  --color-text-neutral-default:     #f7f8f4;
+  --color-text-neutral-secondary:   #d3d6cc;
+  --color-text-neutral-hover:       #e4e6de;
+  --color-text-neutral-pressed:     #d3d6cc;
+  --color-text-neutral-disabled:    #6e736a;
+  --color-text-neutral-invert:      #1c1f1b;
+  --color-text-neutral-placeholder: #93988d;
+  --color-text-primary-default:     #c9d7c6;
+  --color-text-primary-invert:      #153014;
+  --color-text-primary-disabled:    #46683e;
+
+  /* icon */
+  --color-icon-neutral-default:     #f7f8f4;
+  --color-icon-neutral-secondary:   #d3d6cc;
+  --color-icon-neutral-hover:       #e4e6de;
+  --color-icon-neutral-pressed:     #d3d6cc;
+  --color-icon-neutral-disabled:    #6e736a;
+  --color-icon-neutral-invert:      #1c1f1b;
+  --color-icon-primary-default:     #c9d7c6;
+  --color-icon-primary-invert:      #153014;
+  --color-icon-primary-disabled:    #46683e;
+
+  /* background/default */
+  --color-background-default-default: #1b1f1a;
+  --color-background-default-invert:  #f7f8f4;
+
+  /* background/fill */
+  --color-background-fill-neutral-default:  #31352f;
+  --color-background-fill-neutral-hover:    #4e534d;
+  --color-background-fill-neutral-pressed:  #6e736a;
+  --color-background-fill-neutral-disabled: #b7bbaf;
+  --color-background-fill-neutral-muted:    #f7f8f466;
+  --color-background-fill-primary-default:  #7e9b76;
+  --color-background-fill-primary-hover:    #5e7f55;
+  --color-background-fill-primary-pressed:  #46683e;
+  --color-background-fill-primary-disabled: #31352f;
+
+  /* background/surface */
+  --color-background-surface-neutral-default: #1c1f1b;
+  --color-background-surface-neutral-hover:   #4e534d;
+
+  /* border */
+  --color-border-neutral-default:  #6e736a;
+  --color-border-neutral-hover:    #93988d;
+  --color-border-neutral-pressed:  #e4e6de;
+  --color-border-neutral-disabled: #31352f;
+  --color-border-primary-default:  #5e7f55;
+  --color-border-primary-disabled: #33522d;
+}
+
 * {
   box-sizing: border-box;
 }

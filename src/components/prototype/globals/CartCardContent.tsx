@@ -81,15 +81,17 @@ export default function CartCardContent({
         </div>
       </div>
 
-      <Alert
-        type="success"
-        size="sm"
-        showHeading={false}
-        description={savingsText}
-        buttonLabel="Upgrade"
-        icon={<Icon type="refresh-cw" size="sm" className="text-icon-success-default" />}
-        className="w-full [&_button]:w-[43px] [&_button]:[text-decoration-skip-ink:none] [&_button]:text-left"
-      />
+      {savingsText && (
+        <Alert
+          type="success"
+          size="sm"
+          showHeading={false}
+          description={savingsText}
+          buttonLabel="Upgrade"
+          icon={<Icon type="refresh-cw" size="sm" className="text-icon-success-default" />}
+          className="w-full"
+        />
+      )}
     </div>
   );
 }
