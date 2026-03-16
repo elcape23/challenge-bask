@@ -5,6 +5,7 @@ import RelatedCardContent from "@/components/prototype/globals/RelatedCardConten
 import Footer from "@/components/prototype/globals/Footer";
 import Menu from "@/components/prototype/globals/Menu";
 import TopBar from "@/components/prototype/globals/TopBar";
+import Card from "@/components/ui/Card";
 import type { BadgeType } from "@/components/ui/Badge";
 
 const HERO_IMAGE =
@@ -38,7 +39,7 @@ function ProductCard({
   onSecondaryClick,
 }: ProductCardProps) {
   return (
-    <div className="rounded-lg bg-background-surface-neutral-default p-3 cursor-pointer" onClick={onClick}>
+    <Card size="md" showHeading={false} className="cursor-pointer" onClick={onClick}>
       <RelatedCardContent
         className={heightClassName}
         heading={heading}
@@ -53,7 +54,7 @@ function ProductCard({
         isOffer={Boolean(originalPrice)}
         onSecondaryClick={onSecondaryClick}
       />
-    </div>
+    </Card>
   );
 }
 

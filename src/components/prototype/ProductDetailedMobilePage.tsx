@@ -260,45 +260,47 @@ function ProductInfoAccordions() {
 
 function AddOnCard({ onAdd }: { onAdd: () => void }) {
   return (
-    <div className="flex gap-4 rounded-2xl bg-background-surface-neutral-default p-5">
-      <div className="size-[116px] shrink-0 overflow-hidden rounded-xl">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={PRODUCT_ASSETS.finasteride}
-          alt="Minoxidil + Finasteride combo"
-          className="h-full w-full object-cover"
-        />
-      </div>
+    <Card size="lg" showHeading={false} className="!border-0">
+      <div className="flex gap-2 items-start">
+        <div className="size-[116px] shrink-0 overflow-hidden rounded-xl">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={PRODUCT_ASSETS.finasteride}
+            alt="Minoxidil + Finasteride combo"
+            className="h-full w-full object-cover"
+          />
+        </div>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <p className="text-body-01 font-medium text-text-primary-default">
-          Minoxidil + Finasteride
-        </p>
-        <p className="text-body-02 text-text-primary-default">
-          A more complete treatment plan designed to support fuller, healthier
-          hair
-        </p>
-        <div className="mt-auto flex items-center gap-2 pt-2">
-          <div className="flex items-center gap-1 text-body-02">
-            <span className="font-medium text-text-primary-default">
-              $71.99
-            </span>
-            <span className="text-text-neutral-secondary line-through">
-              $99.99
-            </span>
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <p className="text-body-01 font-medium text-text-primary-default">
+            Minoxidil + Finasteride
+          </p>
+          <p className="text-body-02 text-text-primary-default">
+            A more complete treatment plan designed to support fuller, healthier
+            hair
+          </p>
+          <div className="mt-auto flex items-center gap-2 pt-2">
+            <div className="flex items-center gap-1 text-body-02">
+              <span className="font-medium text-text-primary-default">
+                $71.99
+              </span>
+              <span className="text-text-neutral-secondary line-through">
+                $99.99
+              </span>
+            </div>
+            <Button
+              size="sm"
+              variant="primary"
+              appearance="filled"
+              className="ml-auto shrink-0"
+              onClick={onAdd}
+            >
+              Add
+            </Button>
           </div>
-          <Button
-            size="sm"
-            variant="primary"
-            appearance="filled"
-            className="ml-auto shrink-0"
-            onClick={onAdd}
-          >
-            Add
-          </Button>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
 
