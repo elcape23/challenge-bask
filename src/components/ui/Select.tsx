@@ -50,8 +50,8 @@ export interface SelectProps {
 }
 
 const SIZE_TRIGGER_HEIGHT: Record<SelectSize, string> = {
-  md: "h-10",
-  sm: "h-8",
+  md: "h-12",
+  sm: "h-9",
 };
 
 const SIZE_TRIGGER_PADDING: Record<SelectSize, string> = {

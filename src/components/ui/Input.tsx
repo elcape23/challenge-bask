@@ -32,6 +32,12 @@ export interface InputProps extends Omit<
   width?: number | string;
 }
 
+const SIZE_RADIUS: Record<InputSize, string> = {
+  lg: "rounded-md",
+  md: "rounded-md",
+  sm: "rounded-sm",
+};
+
 const SIZE_PADDING: Record<InputSize, string> = {
   lg: "px-4 py-3",
   md: "px-4 py-3",
@@ -125,7 +131,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
         <div
           className={[
-            "flex items-center rounded-md border transition-colors",
+            "flex items-center border transition-colors",
+            SIZE_RADIUS[size],
             SIZE_PADDING[size],
             SIZE_GAP[size],
             disabled

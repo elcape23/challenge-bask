@@ -62,7 +62,7 @@ const CONTAINER_SIZE: Record<AccordionSize, string> = {
 };
 
 const HEADER_GAP: Record<AccordionSize, string> = {
-  sm: "gap-4",
+  sm: "gap-3",
   md: "gap-4",
 };
 
