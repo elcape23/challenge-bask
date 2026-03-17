@@ -126,7 +126,7 @@ export default function LayoutiPhone({
 
   return (
     <div
-      className={`relative flex min-h-screen w-full flex-col items-stretch overflow-hidden md:h-[874px] md:min-h-0 md:w-[402px] ${
+      className={`relative flex min-h-screen w-full flex-col items-stretch overflow-hidden md:h-full md:min-h-0 md:w-[402px] ${
         isOverlay ? "" : "bg-background-default-default"
       } ${className ?? ""}`}
     >
@@ -136,7 +136,7 @@ export default function LayoutiPhone({
           <StatusBar />
 
           {/* Content slot */}
-          <div className="relative flex-1 min-h-0 min-w-0 w-full overflow-y-auto overflow-x-hidden">
+          <div className="relative flex-1 min-h-0 min-w-0 w-full overflow-y-auto overflow-x-hidden md:[scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden">
             {children}
           </div>
 
@@ -152,7 +152,7 @@ export default function LayoutiPhone({
 
       {isOverlay && (
         <>
-          <div className="h-[840px] shrink-0 w-full overflow-y-auto overflow-x-hidden">
+          <div className="h-[840px] shrink-0 w-full overflow-y-auto overflow-x-hidden md:[scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden">
             {children}
           </div>
           <div className="h-[34px] shrink-0 w-full bg-white flex items-end justify-center pb-2">

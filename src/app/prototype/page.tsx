@@ -13,7 +13,7 @@ export default function PrototypePage() {
         <ProductsListMobilePage />
       </div>
 
-      <div className="hidden min-h-screen w-full items-start justify-center px-4 py-16 md:flex">
+      <div className="hidden h-screen w-full items-start justify-center px-4 py-16 md:flex">
         <LayoutiPhone>
           <ProductsListMobilePage />
         </LayoutiPhone>
