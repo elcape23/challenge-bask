@@ -644,8 +644,11 @@ export default function ProductDetailedMobilePage({
     return () => clearTimeout(timer);
   }, []);
   const [topBarHidden, setTopBarHidden] = useState(false);
+  const [isBottomBarVisible, setIsBottomBarVisible] = useState(false);
+  const [hasActivatedBottomBar, setHasActivatedBottomBar] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const bottomBarRef = useRef<HTMLDivElement>(null);
+  const lastScrollYRef = useRef(0);
+  const bottomBarVisibleRef = useRef(false);
   const suppressScrollRef = useRef(false);
   const selectableProducts =
     product.slug === "minoxidil-5-topical"
@@ -717,17 +720,19 @@ export default function ProductDetailedMobilePage({
     syncCartWithSelection();
     setCartCount(getPrototypeCartCount());
     setTopBarHidden(false);
+    setIsBottomBarVisible(true);
+    setHasActivatedBottomBar(true);
+    bottomBarVisibleRef.current = true;
   };
   const showBottomBar = () => {
-    if (bottomBarRef.current) {
-      bottomBarRef.current.style.transform = "translateY(-100%)";
-    }
+    setHasActivatedBottomBar(true);
+    setIsBottomBarVisible(true);
+    bottomBarVisibleRef.current = true;
     suppressScrollRef.current = true;
     setTimeout(() => { suppressScrollRef.current = false; }, 400);
   };
   const handleSelectProduct = (slug: string) => {
     setSelectedProductSlug(slug);
-    showBottomBar();
   };
   const handleSelectDosage = (dosage: keyof typeof DOSAGE_MULTIPLIERS) => {
     setSelectedDosage(dosage);
@@ -748,28 +753,40 @@ export default function ProductDetailedMobilePage({
     if (!wrapper) return;
 
     const scrollEl = getScrollableAncestor(wrapper);
+    const getScrollY = () => {
+      if (scrollEl === window) {
+        return window.scrollY;
+      }
 
-    const getScrollY = () =>
-      scrollEl === window
-        ? window.scrollY
-        : (scrollEl as HTMLElement).scrollTop;
+      const elementScrollTop = (scrollEl as HTMLElement).scrollTop;
+      const wrapperOffset = Math.max(0, -wrapper.getBoundingClientRect().top);
+      return Math.max(elementScrollTop, wrapperOffset);
+    };
 
-    let lastScrollY = getScrollY();
-
-    const handleScroll = () => {
+    const syncScrollState = () => {
       const currentScrollY = getScrollY();
 
       if (suppressScrollRef.current) {
-        lastScrollY = currentScrollY;
+        lastScrollYRef.current = currentScrollY;
         return;
       }
 
-      const scrollingDown = currentScrollY > lastScrollY && currentScrollY > 0;
+      if (!hasActivatedBottomBar) {
+        lastScrollYRef.current = currentScrollY;
+        return;
+      }
 
-      if (bottomBarRef.current) {
-        bottomBarRef.current.style.transform = scrollingDown
-          ? "translateY(0)"
-          : "translateY(-100%)";
+      const delta = currentScrollY - lastScrollYRef.current;
+      const scrollingDown = delta > 6;
+      const scrollingUp = delta < -6;
+      const nextVisible = scrollingDown ? false : scrollingUp || currentScrollY <= 4;
+
+      if (scrollingDown) {
+        setIsBottomBarVisible(false);
+        bottomBarVisibleRef.current = false;
+      } else if (nextVisible) {
+        setIsBottomBarVisible(true);
+        bottomBarVisibleRef.current = true;
       }
 
       if (cartCount > 0) {
@@ -778,19 +795,29 @@ export default function ProductDetailedMobilePage({
         setTopBarHidden(scrollingDown);
       }
 
-      lastScrollY = currentScrollY;
+      lastScrollYRef.current = currentScrollY;
+    };
+    lastScrollYRef.current = getScrollY();
+
+    let frameId = 0;
+    const watchScroll = () => {
+      syncScrollState();
+      frameId = window.requestAnimationFrame(watchScroll);
     };
 
-    scrollEl.addEventListener("scroll", handleScroll, { passive: true });
-    return () => scrollEl.removeEventListener("scroll", handleScroll);
-  }, [cartCount]);
+    frameId = window.requestAnimationFrame(watchScroll);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
+  }, [cartCount, hasActivatedBottomBar, isLoading]);
 
   if (isLoading) return <ProductDetailedSkeleton />;
 
   return (
     <div
       ref={wrapperRef}
-      className="relative flex min-h-full flex-col bg-background-default-default"
+      className="relative flex min-h-full flex-col bg-background-default-default pb-36"
     >
       <div
         className={`sticky top-0 z-10 bg-background-default-default transition-transform duration-300 ${
@@ -847,20 +874,22 @@ export default function ProductDetailedMobilePage({
       </section>
 
       {/* Sticky bottom bar */}
-      <div className="sticky bottom-0 z-10 h-0">
-        <div ref={bottomBarRef} className="transition-transform duration-300 -translate-y-full">
-          <CardContent
-            type="product-detailed"
-            heading={selectedProduct.heading}
-            description={selectedDosageLabel}
-            imageSrc={selectedProduct.cardImageSrc}
-            imageAlt={selectedProduct.imageAlt}
-            finalPrice={displayPrice}
-            originalPrice={selectedDosage === "three-months" ? subtotalPrice : selectedProduct.originalPrice}
-            quantity={cartCount}
-            onPrimaryClick={handleAddToCart}
-          />
-        </div>
+      <div
+        className={`sticky bottom-0 z-10 mt-auto bg-background-default-default transition-transform duration-300 ${
+          isBottomBarVisible ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <CardContent
+          type="product-detailed"
+          heading={selectedProduct.heading}
+          description={selectedDosageLabel}
+          imageSrc={selectedProduct.cardImageSrc}
+          imageAlt={selectedProduct.imageAlt}
+          finalPrice={displayPrice}
+          originalPrice={selectedDosage === "three-months" ? subtotalPrice : selectedProduct.originalPrice}
+          quantity={cartCount}
+          onPrimaryClick={handleAddToCart}
+        />
       </div>
 
       {isMenuOpen && (
