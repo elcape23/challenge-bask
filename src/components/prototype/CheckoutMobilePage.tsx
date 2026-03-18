@@ -1,7 +1,7 @@
 "use client";
 
 import type { PrototypeCartItem } from "@/data/prototypeCart";
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, type FocusEvent } from "react";
 import { useRouter } from "next/navigation";
 import {
   getPrototypeCartItem,
@@ -52,9 +52,27 @@ function OrDivider() {
 
 function CreateAccountContent({
   onContinueWithGoogle,
+  onContinueWithEmail,
+  emailValue,
+  onEmailChange,
 }: {
   onContinueWithGoogle: () => void;
+  onContinueWithEmail: () => void;
+  emailValue: string;
+  onEmailChange: (value: string) => void;
 }) {
+  const emailFieldRef = useRef<HTMLDivElement>(null);
+  const [isEmailFieldActive, setIsEmailFieldActive] = useState(false);
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue.trim());
+
+  const handleEmailFieldBlur = (event: FocusEvent<HTMLDivElement>) => {
+    if (event.currentTarget.contains(event.relatedTarget as Node | null)) {
+      return;
+    }
+
+    setIsEmailFieldActive(false);
+  };
+
   return (
     <div className="flex flex-col gap-5">
       <p className="text-body-01 text-text-neutral-default">
@@ -63,32 +81,44 @@ function CreateAccountContent({
 
       <Button
         size="lg"
-        variant="neutral"
-        appearance="outlined"
+        variant="primary"
+        appearance="filled"
         className="w-full"
         onClick={onContinueWithGoogle}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/icons/google-md.svg"
-          alt=""
-          aria-hidden
-          className="size-6 shrink-0"
-        />
         Continue with Google
       </Button>
 
       <OrDivider />
 
-      <Button
-        size="lg"
-        variant="primary"
-        appearance="filled"
-        className="w-full"
-        disabled
+      <div
+        ref={emailFieldRef}
+        className="flex flex-col gap-2"
+        onFocus={() => setIsEmailFieldActive(true)}
+        onBlur={handleEmailFieldBlur}
       >
-        Sign Up with Email
-      </Button>
+        <InputGroup
+          size="md"
+          placeholder="Enter your email"
+          showButton={false}
+          className="w-full"
+          type="email"
+          value={emailValue}
+          onChange={(event) => onEmailChange(event.target.value)}
+        />
+        {isEmailFieldActive ? (
+          <Button
+            size="lg"
+            variant="primary"
+            appearance="outlined"
+            className="w-full"
+            disabled={!isValidEmail}
+            onClick={onContinueWithEmail}
+          >
+            Continue with Email
+          </Button>
+        ) : null}
+      </div>
 
       <div className="flex items-center gap-2">
         <p className="text-body-02 text-text-neutral-default">
@@ -108,10 +138,10 @@ function CreateAccountContent({
   );
 }
 
-function AccountSummaryContent() {
+function AccountSummaryContent({ email }: { email: string }) {
   return (
     <p className="text-body-01 text-text-neutral-secondary">
-      arqledesma91@gmail.com
+      {email}
     </p>
   );
 }
@@ -335,14 +365,47 @@ function PaymentContent({ onCompleteOrder }: { onCompleteOrder: () => void }) {
 
   const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
-    const digits = raw.replace(/\D/g, "").slice(0, 4);
+    const sanitizedDigits = raw.replace(/\D/g, "").slice(0, 4);
     let formatted: string;
-    if (digits.length > 2) {
-      formatted = digits.slice(0, 2) + "/" + digits.slice(2);
-    } else if (digits.length === 2 && raw.length >= expiry.length) {
-      formatted = digits + "/";
+
+    if (sanitizedDigits.length >= 3) {
+      const firstDigit = sanitizedDigits[0];
+      const secondDigit = sanitizedDigits[1];
+      const thirdDigit = sanitizedDigits[2];
+
+      if (firstDigit === "1" && Number(thirdDigit) >= 6) {
+        const shiftedDigits = `0${firstDigit}${secondDigit}${sanitizedDigits[2] ?? ""}${sanitizedDigits[3] ?? ""}`.slice(0, 4);
+        formatted =
+          shiftedDigits.length > 2
+            ? `${shiftedDigits.slice(0, 2)}/${shiftedDigits.slice(2)}`
+            : shiftedDigits;
+        setExpiry(formatted);
+        return;
+      }
+    }
+
+    if (
+      sanitizedDigits.length === 1 &&
+      raw.length >= expiry.length &&
+      !raw.includes("/") &&
+      sanitizedDigits !== "1"
+    ) {
+      formatted = `0${sanitizedDigits}/`;
     } else {
-      formatted = digits;
+      const monthDigits = sanitizedDigits.slice(0, 2);
+      const clampedMonth =
+        monthDigits.length === 2
+          ? String(Math.min(parseInt(monthDigits, 10), 12)).padStart(2, "0")
+          : monthDigits;
+      const digits = clampedMonth + sanitizedDigits.slice(2);
+
+      if (digits.length > 2) {
+        formatted = digits.slice(0, 2) + "/" + digits.slice(2);
+      } else if (digits.length === 2 && raw.length >= expiry.length) {
+        formatted = digits + "/";
+      } else {
+        formatted = digits;
+      }
     }
     setExpiry(formatted);
   };
@@ -498,7 +561,10 @@ function CheckoutSkeleton() {
 
         {/* Step list items */}
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="flex flex-col gap-1 py-5 border-b border-border-neutral-default">
+          <div
+            key={i}
+            className="flex flex-col gap-1 py-5 border-b border-border-neutral-default"
+          >
             <Bone className="h-3 w-20" />
             <Bone className="h-5 w-40" />
           </div>
@@ -542,6 +608,7 @@ export default function CheckoutMobilePage() {
     return () => clearTimeout(timer);
   }, []);
   const [promoCode, setPromoCode] = useState("");
+  const [accountEmail, setAccountEmail] = useState("");
   const [promoDiscountRate, setPromoDiscountRate] = useState(0);
   const [promoFeedback, setPromoFeedback] = useState("");
   const [promoState, setPromoState] = useState<"default" | "success">(
@@ -576,8 +643,14 @@ export default function CheckoutMobilePage() {
     const multiplier = 3;
     const discountRate = 0.17;
     const newSubtotal = (Number(basePrice) * multiplier).toFixed(2);
-    const newFinalPrice = (Number(basePrice) * multiplier * (1 - discountRate)).toFixed(2);
-    const newDiscountAmount = (Number(newSubtotal) - Number(newFinalPrice)).toFixed(2);
+    const newFinalPrice = (
+      Number(basePrice) *
+      multiplier *
+      (1 - discountRate)
+    ).toFixed(2);
+    const newDiscountAmount = (
+      Number(newSubtotal) - Number(newFinalPrice)
+    ).toFixed(2);
     const upgraded: typeof cartItem = {
       ...cartItem,
       dosageLabel: "90 pills every three months",
@@ -609,6 +682,11 @@ export default function CheckoutMobilePage() {
   };
 
   const handleContinueWithGoogle = () => {
+    setAccountEmail("arqledesma91@gmail.com");
+    setCheckoutStep(2);
+  };
+
+  const handleContinueWithEmail = () => {
     setCheckoutStep(2);
   };
 
@@ -715,12 +793,15 @@ export default function CheckoutMobilePage() {
 
         {/* Step 1 - Account */}
         <ListItem subheading="1 of 3" heading="Account" state="default">
-          {checkoutStep === 1 ? (
-            <CreateAccountContent
-              onContinueWithGoogle={handleContinueWithGoogle}
-            />
-          ) : (
-            <AccountSummaryContent />
+            {checkoutStep === 1 ? (
+              <CreateAccountContent
+                onContinueWithGoogle={handleContinueWithGoogle}
+                onContinueWithEmail={handleContinueWithEmail}
+                emailValue={accountEmail}
+                onEmailChange={setAccountEmail}
+              />
+            ) : (
+            <AccountSummaryContent email={accountEmail} />
           )}
         </ListItem>
 
