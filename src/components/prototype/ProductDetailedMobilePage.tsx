@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { getPrototypeCartCount, setPrototypeCartItem } from "@/data/prototypeCart";
 import type { PrototypeProduct } from "@/data/prototypeProducts";
@@ -16,6 +16,7 @@ import Footer from "@/components/prototype/globals/Footer";
 import InfoCardContent from "@/components/prototype/globals/InfoCardContent";
 import Menu from "@/components/prototype/globals/Menu";
 import TopBar from "@/components/prototype/globals/TopBar";
+import usePrototypePageReady from "@/components/prototype/usePrototypePageReady";
 
 const PRODUCT_ASSETS = {
   background: "/images/prototype/carousel-background.png",
@@ -633,16 +634,24 @@ export default function ProductDetailedMobilePage({
   relatedProducts = [],
 }: ProductDetailedMobilePageProps) {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const loadingSources = useMemo(
+    () => [
+      product.imageSrc,
+      product.cardImageSrc ?? product.imageSrc,
+      PRODUCT_ASSETS.background,
+      PRODUCT_ASSETS.finasteride,
+      MINOXIDIL_TWO_PERCENT_PRODUCT.imageSrc,
+      MINOXIDIL_TWO_PERCENT_PRODUCT.cardImageSrc ?? MINOXIDIL_TWO_PERCENT_PRODUCT.imageSrc,
+      ...relatedProducts.flatMap((item) => [item.imageSrc, item.cardImageSrc ?? item.imageSrc]),
+    ],
+    [product, relatedProducts],
+  );
+  const isReady = usePrototypePageReady(loadingSources);
   const [cartCount, setCartCount] = useState(getPrototypeCartCount());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuOffsetTop, setMenuOffsetTop] = useState(0);
   const [menuViewportHeight, setMenuViewportHeight] = useState(0);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, []);
   const [topBarHidden, setTopBarHidden] = useState(false);
   const [isBottomBarVisible, setIsBottomBarVisible] = useState(false);
   const [hasActivatedBottomBar, setHasActivatedBottomBar] = useState(false);
@@ -811,14 +820,14 @@ export default function ProductDetailedMobilePage({
     return () => {
       window.cancelAnimationFrame(frameId);
     };
-  }, [cartCount, hasActivatedBottomBar, isLoading]);
+  }, [cartCount, hasActivatedBottomBar, isReady]);
 
-  if (isLoading) return <ProductDetailedSkeleton />;
+  if (!isReady) return <ProductDetailedSkeleton />;
 
   return (
     <div
       ref={wrapperRef}
-      className="relative flex min-h-full flex-col bg-background-default-default pb-36"
+      className="prototype-dissolve-in relative flex min-h-full flex-col bg-background-default-default pb-36"
     >
       <div
         className={`sticky top-0 z-10 bg-background-default-default transition-transform duration-300 ${

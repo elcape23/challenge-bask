@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { prototypeProducts } from "@/data/prototypeProducts";
 import RelatedCardContent from "@/components/prototype/globals/RelatedCardContent";
@@ -7,6 +7,7 @@ import Menu from "@/components/prototype/globals/Menu";
 import TopBar from "@/components/prototype/globals/TopBar";
 import Card from "@/components/ui/Card";
 import type { BadgeType } from "@/components/ui/Badge";
+import usePrototypePageReady from "@/components/prototype/usePrototypePageReady";
 
 const HERO_IMAGE =
   "/images/prototype/category-top-background.webp";
@@ -126,18 +127,17 @@ function getScrollMetrics(scrollEl: HTMLElement | Window) {
 export default function ProductsListMobilePage() {
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, []);
+  const loadingSources = useMemo(
+    () => [HERO_IMAGE, ...prototypeProducts.map((product) => product.cardImageSrc ?? product.imageSrc)],
+    [],
+  );
+  const isReady = usePrototypePageReady(loadingSources);
 
   const [menuOffsetTop, setMenuOffsetTop] = useState(0);
   const [menuViewportHeight, setMenuViewportHeight] = useState(0);
 
-  if (isLoading) return <ProductsListSkeleton />;
+  if (!isReady) return <ProductsListSkeleton />;
 
   const handleOpenProduct = (slug: string) => {
     router.push(`/prototype/product-detailed/${slug}`);
@@ -154,7 +154,7 @@ export default function ProductsListMobilePage() {
   return (
     <div
       ref={wrapperRef}
-      className="relative flex min-h-full flex-col bg-background-default-default"
+      className="prototype-dissolve-in relative flex min-h-full flex-col bg-background-default-default"
     >
       <section className="relative h-[200px] overflow-hidden rounded-b-xl pb-5">
         {/* eslint-disable-next-line @next/next/no-img-element */}

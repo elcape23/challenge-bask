@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { getPrototypeCartItem } from "@/data/prototypeCart";
 import { getPrototypeProductBySlug } from "@/data/prototypeProducts";
 import TopBar from "@/components/prototype/globals/TopBar";
 import CardContent from "@/components/prototype/globals/CardContent";
 import ButtonContainer from "@/components/prototype/globals/ButtonContainer";
+import usePrototypePageReady from "@/components/prototype/usePrototypePageReady";
 
 const ORDER_ID = "ORD-483921";
 
@@ -102,14 +103,6 @@ function OrderConfirmationSkeleton() {
 
 export default function OrderConfirmationMobilePage() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading) return <OrderConfirmationSkeleton />;
 
   const cartItem =
     getPrototypeCartItem() ??
@@ -127,6 +120,16 @@ export default function OrderConfirmationMobilePage() {
         quantity: 1,
       };
     })();
+  const loadingSources = useMemo(
+    () => [
+      "/images/prototype/order-placed.webp",
+      cartItem?.imageSrc ?? "",
+    ],
+    [cartItem?.imageSrc],
+  );
+  const isReady = usePrototypePageReady(loadingSources);
+
+  if (!isReady) return <OrderConfirmationSkeleton />;
 
   const quantity = cartItem?.quantity ?? 1;
   const unitPrice = Number(cartItem?.finalPrice ?? 0);
@@ -135,7 +138,7 @@ export default function OrderConfirmationMobilePage() {
   const total = subtotal + taxes;
 
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="prototype-dissolve-in flex min-h-full flex-col">
       <TopBar />
 
       <div className="flex flex-1 flex-col pb-5">

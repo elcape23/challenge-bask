@@ -1,7 +1,7 @@
 "use client";
 
 import type { PrototypeCartItem } from "@/data/prototypeCart";
-import React, { useRef, useState, useEffect, type FocusEvent } from "react";
+import React, { useMemo, useRef, useState, useEffect, type FocusEvent } from "react";
 import { useRouter } from "next/navigation";
 import {
   getPrototypeCartItem,
@@ -16,6 +16,7 @@ import TopBar from "@/components/prototype/globals/TopBar";
 import InputGroup from "@/components/ui/InputGroup";
 import Select from "@/components/ui/Select";
 import Checkbox from "@/components/ui/Checkbox";
+import usePrototypePageReady from "@/components/prototype/usePrototypePageReady";
 
 const COUNTRY_OPTIONS = [
   { value: "us", label: "United States of America" },
@@ -600,13 +601,15 @@ export default function CheckoutMobilePage() {
         savingsText: undefined,
       };
     })();
-  const [isLoading, setIsLoading] = useState(true);
+  const loadingSources = useMemo(
+    () => [
+      initialCartItem?.imageSrc ?? "",
+      "/images/prototype/mastercard.svg",
+    ],
+    [initialCartItem?.imageSrc],
+  );
+  const isReady = usePrototypePageReady(loadingSources);
   const [cartItem, setCartItem] = useState(initialCartItem);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, []);
   const [promoCode, setPromoCode] = useState("");
   const [accountEmail, setAccountEmail] = useState("");
   const [promoDiscountRate, setPromoDiscountRate] = useState(0);
@@ -706,10 +709,10 @@ export default function CheckoutMobilePage() {
     setCheckoutStep(3);
   };
 
-  if (isLoading) return <CheckoutSkeleton />;
+  if (!isReady) return <CheckoutSkeleton />;
 
   return (
-    <div className="relative flex min-h-full flex-col bg-background-default-default">
+    <div className="prototype-dissolve-in relative flex min-h-full flex-col bg-background-default-default">
       <div className="sticky top-0 z-10 bg-background-default-default">
         <TopBar color="primary" logoOnly />
       </div>
