@@ -1,7 +1,7 @@
 "use client";
 
 import type { PrototypeCartItem } from "@/data/prototypeCart";
-import React, { useMemo, useRef, useState, useEffect, type FocusEvent } from "react";
+import React, { useMemo, useState, useEffect, type FocusEvent } from "react";
 import { useRouter } from "next/navigation";
 import {
   getPrototypeCartItem,
@@ -62,7 +62,6 @@ function CreateAccountContent({
   emailValue: string;
   onEmailChange: (value: string) => void;
 }) {
-  const emailFieldRef = useRef<HTMLDivElement>(null);
   const [isEmailFieldActive, setIsEmailFieldActive] = useState(false);
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue.trim());
 
@@ -93,7 +92,6 @@ function CreateAccountContent({
       <OrDivider />
 
       <div
-        ref={emailFieldRef}
         className="flex flex-col gap-2"
         onFocus={() => setIsEmailFieldActive(true)}
         onBlur={handleEmailFieldBlur}
@@ -114,6 +112,7 @@ function CreateAccountContent({
             appearance="outlined"
             className="w-full"
             disabled={!isValidEmail}
+            onMouseDown={(event) => event.preventDefault()}
             onClick={onContinueWithEmail}
           >
             Continue with Email
