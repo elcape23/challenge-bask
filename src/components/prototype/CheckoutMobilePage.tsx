@@ -207,6 +207,7 @@ function ShippingInformationContent({
         options={[...COUNTRY_OPTIONS]}
         value={country}
         onChange={setCountry}
+        className="mb-5"
       />
 
       <div className="grid grid-cols-2 gap-3">
@@ -567,6 +568,27 @@ export default function CheckoutMobilePage() {
   const total = subtotal - discount - promoDiscount + shipping + taxes;
   const lineItemTotal = Number(cartItem?.finalPrice ?? 0) * quantity;
 
+  const handleUpgrade = () => {
+    if (!cartItem) return;
+    const product = getPrototypeProductBySlug(cartItem.productSlug);
+    if (!product) return;
+    const basePrice = product.finalPrice;
+    const multiplier = 3;
+    const discountRate = 0.17;
+    const newSubtotal = (Number(basePrice) * multiplier).toFixed(2);
+    const newFinalPrice = (Number(basePrice) * multiplier * (1 - discountRate)).toFixed(2);
+    const newDiscountAmount = (Number(newSubtotal) - Number(newFinalPrice)).toFixed(2);
+    const upgraded: typeof cartItem = {
+      ...cartItem,
+      dosageLabel: "90 pills every three months",
+      subtotalPrice: newSubtotal,
+      discountAmount: newDiscountAmount,
+      finalPrice: newFinalPrice,
+      savingsText: undefined,
+    };
+    setCartItem(upgraded);
+    setPrototypeCartItem(upgraded);
+  };
   const handleQuantityChange = (nextQuantity: number) => {
     if (!cartItem) return;
     const nextCartItem = { ...cartItem, quantity: nextQuantity };
@@ -618,7 +640,7 @@ export default function CheckoutMobilePage() {
         {/* Cart Summary */}
         <div className="py-5">
           <AccordionItem
-            heading={`Cart Summary (${cartItem?.quantity ?? 0})`}
+            heading={`Cart: $${formatCurrency(subtotal)}`}
             size="md"
           >
             {cartItem ? (
@@ -633,6 +655,7 @@ export default function CheckoutMobilePage() {
                   quantity={quantity}
                   savingsText={cartItem.savingsText}
                   onQuantityChange={handleQuantityChange}
+                  onUpgrade={handleUpgrade}
                 />
 
                 <div className="flex flex-col gap-2 border-b border-border-neutral-default py-3">

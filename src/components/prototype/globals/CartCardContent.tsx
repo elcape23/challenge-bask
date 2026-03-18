@@ -14,6 +14,7 @@ export interface CartCardContentProps {
   quantity?: number;
   savingsText?: string;
   onQuantityChange?: (value: number) => void;
+  onUpgrade?: () => void;
 }
 
 function CartImage({
@@ -24,7 +25,7 @@ function CartImage({
   imageAlt: string;
 }) {
   return (
-    <div className="relative size-[84px] shrink-0 overflow-hidden rounded-sm bg-background-surface-neutral-default">
+    <div className="relative size-[96px] shrink-0 overflow-hidden rounded-sm bg-background-surface-neutral-default">
       {imageSrc ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={imageSrc} alt={imageAlt} className="size-full object-cover" />
@@ -46,8 +47,9 @@ export default function CartCardContent({
   imageSrc,
   imageAlt = "",
   quantity = 1,
-  savingsText = "Save 17% on 3 month delivery",
+  savingsText,
   onQuantityChange,
+  onUpgrade,
 }: CartCardContentProps) {
   return (
     <div
@@ -88,6 +90,7 @@ export default function CartCardContent({
           showHeading={false}
           description={savingsText}
           buttonLabel="Upgrade"
+          onButtonClick={onUpgrade}
           icon={<Icon type="refresh-cw" size="sm" className="text-icon-success-default" />}
           className="w-full"
         />

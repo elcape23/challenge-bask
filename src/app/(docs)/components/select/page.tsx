@@ -113,11 +113,11 @@ const DEMO_COUNTRIES = [
 ];
 
 const DEMO_CATEGORIES = [
-  { value: "general", label: "General consultation" },
-  { value: "cardiology", label: "Cardiology" },
-  { value: "dermatology", label: "Dermatology" },
-  { value: "neurology", label: "Neurology" },
-  { value: "pediatrics", label: "Pediatrics" },
+  { value: "general", label: "General consultation", description: "Talk to a primary care doctor" },
+  { value: "cardiology", label: "Cardiology", description: "Heart & cardiovascular health" },
+  { value: "dermatology", label: "Dermatology", description: "Skin, hair & nails" },
+  { value: "neurology", label: "Neurology", description: "Brain & nervous system" },
+  { value: "pediatrics", label: "Pediatrics", description: "Children's health" },
 ];
 
 const DEMO_SHORT = [
@@ -692,7 +692,7 @@ function PropertiesTab() {
             ["placeholder", "string", '"Select an option"', "Placeholder text when no value is selected."],
             ["helperText", "string", "undefined", "Helper text displayed below the trigger."],
             ["errorMessage", "string", "undefined", 'Error message — replaces helper when state="error".'],
-            ["options", "SelectOption[]", "[]", "Array of { value, label, disabled? } objects."],
+            ["options", "SelectOption[]", "[]", "Array of { value, label, description?, disabled? } objects."],
             ["value", "string", "undefined", "Controlled value — makes the component controlled."],
             ["defaultValue", "string", "undefined", "Initial value for uncontrolled usage."],
             ["onChange", "(value: string) => void", "undefined", "Callback fired when the selected value changes."],
@@ -710,6 +710,7 @@ function PropertiesTab() {
           rows={[
             ["value", "string", "Yes", "Unique value identifier for the option."],
             ["label", "string", "Yes", "Display text shown in the dropdown and trigger."],
+            ["description", "string", "No", "Secondary text shown below the label in the dropdown and beside the value in the trigger."],
             ["disabled", "boolean", "No", "When true, the option cannot be selected."],
           ]}
         />

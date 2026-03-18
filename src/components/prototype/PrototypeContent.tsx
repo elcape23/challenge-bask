@@ -110,7 +110,7 @@ export default function PrototypeContent() {
           <div className="border border-dashed border-border-primary-default rounded-[20px] p-5 bg-background-default-default">
             <div className="mx-auto w-full max-w-[335.209px]">
               <CardContent
-                type="product-detailed"
+                type="add-on"
                 heading="Heading"
                 description="Description"
                 finalPrice="00.00"

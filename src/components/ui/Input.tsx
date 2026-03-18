@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from "react";
 
-export type InputSize = "lg" | "md" | "sm";
+export type InputSize = "md" | "sm";
 export type InputState = "default" | "hover" | "active" | "error" | "success";
 
 export interface InputProps extends Omit<
@@ -33,37 +33,31 @@ export interface InputProps extends Omit<
 }
 
 const SIZE_RADIUS: Record<InputSize, string> = {
-  lg: "rounded-md",
   md: "rounded-md",
   sm: "rounded-sm",
 };
 
 const SIZE_PADDING: Record<InputSize, string> = {
-  lg: "px-4 py-3",
   md: "px-4 py-3",
   sm: "px-3 py-2",
 };
 
 const SIZE_TEXT: Record<InputSize, string> = {
-  lg: "text-body-01",
   md: "text-body-01",
   sm: "text-body-02",
 };
 
 const SIZE_GAP: Record<InputSize, string> = {
-  lg: "gap-3",
-  md: "gap-3",
-  sm: "gap-2",
+  md: "gap-[10px]",
+  sm: "gap-[10px]",
 };
 
 const LABEL_TEXT: Record<InputSize, string> = {
-  lg: "text-body-01 font-medium",
   md: "text-body-02 font-medium",
   sm: "text-body-02 font-medium",
 };
 
 const HELPER_TEXT: Record<InputSize, string> = {
-  lg: "text-body-03",
   md: "text-body-03",
   sm: "text-body-03",
 };
@@ -109,7 +103,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       ? "bg-background-surface-danger-default"
       : isSuccess
         ? "bg-background-surface-success-default"
-        : "bg-[var(--color-background-default-default)]";
+        : isHover
+          ? "bg-background-surface-neutral-hover"
+          : "bg-[var(--color-background-default-default)]";
 
     return (
       <div
@@ -136,7 +132,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             SIZE_PADDING[size],
             SIZE_GAP[size],
             disabled
-              ? "border-border-neutral-disabled bg-background-surface-neutral-default cursor-not-allowed"
+              ? "border-border-neutral-disabled cursor-not-allowed"
               : `${bgColor} ${borderColor}`,
             "focus-within:shadow-focus",
           ].join(" ")}

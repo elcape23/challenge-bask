@@ -16,6 +16,7 @@ export interface SelectOption {
   value: string;
   label: string;
   disabled?: boolean;
+  description?: string;
   badgeLabel?: string;
   badgeType?: BadgeType;
 }
@@ -87,6 +88,11 @@ const HELPER_TEXT: Record<SelectSize, string> = {
 const OPTION_TEXT: Record<SelectSize, string> = {
   md: "text-body-01",
   sm: "text-body-02",
+};
+
+const OPTION_LABEL_ROW_HEIGHT: Record<SelectSize, string> = {
+  md: "min-h-6",
+  sm: "min-h-5",
 };
 
 const POSITION_PADDING: Record<SelectSize, string> = {
@@ -186,8 +192,14 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
           >
             {selectedOption ? (
               <span className="flex min-w-0 flex-1 items-center justify-between gap-3">
-                <span className={["truncate text-left", SIZE_TRIGGER_TEXT[size]].join(" ")}>
-                  {selectedOption.label}
+                <span className={["flex min-w-0 flex-1 items-center gap-1 truncate text-left", SIZE_TRIGGER_TEXT[size]].join(" ")}>
+                  <span className="truncate text-text-neutral-default">{selectedOption.label}</span>
+                  {selectedOption.description && (
+                    <span className="flex shrink-0 items-center gap-1 text-text-neutral-placeholder">
+                      <span>•</span>
+                      <span className="truncate">{selectedOption.description}</span>
+                    </span>
+                  )}
                 </span>
                 {selectedOption.badgeLabel ? (
                   <Badge
@@ -238,7 +250,7 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
                       value={option.value}
                       disabled={option.disabled}
                       className={[
-                        "flex min-h-5 cursor-pointer items-center justify-between gap-3 outline-none",
+                        "flex cursor-pointer flex-col justify-center gap-0 outline-none",
                         POSITION_PADDING[size],
                         OPTION_TEXT[size],
                         "text-text-neutral-default",
@@ -247,15 +259,22 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
                         "data-[disabled]:cursor-not-allowed data-[disabled]:text-text-neutral-disabled",
                       ].join(" ")}
                     >
-                      <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
-                      {option.badgeLabel ? (
-                        <Badge
-                          type={option.badgeType ?? "success"}
-                          size="sm"
-                          label={option.badgeLabel}
-                          showIcon={false}
-                        />
-                      ) : null}
+                      <span className={["flex items-center justify-between gap-3", OPTION_LABEL_ROW_HEIGHT[size]].join(" ")}>
+                        <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
+                        {option.badgeLabel ? (
+                          <Badge
+                            type={option.badgeType ?? "success"}
+                            size="sm"
+                            label={option.badgeLabel}
+                            showIcon={false}
+                          />
+                        ) : null}
+                      </span>
+                      {option.description && (
+                        <span className="text-body-03 text-text-neutral-secondary">
+                          {option.description}
+                        </span>
+                      )}
                     </SelectPrimitive.Item>
                   ))
                 )}

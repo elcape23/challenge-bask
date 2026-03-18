@@ -20,9 +20,8 @@ type ProductCardProps = {
   imageAlt: string;
   badgeLabel: string;
   badgeType: BadgeType;
-  heightClassName?: string;
   onClick?: () => void;
-  onSecondaryClick?: () => void;
+  onPrimaryClick?: () => void;
 };
 
 function ProductCard({
@@ -34,14 +33,12 @@ function ProductCard({
   imageAlt,
   badgeLabel,
   badgeType,
-  heightClassName,
   onClick,
-  onSecondaryClick,
+  onPrimaryClick,
 }: ProductCardProps) {
   return (
     <Card size="md" showHeading={false} className="cursor-pointer" onClick={onClick}>
       <RelatedCardContent
-        className={heightClassName}
         heading={heading}
         description={description}
         finalPrice={finalPrice}
@@ -52,7 +49,7 @@ function ProductCard({
         badgeLabel={badgeLabel}
         badgeType={badgeType}
         isOffer={Boolean(originalPrice)}
-        onSecondaryClick={onSecondaryClick}
+        onPrimaryClick={onPrimaryClick}
       />
     </Card>
   );
@@ -172,7 +169,7 @@ export default function ProductsListMobilePage() {
           <TopBar
             color="invert"
             showIconButton
-            iconType="plus"
+            iconType="menu"
             iconButtonAriaLabel="Add product"
             onIconButtonClick={handleOpenMenu}
           />
@@ -195,11 +192,8 @@ export default function ProductsListMobilePage() {
             imageAlt={product.imageAlt}
             badgeLabel={product.badgeLabel ?? "New"}
             badgeType={product.badgeType ?? "neutral"}
-            heightClassName={
-              product.slug === "scalp-shampoo" ? "h-[184px]" : undefined
-            }
             onClick={() => handleOpenProduct(product.slug)}
-            onSecondaryClick={() => handleOpenProduct(product.slug)}
+            onPrimaryClick={() => handleOpenProduct(product.slug)}
           />
         ))}
       </div>

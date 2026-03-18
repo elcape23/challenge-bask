@@ -15,7 +15,9 @@ export interface CardContentProps {
   quantity?: number;
   savingsText?: string;
   onQuantityChange?: (value: number) => void;
-  type?: "product-detailed" | "menu" | "order-confirmation" | "cart";
+  onPrimaryClick?: () => void;
+  onUpgrade?: () => void;
+  type?: "product-detailed" | "add-on" | "menu" | "order-confirmation" | "cart";
   variant?: "default" | "invert";
 }
 
@@ -23,14 +25,16 @@ function ProductImage({
   imageSrc,
   imageAlt,
   className,
+  showBackground = true,
 }: {
   imageSrc?: string;
   imageAlt: string;
   className?: string;
+  showBackground?: boolean;
 }) {
   return (
     <div
-      className={`relative shrink-0 overflow-hidden bg-background-surface-neutral-default ${className ?? "size-[84px] rounded-sm"}`}
+      className={`relative shrink-0 overflow-hidden ${showBackground ? "bg-background-surface-neutral-default" : ""} ${className ?? "size-[84px] rounded-sm"}`}
     >
       {imageSrc ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -77,15 +81,113 @@ export default function CardContent({
   imageSrc,
   imageAlt = "",
   finalPrice = "00.00",
-  originalPrice = "00.00",
+  originalPrice,
   quantity = 0,
   savingsText,
   onQuantityChange,
+  onPrimaryClick,
+  onUpgrade,
   type,
   variant = "default",
 }: CardContentProps) {
   const resolvedType =
-    type ?? (variant === "invert" ? "menu" : "product-detailed");
+    type ?? (variant === "invert" ? "menu" : "add-on");
+
+  if (resolvedType === "product-detailed") {
+    return (
+      <div
+        className={`flex w-full items-end gap-2 border-t border-border-neutral-default bg-background-default-default p-5 ${
+          className ?? ""
+        }`}
+      >
+        <ProductImage
+          imageSrc={imageSrc}
+          imageAlt={imageAlt}
+          className="w-[84px] self-stretch"
+          showBackground={false}
+        />
+        <div className="flex min-w-0 flex-1 flex-col gap-1 self-stretch py-2">
+          <div className="flex w-full flex-col gap-1">
+            <p className="truncate text-body-01 font-medium text-text-primary-default">
+              {heading}
+            </p>
+            <p className="h-4 truncate text-body-02 text-text-primary-default">
+              {description}
+            </p>
+          </div>
+          <div className="flex items-end gap-1">
+            <div className="min-w-0 flex-1">
+              <Price
+                finalPrice={finalPrice}
+                originalPrice={originalPrice}
+                finalClassName="text-body-02 font-medium text-text-primary-default"
+                originalClassName="text-body-02 text-primary-700 line-through"
+              />
+            </div>
+            <Button
+              aria-label={`Add ${heading} to cart`}
+              size="icon"
+              variant="primary"
+              appearance={quantity > 0 ? "outlined" : "filled"}
+              className="shrink-0 [&_svg]:size-5"
+              leadingIcon={
+                quantity > 0
+                  ? <span className="text-body-02 font-medium">{quantity}</span>
+                  : <Icon type="plus" size="sm" className="text-icon-primary-invert" />
+              }
+              onClick={onPrimaryClick}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (resolvedType === "add-on") {
+    return (
+      <div
+        className={`flex h-[124px] w-full items-end gap-2 rounded-lg bg-background-surface-neutral-default p-5 ${
+          className ?? ""
+        }`}
+      >
+        <ProductImage
+          imageSrc={imageSrc}
+          imageAlt={imageAlt}
+          className="size-[84px] rounded-lg"
+        />
+        <div className="flex min-w-0 flex-1 flex-col gap-1 self-stretch">
+          <div className="flex w-full flex-col gap-1">
+            <p className="truncate text-body-01 font-medium text-text-primary-default">
+              {heading}
+            </p>
+            <p className="h-4 truncate text-body-02 text-text-primary-default">
+              {description}
+            </p>
+          </div>
+          <div className="flex items-end gap-1">
+            <div className="min-w-0 flex-1">
+              <Price
+                finalPrice={finalPrice}
+                originalPrice={originalPrice}
+                finalClassName="text-body-02 font-medium text-text-primary-default"
+                originalClassName="text-body-02 text-primary-700 line-through"
+              />
+            </div>
+            <Button
+              aria-label={`Add ${heading} to cart`}
+              size="icon"
+              variant="primary"
+              appearance="filled"
+              className="shrink-0 [&_svg]:size-5"
+              leadingIcon={
+                <Icon type="plus" size="sm" className="text-icon-primary-invert" />
+              }
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (resolvedType === "menu") {
     return (
@@ -146,51 +248,9 @@ export default function CardContent({
         quantity={quantity}
         savingsText={savingsText}
         onQuantityChange={onQuantityChange}
+        onUpgrade={onUpgrade}
       />
     );
   }
 
-  return (
-    <div
-      className={`flex h-[124px] w-full items-end gap-2 rounded-lg bg-background-surface-neutral-default p-5 ${
-        className ?? ""
-      }`}
-    >
-      <ProductImage
-        imageSrc={imageSrc}
-        imageAlt={imageAlt}
-        className="size-[86px] rounded-lg"
-      />
-      <div className="flex min-w-0 flex-1 flex-col gap-1 self-stretch">
-        <div className="flex w-full flex-col gap-1">
-          <p className="truncate text-body-01 font-medium text-text-primary-default">
-            {heading}
-          </p>
-          <p className="h-4 truncate text-body-02 text-text-primary-default">
-            {description}
-          </p>
-        </div>
-        <div className="flex items-end gap-1">
-          <div className="min-w-0 flex-1">
-            <Price
-              finalPrice={finalPrice}
-              originalPrice={originalPrice}
-              finalClassName="text-body-02 font-medium text-text-primary-default"
-              originalClassName="text-body-02 text-primary-700 line-through"
-            />
-          </div>
-          <Button
-            aria-label={`Add ${heading} to cart`}
-            size="icon"
-            variant="primary"
-            appearance="filled"
-            className="shrink-0 [&_svg]:size-5"
-            leadingIcon={
-              <Icon type="plus" size="sm" className="text-icon-primary-invert" />
-            }
-          />
-        </div>
-      </div>
-    </div>
-  );
 }

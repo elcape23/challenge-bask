@@ -11,6 +11,7 @@ import Icon from "@/components/ui/Icon";
 import Select from "@/components/ui/Select";
 import RadioButton from "@/components/ui/RadioButton";
 import Card from "@/components/ui/Card";
+import CardContent from "@/components/prototype/globals/CardContent";
 import Footer from "@/components/prototype/globals/Footer";
 import InfoCardContent from "@/components/prototype/globals/InfoCardContent";
 import Menu from "@/components/prototype/globals/Menu";
@@ -55,19 +56,6 @@ const DOSAGE_DISCOUNTS = {
   "three-months": 0.17,
 } as const;
 
-type RelatedProductCardProps = {
-  slug: PrototypeProduct["slug"];
-  heading: PrototypeProduct["heading"];
-  description: PrototypeProduct["shortDescription"];
-  finalPrice: PrototypeProduct["finalPrice"];
-  originalPrice?: PrototypeProduct["originalPrice"];
-  imageSrc: PrototypeProduct["imageSrc"];
-  imageAlt: PrototypeProduct["imageAlt"];
-  badgeLabel?: PrototypeProduct["badgeLabel"];
-  badgeType?: PrototypeProduct["badgeType"];
-  onAddToCart?: () => void;
-  onLearnMore?: (slug: string) => void;
-};
 
 type ProductDetailedMobilePageProps = {
   product: PrototypeProduct;
@@ -80,12 +68,15 @@ type ProductConfiguratorProps = {
   dosageOptions: readonly {
     value: string;
     label: string;
+    description?: string;
     badgeLabel?: string;
     badgeType?: "success";
   }[];
   selectableProducts: PrototypeProduct[];
   showStrength: boolean;
+  cartCount: number;
   onBuyNow: () => void;
+  onAddToCart: () => void;
   onSelectProduct: (slug: string) => void;
   onSelectDosage: (dosage: keyof typeof DOSAGE_MULTIPLIERS) => void;
 };
@@ -98,6 +89,7 @@ const MINOXIDIL_TWO_PERCENT_PRODUCT: PrototypeProduct = {
     "A gentler topical option for patients easing into a daily regrowth routine. Designed for consistent scalp application, it supports steady long-term care with a lighter-strength formula.",
   finalPrice: "12.99",
   imageSrc: "/images/prototype/minoxidil-2.webp",
+  cardImageSrc: "/images/prototype/minoxidil-2-transparent.webp",
   imageAlt: "Minoxidil 2% Topical bottle",
   badgeLabel: "Gentle",
   badgeType: "neutral",
@@ -170,7 +162,9 @@ function ProductConfigurator({
   dosageOptions,
   selectableProducts,
   showStrength,
+  cartCount,
   onBuyNow,
+  onAddToCart,
   onSelectProduct,
   onSelectDosage,
 }: ProductConfiguratorProps) {
@@ -214,6 +208,15 @@ function ProductConfigurator({
 
       {/* Buy Now + Guarantee */}
       <div className="flex flex-col gap-2">
+        <Button
+          size="lg"
+          variant="neutral"
+          appearance="outlined"
+          className="w-full"
+          onClick={onAddToCart}
+        >
+          {cartCount > 0 ? `Add to Cart (${cartCount})` : "Add to Cart"}
+        </Button>
         <Button
           size="lg"
           variant="primary"
@@ -375,18 +378,50 @@ function ProductFaq() {
         FAQ about the product
       </h2>
       <div className="flex flex-col gap-3">
-        <AccordionItem heading="How does Minoxidil work?" size="sm" />
-        <AccordionItem
-          heading="How long does it take to see results?"
-          size="sm"
-        />
-        <AccordionItem heading="How often should I use it?" size="sm" />
-        <AccordionItem heading="Do I need to keep using it?" size="sm" />
-        <AccordionItem heading="Are there any common side effects?" size="sm" />
+        <AccordionItem heading="How does Minoxidil work?" size="sm">
+          <p className="text-body-02 text-text-neutral-secondary">
+            Minoxidil is a topical treatment used to help stimulate hair growth in people with hereditary hair loss. It may help regrow hair, slow further loss, or both.
+          </p>
+        </AccordionItem>
+        <AccordionItem heading="How long does it take to see results?" size="sm">
+          <p className="text-body-02 text-text-neutral-secondary">
+            Results usually take time. Many people need several months of consistent use before noticing visible changes, and some sources note it can take about 6 to 12 months to fully judge results.
+          </p>
+        </AccordionItem>
+        <AccordionItem heading="How often should I use it?" size="sm">
+          <p className="text-body-02 text-text-neutral-secondary">
+            For common topical solution directions, Minoxidil is typically applied directly to the scalp twice a day. Using more than directed does not make it work faster or better.
+          </p>
+        </AccordionItem>
+        <AccordionItem heading="Do I need to keep using it?" size="sm">
+          <p className="text-body-02 text-text-neutral-secondary">
+            Yes. Continued use is usually needed to maintain results. If treatment is stopped, hair loss may begin again over time.
+          </p>
+        </AccordionItem>
+        <AccordionItem heading="Are there any common side effects?" size="sm">
+          <p className="text-body-02 text-text-neutral-secondary">
+            Some people may experience scalp irritation, itching, or unwanted hair growth on nearby skin. If side effects feel significant or unusual, the next step should be to check with a healthcare provider.
+          </p>
+        </AccordionItem>
       </div>
     </section>
   );
 }
+
+
+type RelatedProductCardProps = {
+  slug: PrototypeProduct["slug"];
+  heading: PrototypeProduct["heading"];
+  description: PrototypeProduct["shortDescription"];
+  finalPrice: PrototypeProduct["finalPrice"];
+  originalPrice?: PrototypeProduct["originalPrice"];
+  imageSrc: PrototypeProduct["imageSrc"];
+  imageAlt: PrototypeProduct["imageAlt"];
+  badgeLabel?: PrototypeProduct["badgeLabel"];
+  badgeType?: PrototypeProduct["badgeType"];
+  onAddToCart?: () => void;
+  onLearnMore?: (slug: string) => void;
+};
 
 function RelatedProductCard({
   slug,
@@ -610,6 +645,8 @@ export default function ProductDetailedMobilePage({
   }, []);
   const [topBarHidden, setTopBarHidden] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const bottomBarRef = useRef<HTMLDivElement>(null);
+  const suppressScrollRef = useRef(false);
   const selectableProducts =
     product.slug === "minoxidil-5-topical"
       ? [product, MINOXIDIL_TWO_PERCENT_PRODUCT]
@@ -635,14 +672,22 @@ export default function ProductDetailedMobilePage({
     Number(subtotalPrice) - Number(displayPrice)
   ).toFixed(2);
   const showStrength = product.slug === "minoxidil-5-topical";
-  const dosageOptions =
+  const baseDosageOptions =
     product.slug === "scalp-shampoo" ? SHAMPOO_DOSAGE_OPTIONS : DOSAGE_OPTIONS;
+  const dosageOptions = baseDosageOptions.map((option) => ({
+    ...option,
+    description: `$${formatPrice(
+      selectedProduct.finalPrice,
+      DOSAGE_MULTIPLIERS[option.value as keyof typeof DOSAGE_MULTIPLIERS],
+      DOSAGE_DISCOUNTS[option.value as keyof typeof DOSAGE_DISCOUNTS],
+    )}`,
+  }));
   const selectedDosageLabel =
     dosageOptions.find((option) => option.value === selectedDosage)?.label ??
     dosageOptions[0]?.label ??
     selectedProduct.shortDescription;
   const cartSavingsText =
-    selectedDosage === "three-months"
+    selectedDosage !== "three-months"
       ? "Save 17% on 3 month delivery"
       : undefined;
   const syncCartWithSelection = () => {
@@ -673,6 +718,21 @@ export default function ProductDetailedMobilePage({
     setCartCount(getPrototypeCartCount());
     setTopBarHidden(false);
   };
+  const showBottomBar = () => {
+    if (bottomBarRef.current) {
+      bottomBarRef.current.style.transform = "translateY(-100%)";
+    }
+    suppressScrollRef.current = true;
+    setTimeout(() => { suppressScrollRef.current = false; }, 400);
+  };
+  const handleSelectProduct = (slug: string) => {
+    setSelectedProductSlug(slug);
+    showBottomBar();
+  };
+  const handleSelectDosage = (dosage: keyof typeof DOSAGE_MULTIPLIERS) => {
+    setSelectedDosage(dosage);
+    showBottomBar();
+  };
   const handleOpenMenu = () => {
     const scrollEl = getScrollableAncestor(wrapperRef.current);
     const { top, height } = getScrollMetrics(scrollEl);
@@ -697,14 +757,27 @@ export default function ProductDetailedMobilePage({
     let lastScrollY = getScrollY();
 
     const handleScroll = () => {
-      if (cartCount > 0) {
-        setTopBarHidden(false);
-        lastScrollY = getScrollY();
+      const currentScrollY = getScrollY();
+
+      if (suppressScrollRef.current) {
+        lastScrollY = currentScrollY;
         return;
       }
 
-      const currentScrollY = getScrollY();
-      setTopBarHidden(currentScrollY > lastScrollY && currentScrollY > 0);
+      const scrollingDown = currentScrollY > lastScrollY && currentScrollY > 0;
+
+      if (bottomBarRef.current) {
+        bottomBarRef.current.style.transform = scrollingDown
+          ? "translateY(0)"
+          : "translateY(-100%)";
+      }
+
+      if (cartCount > 0) {
+        setTopBarHidden(false);
+      } else {
+        setTopBarHidden(scrollingDown);
+      }
+
       lastScrollY = currentScrollY;
     };
 
@@ -726,7 +799,7 @@ export default function ProductDetailedMobilePage({
       >
         <TopBar
           color="primary"
-          showButton={cartCount > 0}
+          showButton={cartCount > 0 && !isMenuOpen}
           buttonLabel={`Cart(${cartCount})`}
           onButtonClick={handleCheckout}
           showIconButton
@@ -744,9 +817,11 @@ export default function ProductDetailedMobilePage({
           dosageOptions={dosageOptions}
           selectableProducts={selectableProducts}
           showStrength={showStrength}
+          cartCount={cartCount}
           onBuyNow={handleCheckout}
-          onSelectProduct={setSelectedProductSlug}
-          onSelectDosage={setSelectedDosage}
+          onAddToCart={handleAddToCart}
+          onSelectProduct={handleSelectProduct}
+          onSelectDosage={handleSelectDosage}
         />
         <ProductInfoAccordions />
         <AddOnCard onAdd={handleAddToCart} />
@@ -765,10 +840,28 @@ export default function ProductDetailedMobilePage({
         onLearnMore={handleOpenProduct}
       />
 
+
       {/* Section 4 — Footer */}
       <section className="bg-background-default-invert px-5 py-12">
         <Footer variant="section" />
       </section>
+
+      {/* Sticky bottom bar */}
+      <div className="sticky bottom-0 z-10 h-0">
+        <div ref={bottomBarRef} className="transition-transform duration-300 -translate-y-full">
+          <CardContent
+            type="product-detailed"
+            heading={selectedProduct.heading}
+            description={selectedDosageLabel}
+            imageSrc={selectedProduct.cardImageSrc}
+            imageAlt={selectedProduct.imageAlt}
+            finalPrice={displayPrice}
+            originalPrice={selectedDosage === "three-months" ? subtotalPrice : selectedProduct.originalPrice}
+            quantity={cartCount}
+            onPrimaryClick={handleAddToCart}
+          />
+        </div>
+      </div>
 
       {isMenuOpen && (
         <div

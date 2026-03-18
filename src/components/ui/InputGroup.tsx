@@ -17,7 +17,7 @@ export interface InputGroupProps
   /** Visual/interaction state for the group */
   state?: InputGroupState;
   /** Size variant */
-  size?: "lg" | "md" | "sm";
+  size?: "md" | "sm";
   /** Placeholder text */
   placeholder?: string;
   /** Feedback text below (shown for success/danger) */
@@ -53,40 +53,9 @@ function CheckIcon({ className }: { className?: string }) {
   );
 }
 
-function BanIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="m4.9 4.9 14.2 14.2" />
-    </svg>
-  );
-}
-
-const CONTAINER_BASE =
-  "flex items-center rounded-md border w-full transition-colors";
-
-const SIZE_HEIGHT = { lg: "h-12", md: "h-10", sm: "h-8" } as const;
-const SIZE_PADDING = {
-  lg: "px-4 py-3",
-  md: "px-4 py-3",
-  sm: "px-3 py-2",
-} as const;
-const SIZE_TEXT = {
-  lg: "text-body-01",
-  md: "text-body-01",
-  sm: "text-body-02",
-} as const;
+const SIZE_RADIUS = { md: "rounded-md", sm: "rounded-sm" } as const;
+const SIZE_PADDING = { md: "px-4 py-3", sm: "px-3 py-2" } as const;
+const SIZE_TEXT = { md: "text-body-01", sm: "text-body-02" } as const;
 
 const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
   (
@@ -112,185 +81,119 @@ const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
     const isDisabled = state === "disabled" || disabled;
     const isSuccess = state === "success";
     const isDanger = state === "danger";
-    const showAttachedIcon = isSuccess || isDanger;
-    const visualState =
-      state === "default" && isActive ? "pressed" : state;
+    const visualState = state === "default" && isActive ? "pressed" : state;
+    const isFocus = visualState === "focus";
 
-    if (
-      visualState === "default" ||
-      visualState === "focus" ||
-      visualState === "hover" ||
-      visualState === "pressed" ||
-      visualState === "disabled"
-    ) {
-      const s = size;
-      const isFocus = visualState === "focus";
-      const containerClasses =
-        visualState === "hover"
-          ? "bg-background-surface-neutral-hover border-border-neutral-hover"
-          : visualState === "pressed"
-            ? "bg-background-default-default border-[var(--color-neutral-800)]"
-            : visualState === "disabled"
-              ? "border-border-neutral-disabled bg-background-surface-neutral-default cursor-not-allowed opacity-90"
-              : "bg-background-default-default border-border-neutral-default";
-      const textClasses =
-        visualState === "hover"
-          ? "text-text-neutral-hover placeholder:text-text-neutral-hover"
-          : visualState === "pressed"
-            ? "text-text-neutral-pressed placeholder:text-text-neutral-pressed"
-            : visualState === "disabled"
-              ? "text-text-neutral-disabled placeholder:text-text-neutral-disabled"
-              : "text-text-neutral-default placeholder:text-text-neutral-placeholder";
+    const containerClasses =
+      isDisabled
+        ? "border-border-neutral-disabled cursor-not-allowed"
+        : isSuccess
+          ? "bg-background-surface-success-default border-border-success-default"
+          : isDanger
+            ? "bg-background-surface-danger-default border-border-danger-default"
+            : visualState === "hover"
+              ? "bg-background-surface-neutral-hover border-border-neutral-hover"
+              : visualState === "pressed"
+                ? "bg-background-default-default border-[var(--color-neutral-800)]"
+                : isFocus
+                  ? "bg-background-default-default border-border-neutral-default shadow-focus"
+                  : "bg-background-default-default border-border-neutral-default";
 
-      return (
-        <div className={`flex flex-col ${className ?? ""}`}>
-          {label && (
-            <label
-              htmlFor={inputId}
-              className={`${
-                s === "lg"
-                  ? "text-body-01 font-medium"
-                  : "text-body-02 font-medium"
-              } mb-1 text-text-neutral-default`}
-            >
-              {label}
-            </label>
+    const textClasses =
+      isDisabled
+        ? "text-text-neutral-disabled placeholder:text-text-neutral-disabled"
+        : isSuccess
+          ? "text-text-success-default placeholder:text-text-success-default/60"
+          : isDanger
+            ? "text-text-danger-default placeholder:text-text-danger-default/60"
+            : visualState === "hover"
+              ? "text-text-neutral-hover placeholder:text-text-neutral-hover"
+              : visualState === "pressed"
+                ? "text-text-neutral-pressed placeholder:text-text-neutral-pressed"
+                : "text-text-neutral-default placeholder:text-text-neutral-placeholder";
+
+    const showFeedback = isSuccess || isDanger;
+    const feedbackClasses = isSuccess
+      ? "text-text-success-default"
+      : "text-text-danger-default";
+
+    return (
+      <div className={`flex flex-col ${className ?? ""}`}>
+        {label && (
+          <label
+            htmlFor={inputId}
+            className="text-body-02 font-medium mb-1 text-text-neutral-default"
+          >
+            {label}
+          </label>
+        )}
+
+        <div
+          className={[
+            "flex w-full items-center justify-between border transition-colors gap-[10px]",
+            SIZE_RADIUS[size],
+            containerClasses,
+          ].join(" ")}
+        >
+          <div className={["flex min-w-0 flex-1 items-center", SIZE_PADDING[size]].join(" ")}>
+            <input
+              ref={ref}
+              id={inputId}
+              disabled={isDisabled}
+              aria-invalid={isDanger || undefined}
+              aria-describedby={showFeedback ? `${inputId}-feedback` : undefined}
+              className={[
+                "flex-1 min-w-0 bg-transparent outline-none",
+                SIZE_TEXT[size],
+                textClasses,
+              ].join(" ")}
+              placeholder={placeholder}
+              {...inputProps}
+              onFocus={(event) => {
+                setIsActive(true);
+                inputProps.onFocus?.(event);
+              }}
+              onBlur={(event) => {
+                setIsActive(false);
+                inputProps.onBlur?.(event);
+              }}
+            />
+          </div>
+
+          {isSuccess && (
+            <span className="shrink-0 pr-4 text-icon-success-default" aria-hidden>
+              <CheckIcon className="size-5" />
+            </span>
           )}
 
-          <div
-            className={[
-              CONTAINER_BASE,
-              SIZE_HEIGHT[s],
-              containerClasses,
-              isFocus ? "shadow-focus border-border-primary-default" : "",
-            ].join(" ")}
-          >
-            <div className={["flex min-w-0 flex-1 items-center", SIZE_PADDING[s]].join(" ")}>
-              <input
-                ref={ref}
-                id={inputId}
+          {showButton && !isSuccess && !isDanger && (
+            <div className="shrink-0 pr-4">
+              <Button
+                size="sm"
+                variant="neutral"
+                appearance="link"
                 disabled={isDisabled}
-                className={[
-                  "flex-1 min-w-0 bg-transparent outline-none",
-                  SIZE_TEXT[s],
-                  textClasses,
-                ].join(" ")}
-                placeholder={placeholder}
-                autoFocus={isFocus}
-                {...inputProps}
-                onFocus={(event) => {
-                  setIsActive(true);
-                  inputProps.onFocus?.(event);
-                }}
-                onBlur={(event) => {
-                  setIsActive(false);
-                  inputProps.onBlur?.(event);
-                }}
-              />
+                onClick={onButtonClick}
+              >
+                {buttonLabel}
+              </Button>
             </div>
-            {showButton ? (
-              <div className="shrink-0 px-4">
-                <Button
-                  size="sm"
-                  variant="neutral"
-                  appearance="link"
-                  disabled={isDisabled}
-                  onClick={onButtonClick}
-                >
-                  {buttonLabel}
-                </Button>
-              </div>
-            ) : null}
-          </div>
-          <p
-            id={`${inputId}-feedback`}
-            className="mt-1 min-h-3 px-3 text-body-03 text-transparent"
-            aria-hidden="true"
-          >
-            {" "}
-          </p>
-        </div>
-      );
-    }
-
-    if (showAttachedIcon) {
-      const s = size;
-      return (
-        <div className={`flex flex-col ${className ?? ""}`}>
-          {label && (
-            <label
-              htmlFor={inputId}
-              className={`${
-                s === "lg"
-                  ? "text-body-01 font-medium"
-                  : "text-body-02 font-medium"
-              } mb-1 text-text-neutral-default`}
-            >
-              {label}
-            </label>
           )}
-          <div className="flex items-stretch">
-            <div
-              className={[
-                "flex items-center flex-1 min-w-0 rounded-l-md rounded-r-none border border-r-0",
-                SIZE_HEIGHT[s],
-                SIZE_PADDING[s],
-                isSuccess
-                  ? "bg-background-surface-success-default border-border-success-default"
-                  : "bg-background-surface-danger-default border-border-danger-default",
-                isSuccess ? "focus-within:shadow-focus" : "",
-              ].join(" ")}
-            >
-              <input
-                ref={ref}
-                id={inputId}
-                disabled={disabled}
-                aria-invalid={isDanger || undefined}
-                aria-describedby={`${inputId}-feedback`}
-                className={[
-                  "flex-1 min-w-0 bg-transparent outline-none",
-                  SIZE_TEXT[s],
-                  isSuccess
-                    ? "text-text-success-default placeholder:text-text-success-default/60"
-                    : "text-text-danger-default placeholder:text-text-danger-default/60",
-                ].join(" ")}
-                placeholder={placeholder}
-                {...inputProps}
-              />
-            </div>
-            <div
-              className={[
-                "flex items-center justify-center shrink-0 w-12 rounded-r-md rounded-l-none border-y border-r border-l-0",
-                SIZE_HEIGHT[s],
-                isSuccess
-                  ? "bg-background-surface-success-default border-border-success-default text-icon-success-default"
-                  : "border bg-background-surface-danger-default border-border-danger-default text-icon-danger-default",
-              ].join(" ")}
-              aria-hidden
-            >
-              {isSuccess ? (
-                <CheckIcon className="size-5" />
-              ) : (
-                <BanIcon className="size-5" />
-              )}
-            </div>
-          </div>
-          <p
-            id={`${inputId}-feedback`}
-            className={[
-              "mt-1 min-h-3 px-3 text-body-03",
-              isSuccess
-                ? "text-text-success-default"
-                : "text-text-danger-default",
-            ].join(" ")}
-            role={isDanger ? "alert" : undefined}
-          >
-            {feedback}
-          </p>
         </div>
-      );
-    }
 
+        <p
+          id={`${inputId}-feedback`}
+          className={[
+            "px-3 py-1 text-body-03",
+            showFeedback ? feedbackClasses : "text-transparent select-none",
+          ].join(" ")}
+          role={isDanger ? "alert" : undefined}
+          aria-hidden={!showFeedback}
+        >
+          {showFeedback ? feedback : "\u00A0"}
+        </p>
+      </div>
+    );
   }
 );
 
