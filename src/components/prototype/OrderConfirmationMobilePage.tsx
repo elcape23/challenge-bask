@@ -152,10 +152,13 @@ export default function OrderConfirmationMobilePage() {
         </div>
 
         {/* Heading */}
-        <div className="px-5 pt-5 pb-2">
+        <div className="flex flex-col gap-1 px-5 pt-5 pb-2">
           <h1 className="text-heading-04 font-medium text-text-neutral-default text-center">
             Your order was placed.
           </h1>
+          <p className="text-center text-body-01 text-text-neutral-secondary">
+            Estimated delivery: 28th - 30th May
+          </p>
         </div>
 
         <div className="flex flex-col px-5">
