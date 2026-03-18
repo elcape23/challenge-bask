@@ -733,6 +733,7 @@ export default function ProductDetailedMobilePage({
   };
   const handleSelectProduct = (slug: string) => {
     setSelectedProductSlug(slug);
+    showBottomBar();
   };
   const handleSelectDosage = (dosage: keyof typeof DOSAGE_MULTIPLIERS) => {
     setSelectedDosage(dosage);
